@@ -11,7 +11,6 @@ class Grid : public SpritesGroup {
     std::vector<std::vector<Cell*>> cells_;
 public:
     Grid(const GameOptions&);
-    ~Grid();
 };
 
 #endif //DIPLOMACY_CPP_GRID_H

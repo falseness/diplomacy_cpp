@@ -8,9 +8,9 @@ void SpritesGroup::Draw(Screen& screen, const GameOptions& game_options) {
         sprite->Draw(screen, game_options);
     }
 }
-/*
+
 SpritesGroup::~SpritesGroup() {
     for (size_t i = 0; i < sprites_.size(); ++i) {
         delete sprites_[i];
     }
-}*/
+}

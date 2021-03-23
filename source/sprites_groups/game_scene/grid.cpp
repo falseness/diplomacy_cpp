@@ -12,8 +12,3 @@ Grid::Grid(const GameOptions& game_options) {
     }
 }
 
-Grid::~Grid() {
-    for (size_t i = 0; i < sprites_.size(); ++i) {
-        delete sprites_[i];
-    }
-}

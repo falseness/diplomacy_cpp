@@ -12,7 +12,7 @@ protected:
 public:
     virtual void Draw(Screen& screen, const GameOptions&);
     //void HandleEvent() {}
-    //~SpritesGroup();
+    ~SpritesGroup();
 };
 
 #endif //DIPLOMACY_CPP_SPRITES_GROUP_H
