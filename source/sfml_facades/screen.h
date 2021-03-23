@@ -10,6 +10,7 @@ class Screen {
     Поэтому используется паттерн Фасад.
     */
     sf::RenderWindow* window_;
+    sf::Color background_color_;
 public:
     size_t width_;
     size_t height_;

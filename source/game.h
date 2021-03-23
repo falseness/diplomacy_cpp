@@ -6,9 +6,10 @@
 #ifndef DIPLOMACY_CPP_GAME_H
 #define DIPLOMACY_CPP_GAME_H
 class Game {
-    Screen* screen;
-    EventManager* event_manager;
-    GameScene* game_scene;
+    Screen* screen_;
+    EventManager* event_manager_;
+    GameScene* game_scene_;
+    GameOptions game_options_;
 public:
     Game();
     ~Game();

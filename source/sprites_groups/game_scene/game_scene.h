@@ -5,9 +5,9 @@
 #define DIPLOMACY_CPP_GAME_SCENE_H
 
 class GameScene : public Scene {
-    Grid *grid_;
+    Grid* grid_;
 public:
-    GameScene();
+    GameScene(const GameOptions&);
     ~GameScene();
 };
 
