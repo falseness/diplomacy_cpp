@@ -9,13 +9,16 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 #---
 
 include_directories(${PROJECT_SOURCE_DIR})
-set(MAIN_SOURCE main/main.cpp)
-add_executable(Diplomacy ${MAIN_SOURCE})
+set(MAIN_SOURCE main/main.cpp source/game.cpp source/sfml_facades/event_manager.cpp source/sfml_facades/screen.cpp
+        source/sprites_groups/sprites_group.cpp source/sprites_groups/scene.cpp
+        source/sprites_groups/game_scene/game_scene.cpp source/sprites_groups/game_scene/grid.cpp)
 
+add_executable(Diplomacy ${MAIN_SOURCE})
 #---
 find_package(SFML 2.5 COMPONENTS graphics audio REQUIRED)
 
 target_link_libraries(Diplomacy sfml-graphics sfml-audio)
 #---
-add_subdirectory(${PROJECT_SOURCE_DIR}/source)
-target_link_libraries(SubdirectoryProject)
+
+
+

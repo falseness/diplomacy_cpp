@@ -1,8 +1,7 @@
 #include <iostream>
-#include <source/game.cpp>
+#include <source/game.h>
 
-int main()
-{
+int main() {
     Game game;
     game.MainLoop();
     std::cout << "ok";
