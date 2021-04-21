@@ -1,20 +1,15 @@
 #include "cell.h"
 #include "coord_translation.h"
-#include <source/geometry/point.h>
+#include <source/utility/point.h>
 
-Cell::Cell(std::pair<int, int> coord, const GameOptions& game_options) {
-    coord_ = coord;
-    hexagon_ = new Hexagon(*this, game_options.hexagon_radius, game_options.hexagon_rotation,
-                           game_options.neutral_player_color, game_options.hexagon_outline_color,
-                           game_options.hexagon_outline_thickness);
-}
+Cell::Cell(std::pair<int, int> coord, const GameOptions& game_options) : coord_(coord), hexagon_(*this) {}
 
 std::pair<int, int> Cell::get_coord() const {
     return coord_;
 }
 
 void Cell::Draw(Screen& screen, const GameOptions& game_options) {
-    hexagon_->Draw(screen, game_options);
+    hexagon_.Draw(screen, game_options);
 }
 
 Point Cell::calculate_pos(const GameOptions& game_options) const {

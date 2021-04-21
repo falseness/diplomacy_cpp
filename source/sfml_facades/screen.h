@@ -1,26 +1,23 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <source/options/hexagon.h>
 
-#ifndef DIPLOMACY_CPP_SCREEN_H
-#define DIPLOMACY_CPP_SCREEN_H
+#pragma once
 
 class Screen {
-    /*
-    Пользователь можешь изменить window_, тогда всё сломается.
-    Поэтому используется паттерн Фасад.
-    */
-    sf::RenderWindow* window_;
+    sf::RenderWindow& window_;
     sf::Color background_color_;
+
+    sf::CircleShape hexagon_shape_ = sf::CircleShape(0, 6);
+
+    void Draw(const sf::Shape& shape);
 public:
     size_t width_;
     size_t height_;
-    Screen(sf::RenderWindow* window);
-    ~Screen();
+    Screen(sf::RenderWindow& window);
     void Clear();
-    void Draw(const sf::Shape& shape);
+    void DrawHexagon(const HexagonOptions&, const Point&);
     void Display();
     bool IsOpen() const;
     void Close();
 };
-
-#endif //DIPLOMACY_CPP_SCREEN_H

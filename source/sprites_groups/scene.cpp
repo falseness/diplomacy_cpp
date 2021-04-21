@@ -4,4 +4,3 @@
 void Scene::LoopIteration(Screen& screen, const GameOptions& game_options) {
     Draw(screen, game_options);
 }
-

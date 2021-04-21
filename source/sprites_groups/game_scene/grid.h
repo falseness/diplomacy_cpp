@@ -4,13 +4,10 @@
 #include <source/options/options.h>
 #include <vector>
 
-#ifndef DIPLOMACY_CPP_GRID_H
-#define DIPLOMACY_CPP_GRID_H
+#pragma once
 
 class Grid : public SpritesGroup {
-    std::vector<std::vector<Cell*>> cells_;
+    std::vector<std::vector<unique_ptr<Cell>>> cells_;
 public:
     Grid(const GameOptions&);
 };
-
-#endif //DIPLOMACY_CPP_GRID_H

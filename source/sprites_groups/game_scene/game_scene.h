@@ -1,14 +1,11 @@
 #include <source/sprites_groups/scene.h>
 #include <source/sprites_groups/game_scene/grid.h>
+#include <source/utility/all_usings.h>
 
-#ifndef DIPLOMACY_CPP_GAME_SCENE_H
-#define DIPLOMACY_CPP_GAME_SCENE_H
+#pragma once
 
 class GameScene : public Scene {
-    Grid* grid_;
+    Grid grid_;
 public:
     GameScene(const GameOptions&);
-    ~GameScene();
 };
-
-#endif //DIPLOMACY_CPP_GAME_SCENE_H

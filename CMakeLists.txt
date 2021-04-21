@@ -19,7 +19,12 @@ set(    MAIN_SOURCE
         source/sprites_groups/game_scene/game_scene.cpp
         source/sprites_groups/game_scene/grid.cpp
         source/sprites/cell/hexagon.cpp
-        source/options/options.cpp source/sprites/cell/cell.cpp source/sprites/cell/cell.h source/sprites/cell/coord_translation.cpp source/sprites/cell/coord_translation.h source/geometry/point.h)
+        source/options/options.cpp source/sprites/cell/cell.cpp
+        source/sprites/cell/coord_translation.cpp
+        source/sfml_facades/library_facade.cpp
+        source/utility/color.cpp
+        source/options/hexagon.cpp
+        source/sfml_facades/utility/sfml_color.cpp)
 
 add_executable(Diplomacy ${MAIN_SOURCE})
 #---
