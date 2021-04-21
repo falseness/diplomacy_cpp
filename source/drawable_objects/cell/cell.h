@@ -1,4 +1,4 @@
-#include <source/drawable_objects/sprite.h>
+#include <source/drawable_objects/drawable_object.h>
 #include <source/drawable_objects/cell/hexagon.h>
 #include <source/options/options.h>
 #include <tuple>
