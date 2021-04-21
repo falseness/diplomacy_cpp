@@ -18,6 +18,7 @@ void Game::MainLoop() {
         library_facade_.screen.Clear();
         //screen_->Draw(shape);
         game_scene_->Draw(library_facade_.screen, game_options_);
+        library_facade_.screen.DrawImage("peasant", Point(100, 100));
         library_facade_.screen.Display();
     }
 }

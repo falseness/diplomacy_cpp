@@ -6,5 +6,8 @@ Hexagon::Hexagon(const Cell& cell) : cell_(cell) {}
 
 void Hexagon::Draw(Screen& screen, const GameOptions& game_options) {
     Point position = cell_.calculate_pos(game_options);
-    screen.DrawHexagon(game_options.hexagon_options, position);
+
+    HexagonOptions hexagon_options(game_options.hexagon_options);
+    hexagon_options.fill_color = cell_.get_color();
+    screen.DrawHexagon(hexagon_options, position);
 }

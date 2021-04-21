@@ -4,16 +4,11 @@
 Screen::Screen(sf::RenderWindow& window) :
             width_(sf::VideoMode::getDesktopMode().width),
             height_(sf::VideoMode::getDesktopMode().height),
-            window_(window) {
+            window_(window), background_color_(sf::Color(80, 80, 80)) {
     window_.create(sf::VideoMode(width_, height_), "Diplomacy");
-    background_color_ = sf::Color(80, 80, 80);
 }
 void Screen::Clear() {
     window_.clear(background_color_);
-}
-
-void Screen::Draw(const sf::Shape& shape) {
-    window_.draw(shape);
 }
 
 void Screen::DrawHexagon(const HexagonOptions& hexagon_options, const Point& position) {
@@ -24,7 +19,14 @@ void Screen::DrawHexagon(const HexagonOptions& hexagon_options, const Point& pos
     hexagon_shape_.setRotation(hexagon_options.rotation);
 
     hexagon_shape_.setPosition(position.x, position.y);
-    Draw(hexagon_shape_);
+    window_.draw(hexagon_shape_);
+}
+
+void Screen::DrawImage(const std::string& image_name, const Point& position) {
+    sf::Sprite sprite;
+    sprite.setTexture(image_manager_.images[image_name]);
+    sprite.setPosition(position.x, position.y);
+    window_.draw(sprite);
 }
 
 void Screen::Display() {

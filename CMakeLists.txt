@@ -24,11 +24,21 @@ set(    MAIN_SOURCE
         source/sfml_facades/library_facade.cpp
         source/utility/color.cpp
         source/options/hexagon.cpp
-        source/sfml_facades/utility/sfml_color.cpp)
+        source/sfml_facades/utility/sfml_color.cpp
+        source/player/player.cpp
+        source/player/unit_stats.cpp
+        source/drawable_objects/entity.cpp
+        source/sfml_facades/image_manager.cpp)
 
 add_executable(Diplomacy ${MAIN_SOURCE})
 #---
 find_package(SFML 2.5 COMPONENTS graphics audio REQUIRED)
+
+add_custom_target(copy_assets
+        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/assets ${PROJECT_SOURCE_DIR}/bin
+        )
+add_dependencies(Diplomacy copy_assets)
+
 
 target_link_libraries(Diplomacy sfml-graphics sfml-audio)
 #---

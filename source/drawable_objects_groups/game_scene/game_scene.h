@@ -5,6 +5,7 @@
 #pragma once
 
 class GameScene : public Scene {
+    std::vector<Player> players_;
     Grid grid_;
 public:
     GameScene(const GameOptions&);

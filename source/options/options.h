@@ -5,7 +5,7 @@
 #pragma once
 
 struct GameOptions {
-    Color neutral_player_color;
+    std::size_t neutral_player_index;
     HexagonOptions hexagon_options;
     Point hexagon_offset;
     GameOptions();
