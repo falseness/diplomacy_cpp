@@ -1,5 +1,5 @@
 #include <source/sfml_facades/library_facade.h>
-#include <source/sprites_groups/game_scene/game_scene.h>
+#include <source/drawable_objects_groups/game_scene/game_scene.h>
 
 #pragma once
 

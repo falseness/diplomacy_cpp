@@ -1,4 +1,4 @@
-#include <source/sprites/sprite.h>
+#include <source/drawable_objects/sprite.h>
 #include <source/sfml_facades/screen.h>
 #include <source/options/options.h>
 
@@ -6,7 +6,7 @@ class Cell;
 
 #pragma once
 
-class Hexagon : public Sprite {
+class Hexagon : public DrawableObject {
     const Cell& cell_;
 public:
     Hexagon(const Cell&);

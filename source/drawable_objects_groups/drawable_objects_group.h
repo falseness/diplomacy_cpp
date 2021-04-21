@@ -1,4 +1,4 @@
-#include <source/sprites/sprite.h>
+#include <source/drawable_objects/sprite.h>
 #include <source/sfml_facades/screen.h>
 #include <source/options/options.h>
 #include <vector>
@@ -6,9 +6,9 @@
 
 #pragma once
 
-class SpritesGroup : public Sprite {
+class DrawableObjectsGroup : public DrawableObject {
 protected:
-    std::vector<Sprite*> sprites_;
+    std::vector<DrawableObject*> drawable_objects_;
 public:
     virtual void Draw(Screen& screen, const GameOptions&);
     //void HandleEvent() {}

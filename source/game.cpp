@@ -1,6 +1,6 @@
 #include <iostream>
 #include "game.h"
-#include <source/sprites_groups/game_scene/game_scene.h>
+#include <source/drawable_objects_groups/game_scene/game_scene.h>
 #include <source/options/options.h>
 
 Game::Game() {

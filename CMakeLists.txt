@@ -14,13 +14,13 @@ set(    MAIN_SOURCE
         source/game.cpp
         source/sfml_facades/event_manager.cpp
         source/sfml_facades/screen.cpp
-        source/sprites_groups/sprites_group.cpp
-        source/sprites_groups/scene.cpp
-        source/sprites_groups/game_scene/game_scene.cpp
-        source/sprites_groups/game_scene/grid.cpp
-        source/sprites/cell/hexagon.cpp
-        source/options/options.cpp source/sprites/cell/cell.cpp
-        source/sprites/cell/coord_translation.cpp
+        source/drawable_objects_groups/drawable_objects_group.cpp
+        source/drawable_objects_groups/scene.cpp
+        source/drawable_objects_groups/game_scene/game_scene.cpp
+        source/drawable_objects_groups/game_scene/grid.cpp
+        source/drawable_objects/cell/hexagon.cpp
+        source/options/options.cpp source/drawable_objects/cell/cell.cpp
+        source/drawable_objects/cell/coord_translation.cpp
         source/sfml_facades/library_facade.cpp
         source/utility/color.cpp
         source/options/hexagon.cpp

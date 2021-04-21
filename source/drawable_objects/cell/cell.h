@@ -1,12 +1,12 @@
-#include <source/sprites/sprite.h>
-#include <source/sprites/cell/hexagon.h>
+#include <source/drawable_objects/sprite.h>
+#include <source/drawable_objects/cell/hexagon.h>
 #include <source/options/options.h>
 #include <tuple>
 #include <source/utility/point.h>
 
 #pragma once
 
-class Cell : public Sprite {
+class Cell : public DrawableObject {
     std::pair<int, int> coord_;
     Hexagon hexagon_;
 public:
