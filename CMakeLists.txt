@@ -26,9 +26,15 @@ set(    MAIN_SOURCE
         source/options/hexagon.cpp
         source/sfml_facades/utility/sfml_color.cpp
         source/player/player.cpp
-        source/player/unit_stats.cpp
+        source/player/entity_stats.cpp
         source/drawable_objects/entity.cpp
-        source/sfml_facades/image_manager.cpp)
+        source/sfml_facades/image_manager.cpp
+        source/utility/point.cpp
+        source/utility/object_size.cpp
+        source/utility/object_size.h
+        source/drawable_objects/unit/unit.cpp
+        source/drawable_objects/unit/melee/peasant.cpp
+        )
 
 add_executable(Diplomacy ${MAIN_SOURCE})
 #---

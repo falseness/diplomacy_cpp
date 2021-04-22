@@ -16,16 +16,21 @@ void Screen::DrawHexagon(const HexagonOptions& hexagon_options, const Point& pos
     hexagon_shape_.setFillColor(create_color(hexagon_options.fill_color));
     hexagon_shape_.setOutlineColor(create_color(hexagon_options.outline_color));
     hexagon_shape_.setOutlineThickness(hexagon_options.outline_thickness);
-    hexagon_shape_.setRotation(hexagon_options.rotation);
 
+    hexagon_shape_.setRotation(hexagon_options.rotation);
     hexagon_shape_.setPosition(position.x, position.y);
+
     window_.draw(hexagon_shape_);
 }
 
-void Screen::DrawImage(const std::string& image_name, const Point& position) {
+void Screen::DrawImage(const std::string& image_name, const ObjectSize& image_size, const Point& position) {
     sf::Sprite sprite;
     sprite.setTexture(image_manager_.images[image_name]);
-    sprite.setPosition(position.x, position.y);
+
+    sf::FloatRect this_rect = sprite.getGlobalBounds();
+    sprite.scale(image_size.width / this_rect.width, image_size.height / this_rect.height);
+    sprite.setPosition(position.x - image_size.width / 2, position.y - image_size.height / 2);
+
     window_.draw(sprite);
 }
 

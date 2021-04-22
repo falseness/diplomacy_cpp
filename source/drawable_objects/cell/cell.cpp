@@ -3,7 +3,7 @@
 #include <source/utility/point.h>
 
 Cell::Cell(std::pair<int, int> coord, size_t player_index_, const std::vector<Player>& players) : coord_(coord),
-    player_index_(player_index_), players_(players), hexagon_(*this) {}
+    player_index_(player_index_), players_(players), hexagon_(*this), unit_(nullptr) {}
 
 std::pair<int, int> Cell::get_coord() const {
     return coord_;
@@ -11,6 +11,8 @@ std::pair<int, int> Cell::get_coord() const {
 
 void Cell::Draw(Screen& screen, const GameOptions& game_options) {
     hexagon_.Draw(screen, game_options);
+    if (unit_ != nullptr)
+        unit_->Draw(screen, game_options);
 }
 
 Point Cell::calculate_pos(const GameOptions& game_options) const {
@@ -21,4 +23,8 @@ Point Cell::calculate_pos(const GameOptions& game_options) const {
 
 const Color& Cell::get_color() const {
     return players_[player_index_].color_;
+}
+
+const Player& Cell::get_player() const {
+    return players_[player_index_];
 }

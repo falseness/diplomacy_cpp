@@ -2,6 +2,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <source/options/hexagon.h>
 #include <source/sfml_facades/image_manager.h>
+#include <source/utility/object_size.h>
 
 #pragma once
 
@@ -18,7 +19,7 @@ public:
     Screen(sf::RenderWindow& window);
     void Clear();
     void DrawHexagon(const HexagonOptions&, const Point&);
-    void DrawImage(const std::string&, const Point&);
+    void DrawImage(const std::string&, const ObjectSize&, const Point&);
     void Display();
     bool IsOpen() const;
     void Close();

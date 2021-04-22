@@ -10,15 +10,12 @@ Game::Game() {
 }
 
 void Game::MainLoop() {
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
     while (library_facade_.screen.IsOpen()) {
         if (library_facade_.event_manager.HasCloseEvent())
             library_facade_.screen.Close();
         library_facade_.screen.Clear();
         //screen_->Draw(shape);
         game_scene_->Draw(library_facade_.screen, game_options_);
-        library_facade_.screen.DrawImage("peasant", Point(100, 100));
         library_facade_.screen.Display();
     }
 }

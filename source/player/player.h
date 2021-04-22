@@ -1,6 +1,6 @@
 #include <map>
 #include <source/utility/color.h>
-#include <source/player/unit_stats.h>
+#include <source/player/entity_stats.h>
 
 #pragma once
 
@@ -9,5 +9,5 @@ class Player {
 public:
     const Color color_;
     Player(const Color&);
-    const UnitStats& get_stats(const std::string&);
+    const UnitStats& get_stats(const std::string&) const;
 };
