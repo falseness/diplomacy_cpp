@@ -1,7 +1,6 @@
 #include <source/drawable_objects_groups/game_scene/grid.h>
 #include <source/drawable_objects/cell/cell.h>
 #include <tuple>
-#include <source/drawable_objects/unit/melee/peasant.h>
 #include <source/drawable_objects/cell/coord_converter.h>
 #include <iostream>
 
@@ -14,15 +13,15 @@ Grid::Grid(const std::vector<Player>& players) {
             drawable_objects_.push_back(cells_[i][j].get());
         }
     }
-    cells_[0][0]->CreateUnit<Peasant>();
+    cells_[0][0]->CreateUnit<Unit>("peasant");
     selected_entity_ = cells_[0][0]->get_unit();
 }
 
-void Grid::HandleClick(const Vector2D& Vector2D, const GameOptions& game_options) {
+void Grid::HandleClick(const Vector2D& click_pos, const GameOptions& game_options) {
     // когда-нибудь тут будет нормальный обработчик
     // но пока юнит просто телепортируется
 
-    std::pair<int, int> coord = CoordConverter::CalculateCoord(Vector2D, game_options);
+    std::pair<int, int> coord = CoordConverter::CalculateCoord(click_pos, game_options);
     if (CoordConverter::IsCoordOutOfRange(coord, cells_.size(), cells_[0].size()))
         return;
     const Unit* selected_unit = dynamic_cast<const Unit*>(selected_entity_);

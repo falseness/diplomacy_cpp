@@ -32,7 +32,6 @@ set(    MAIN_SOURCE
         source/utility/vector2d.cpp
         source/utility/object_size.cpp
         source/drawable_objects/unit/unit.cpp
-        source/drawable_objects/unit/melee/peasant.cpp
         source/utility/geometry.cpp)
 
 add_executable(Diplomacy ${MAIN_SOURCE})
