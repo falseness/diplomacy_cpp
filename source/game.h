@@ -7,6 +7,8 @@ class Game {
     LibraryFacade library_facade_;
     GameScene* game_scene_;
     GameOptions game_options_;
+    void EventsIteration();
+    void DrawingIteration();
 public:
     Game();
     void MainLoop();

@@ -2,7 +2,6 @@
 #include <source/sfml_facades/screen.h>
 #include <source/options/options.h>
 #include <vector>
-#include <source/utility/all_usings.h>
 
 #pragma once
 

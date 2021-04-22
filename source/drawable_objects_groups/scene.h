@@ -7,4 +7,5 @@
 class Scene : public DrawableObjectsGroup {
 public:
     virtual void LoopIteration(Screen&, const GameOptions&);
+    virtual void HandleClick(const Vector2D&, const GameOptions&) = 0;
 };

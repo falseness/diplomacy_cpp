@@ -8,7 +8,9 @@
 #pragma once
 
 class Grid : public DrawableObjectsGroup {
-    std::vector<std::vector<unique_ptr<Cell>>> cells_;
+    std::vector<std::vector<std::unique_ptr<Cell>>> cells_;
+    const Entity* selected_entity_;
 public:
     Grid(const std::vector<Player>&);
+    void HandleClick(const Vector2D&, const GameOptions&);
 };

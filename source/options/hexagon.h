@@ -1,4 +1,4 @@
-#include <source/utility/point.h>
+#include <source/utility/vector2d.h>
 #include <source/utility/color.h>
 
 #pragma once

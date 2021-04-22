@@ -5,7 +5,7 @@
 Hexagon::Hexagon(const Cell& cell) : cell_(cell) {}
 
 void Hexagon::Draw(Screen& screen, const GameOptions& game_options) {
-    Point position = cell_.calculate_pos(game_options);
+    Vector2D position = cell_.get_pos(game_options);
 
     HexagonOptions hexagon_options(game_options.hexagon_options);
     hexagon_options.fill_color = cell_.get_color();

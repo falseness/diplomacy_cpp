@@ -7,7 +7,7 @@ class Unit : public Entity {
     int dmg_;
     unsigned int moves_;
 public:
-    static const std::string empty_unit_name_;
     const UnitStats& get_unit_type_stats() const;
-    Unit(const Cell&, std::string&&);
+    Unit(const Cell*, std::string&&);
+    void set_cell(const Cell*);
 };

@@ -20,7 +20,7 @@ set(    MAIN_SOURCE
         source/drawable_objects_groups/game_scene/grid.cpp
         source/drawable_objects/cell/hexagon.cpp
         source/options/options.cpp source/drawable_objects/cell/cell.cpp
-        source/drawable_objects/cell/coord_translation.cpp
+        source/drawable_objects/cell/coord_converter.cpp
         source/sfml_facades/library_facade.cpp
         source/utility/color.cpp
         source/options/hexagon.cpp
@@ -29,12 +29,11 @@ set(    MAIN_SOURCE
         source/player/entity_stats.cpp
         source/drawable_objects/entity.cpp
         source/sfml_facades/image_manager.cpp
-        source/utility/point.cpp
+        source/utility/vector2d.cpp
         source/utility/object_size.cpp
-        source/utility/object_size.h
         source/drawable_objects/unit/unit.cpp
         source/drawable_objects/unit/melee/peasant.cpp
-        )
+        source/utility/geometry.cpp)
 
 add_executable(Diplomacy ${MAIN_SOURCE})
 #---

@@ -4,5 +4,5 @@
 
 class Peasant : public Unit {
 public:
-    Peasant(const Cell&);
+    Peasant(const Cell*);
 };
