@@ -3,9 +3,10 @@
 #include <source/options/hexagon.h>
 #include <source/sfml_facades/image_manager.h>
 #include <source/utility/object_size.h>
-#include <source/utility/rounded_rectangle.h>
 
 #pragma once
+
+class RoundedRectangle;
 
 class Screen {
     sf::RenderWindow& window_;
@@ -16,10 +17,9 @@ class Screen {
     ImageManager image_manager_ = ImageManager();
 
     Vector2D draw_offset_ = Vector2D(0, 0);
-
-public:
     size_t width_;
     size_t height_;
+public:
     Screen(sf::RenderWindow& window);
     void Clear();
     void DrawHexagon(const HexagonOptions&, const Vector2D&);
@@ -30,4 +30,7 @@ public:
     void Close();
     void set_draw_offset(const Vector2D&);
     const Vector2D& get_draw_offset() const;
+
+    size_t get_width() const;
+    size_t get_height() const;
 };

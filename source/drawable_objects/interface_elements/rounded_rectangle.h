@@ -1,8 +1,12 @@
+#include <source/drawable_objects/drawable_object.h>
+#include <source/utility/vector2d.h>
 #include <source/utility/color.h>
 #include <array>
+
+
 #pragma once
 
-struct RoundedRectangle {
+struct RoundedRectangle : DrawableObject {
     Color border_color = Color(0, 0, 0);
     // width 0 means no border
     float border_width = 5;
@@ -13,8 +17,10 @@ struct RoundedRectangle {
     float height = 400;
     // radius 0 means no circle
     float corner_radius = 30;
+    void set_pos(const Vector2D&);
     float get_right() const;
     float get_left() const;
     float get_up() const;
     float get_bottom() const;
+    void Draw(Screen&, const GameOptions&) override;
 };

@@ -32,7 +32,12 @@ set(    MAIN_SOURCE
         source/utility/vector2d.cpp
         source/utility/object_size.cpp
         source/drawable_objects/unit/unit.cpp
-        source/utility/geometry.cpp source/drawable_objects/unit/unit_logic.cpp source/drawable_objects/unit/unit_logic.h source/drawable_objects_groups/game_scene/grid_logic_helper.cpp source/drawable_objects_groups/game_scene/grid_logic_helper.h source/drawable_objects/entity_info_interface.cpp source/drawable_objects/entity_info_interface.h source/utility/rounded_rectangle.h source/utility/rounded_rectangle.cpp source/utility/rounded_rectangle.cpp source/utility/rounded_rectangle.h)
+        source/utility/geometry.cpp
+        source/drawable_objects/unit/unit_logic.cpp
+        source/drawable_objects_groups/game_scene/grid_logic_helper.cpp
+        source/drawable_objects_groups/interfaces/entity_info_interface.cpp
+        source/drawable_objects/interface_elements/rounded_rectangle.cpp
+        source/drawable_objects/interface_elements/rounded_rectangle.cpp)
 
 add_executable(Diplomacy ${MAIN_SOURCE})
 #---

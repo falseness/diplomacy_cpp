@@ -16,4 +16,5 @@ public:
     virtual bool HandleClick(Grid*, const Vector2D& click_pos, const GameOptions& game_options) = 0;
     Entity(const Cell*, std::string&&);
     std::pair<int, int> get_coord() const;
+
 };

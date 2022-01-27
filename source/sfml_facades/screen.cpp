@@ -1,5 +1,6 @@
 #include "screen.h"
 #include <source/sfml_facades/utility/sfml_color.h>
+#include <source/drawable_objects/interface_elements/rounded_rectangle.h>
 
 Screen::Screen(sf::RenderWindow& window) :
             width_(sf::VideoMode::getDesktopMode().width),
@@ -102,4 +103,12 @@ void Screen::DrawRoundedRectangle(const RoundedRectangle& rect) {
         sfml_circle.setPosition(sf::Vector2f(rect.get_left(), rect.get_up()) + pos_transition);
         window_.draw(sfml_circle);
     }
+}
+
+size_t Screen::get_height() const {
+    return height_;
+}
+
+size_t Screen::get_width() const {
+    return width_;
 }

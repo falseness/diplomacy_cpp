@@ -19,3 +19,12 @@ float RoundedRectangle::get_up() const {
 float RoundedRectangle::get_bottom() const {
     return up_side_y + height;
 }
+
+void RoundedRectangle::set_pos(const Vector2D& position) {
+    left_side_x = position.x;
+    up_side_y = position.y;
+}
+
+void RoundedRectangle::Draw(Screen& screen, const GameOptions &) {
+    screen.DrawRoundedRectangle(*this);
+}
