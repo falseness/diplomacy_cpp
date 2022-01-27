@@ -32,7 +32,7 @@ set(    MAIN_SOURCE
         source/utility/vector2d.cpp
         source/utility/object_size.cpp
         source/drawable_objects/unit/unit.cpp
-        source/utility/geometry.cpp)
+        source/utility/geometry.cpp source/drawable_objects/unit/unit_logic.cpp source/drawable_objects/unit/unit_logic.h source/drawable_objects_groups/game_scene/grid_logic_helper.cpp source/drawable_objects_groups/game_scene/grid_logic_helper.h)
 
 add_executable(Diplomacy ${MAIN_SOURCE})
 #---

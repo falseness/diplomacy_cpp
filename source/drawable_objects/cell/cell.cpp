@@ -34,7 +34,7 @@ bool Cell::IsStore(const Unit* unit) const {
     return unit == unit_.get();
 }
 
-const Unit* Cell::get_unit() const {
+Unit* Cell::get_unit() {
     return unit_.get();
 }
 

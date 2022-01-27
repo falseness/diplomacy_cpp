@@ -28,7 +28,7 @@ public:
     const Color& get_color() const;
     const Player& get_player() const;
     bool IsStore(const Unit*) const;
-    const Unit* get_unit() const;
+    Unit* get_unit();
     void set_unit(std::unique_ptr<Unit>&&);
     void MoveUnitTo(Cell&);
 };
