@@ -3,6 +3,7 @@
 #include <source/options/hexagon.h>
 #include <source/sfml_facades/image_manager.h>
 #include <source/utility/object_size.h>
+#include <source/utility/rounded_rectangle.h>
 
 #pragma once
 
@@ -22,6 +23,7 @@ public:
     Screen(sf::RenderWindow& window);
     void Clear();
     void DrawHexagon(const HexagonOptions&, const Vector2D&);
+    void DrawRoundedRectangle(const RoundedRectangle&);
     void DrawImage(const std::string&, const ObjectSize&, const Vector2D&);
     void Display();
     bool IsOpen() const;
