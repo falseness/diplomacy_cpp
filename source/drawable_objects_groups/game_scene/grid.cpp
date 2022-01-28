@@ -16,11 +16,10 @@ Grid::Grid(const std::vector<Player>& players) : logic_helper_(kGridRowsCount, k
         }
     }
     cells_[0][0]->CreateUnit<Unit>("peasant");
-    selected_entity_ = nullptr;//cells_[0][0]->get_unit();
-    //cells_[0][0]->get_unit()->Select(this);
+    selected_entity_ = nullptr;
 }
 
-void Grid::HandleClick(GameScene& scene, const Vector2D& click_pos, const GameOptions& game_options) {
+void Grid::HandleClick(SceneInfo& scene, const Vector2D& click_pos, const GameOptions& game_options) {
     // когда-нибудь тут будет нормальный обработчик
     // но пока юнит просто телепортируется
     if (selected_entity_ == nullptr) {

@@ -9,7 +9,7 @@
 
 #pragma once
 
-class GameScene;
+class SceneInfo;
 
 class Grid : public DrawableObjectsGroup {
     std::vector<std::vector<std::unique_ptr<Cell>>> cells_;
@@ -20,7 +20,7 @@ public:
     std::vector<std::pair<int, int>> get_neighbours(std::pair<int, int> coord);
     GridLogicHelper logic_helper_;
     explicit Grid(const std::vector<Player>&);
-    void HandleClick(GameScene&, const Vector2D&, const GameOptions&);
+    void HandleClick(SceneInfo&, const Vector2D&, const GameOptions&);
     void MoveUnit(std::pair<int, int> from, std::pair<int, int> to);
     size_t get_rows_count();
     size_t get_columns_count();

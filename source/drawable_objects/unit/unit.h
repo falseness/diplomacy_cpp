@@ -4,14 +4,15 @@
 #pragma once
 
 class Grid;
+class SceneInfo;
 
 class Unit : public Entity {
     int dmg_;
     unsigned int moves_;
 public:
     const UnitStats& get_unit_type_stats() const;
-    void Select(GameScene&);
-    bool HandleClick(GameScene&, const Vector2D& click_pos, const GameOptions& game_options) override;
+    void Select(SceneInfo&);
+    bool HandleClick(SceneInfo&, const Vector2D& click_pos, const GameOptions& game_options) override;
     Unit(const Cell*, std::string&&);
     void set_cell(const Cell*);
     unsigned int get_moves() const;

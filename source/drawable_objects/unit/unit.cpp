@@ -22,18 +22,18 @@ void Unit::set_cell(const Cell* cell) {
     cell_ = cell;
 }
 
-bool Unit::HandleClick(GameScene& scene, const Vector2D &click_pos, const GameOptions &game_options) {
+bool Unit::HandleClick(SceneInfo& scene, const Vector2D &click_pos, const GameOptions &game_options) {
     std::pair<int, int> coord = CoordConverter::CalculateCoord(click_pos, game_options);
-    return UnitLogic::ClickLogic(*this, scene.grid_, coord);
+    return UnitLogic::ClickLogic(*this, scene.grid, coord);
 }
 
 unsigned int Unit::get_moves() const {
     return moves_;
 }
 
-void Unit::Select(GameScene& scene) {
-    UnitLogic::Select(*this, scene.grid_);
-    scene.entity_interface_.update(to_json());
+void Unit::Select(SceneInfo& scene) {
+    UnitLogic::Select(*this, scene.grid);
+    scene.entity_interface.update(to_json());
 }
 
 
