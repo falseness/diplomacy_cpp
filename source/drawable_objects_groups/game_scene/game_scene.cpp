@@ -8,5 +8,5 @@ GameScene::GameScene(Screen& screen, const GameOptions& game_options) : players_
 }
 
 void GameScene::HandleClick(const Vector2D& click_pos, const GameOptions& game_options) {
-    grid_.HandleClick(click_pos, game_options);
+    grid_.HandleClick(*this, click_pos, game_options);
 }

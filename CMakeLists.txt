@@ -28,7 +28,7 @@ set(    MAIN_SOURCE
         source/player/player.cpp
         source/player/entity_stats.cpp
         source/drawable_objects/entity.cpp
-        source/sfml_facades/image_manager.cpp
+        source/sfml_facades/assets_manager.cpp
         source/utility/vector2d.cpp
         source/utility/object_size.cpp
         source/drawable_objects/unit/unit.cpp
@@ -37,11 +37,12 @@ set(    MAIN_SOURCE
         source/drawable_objects_groups/game_scene/grid_logic_helper.cpp
         source/drawable_objects_groups/interfaces/entity_info_interface.cpp
         source/drawable_objects/interface_elements/rounded_rectangle.cpp
-        source/drawable_objects/interface_elements/rounded_rectangle.cpp)
+        source/drawable_objects/interface_elements/rounded_rectangle.cpp source/drawable_objects/interface_elements/text.cpp source/drawable_objects/interface_elements/text.h source/drawable_objects/interface_elements/image.cpp source/drawable_objects/interface_elements/image.h)
 
 add_executable(Diplomacy ${MAIN_SOURCE})
 #---
 find_package(SFML 2.5 COMPONENTS graphics audio REQUIRED)
+find_package(nlohmann_json 3.2.0 REQUIRED)
 
 add_custom_target(copy_assets
         COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/assets ${PROJECT_SOURCE_DIR}/bin
@@ -49,7 +50,7 @@ add_custom_target(copy_assets
 add_dependencies(Diplomacy copy_assets)
 
 
-target_link_libraries(Diplomacy sfml-graphics sfml-audio)
+target_link_libraries(Diplomacy PRIVATE sfml-graphics sfml-audio nlohmann_json::nlohmann_json)
 #---
 
 

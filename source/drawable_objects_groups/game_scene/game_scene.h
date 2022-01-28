@@ -6,9 +6,9 @@
 
 class GameScene : public Scene {
     std::vector<Player> players_;
+public:
     Grid grid_;
     EntityInfoInterface entity_interface_;
-public:
     GameScene(Screen& screen, const GameOptions&);
     void HandleClick(const Vector2D&, const GameOptions&) override;
 };

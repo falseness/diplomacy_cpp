@@ -8,9 +8,19 @@ void Entity::Draw(Screen& screen, const GameOptions& game_options) {
     Vector2D offset = game_options.get_image_offset();
     pos.x += offset.x;
     pos.y += offset.y;
-    screen.DrawImage(image_name_, game_options.get_image_size(), pos);
+    screen.DrawGridImage(image_name_, game_options.get_image_size(), pos);
 }
 
 std::pair<int, int> Entity::get_coord() const {
     return cell_->get_coord();
+}
+
+json Entity::to_json() {
+    json result;
+    result["name"] = image_name_;
+    auto coord = get_coord();
+    result["coord"]["x"] = coord.first;
+    result["coord"]["y"] = coord.second;
+    result["hp"] = hp_;
+    return std::move(result);
 }

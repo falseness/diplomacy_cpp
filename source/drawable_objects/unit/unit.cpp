@@ -3,6 +3,7 @@
 #include <source/drawable_objects/cell/cell.h>
 #include <source/drawable_objects_groups/game_scene/grid.h>
 #include <source/drawable_objects/unit/unit_logic.h>
+#include <source/drawable_objects_groups/game_scene/game_scene.h>
 
 const UnitStats& Unit::get_unit_type_stats() const {
     return cell_->get_player().get_stats(image_name_);
@@ -21,20 +22,29 @@ void Unit::set_cell(const Cell* cell) {
     cell_ = cell;
 }
 
-bool Unit::HandleClick(Grid* grid, const Vector2D &click_pos, const GameOptions &game_options) {
+bool Unit::HandleClick(GameScene& scene, const Vector2D &click_pos, const GameOptions &game_options) {
     std::pair<int, int> coord = CoordConverter::CalculateCoord(click_pos, game_options);
-    return UnitLogic::ClickLogic(this, grid, coord);
+    return UnitLogic::ClickLogic(*this, scene.grid_, coord);
 }
 
 unsigned int Unit::get_moves() const {
     return moves_;
 }
 
-void Unit::Select(Grid* grid) {
-    UnitLogic::Select(this, grid);
+void Unit::Select(GameScene& scene) {
+    UnitLogic::Select(*this, scene.grid_);
+    scene.entity_interface_.update(to_json());
 }
-#include <iostream>
-void Unit::MoveTo(Grid* grid, std::pair<int, int> coord) {
-    moves_ -= grid->logic_helper_.get_info(coord);
-    grid->MoveUnit(get_coord(), coord);
+
+
+void Unit::MoveTo(Grid& grid, std::pair<int, int> coord) {
+    moves_ -= grid.logic_helper_.get_info(coord);
+    grid.MoveUnit(get_coord(), coord);
+}
+
+json Unit::to_json() {
+    auto result = Entity::to_json();
+    result["dmg"] = dmg_;
+    result["hp"] = hp_;
+    return std::move(result);
 }

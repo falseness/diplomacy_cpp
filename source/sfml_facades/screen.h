@@ -1,12 +1,13 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <source/options/hexagon.h>
-#include <source/sfml_facades/image_manager.h>
+#include <source/sfml_facades/assets_manager.h>
 #include <source/utility/object_size.h>
 
 #pragma once
 
 class RoundedRectangle;
+class Text;
 
 class Screen {
     sf::RenderWindow& window_;
@@ -14,7 +15,7 @@ class Screen {
 
     sf::CircleShape hexagon_shape_ = sf::CircleShape(0, 6);
 
-    ImageManager image_manager_ = ImageManager();
+    AssetsManager assets_manager_ = AssetsManager();
 
     Vector2D draw_offset_ = Vector2D(0, 0);
     size_t width_;
@@ -24,7 +25,9 @@ public:
     void Clear();
     void DrawHexagon(const HexagonOptions&, const Vector2D&);
     void DrawRoundedRectangle(const RoundedRectangle&);
-    void DrawImage(const std::string&, const ObjectSize&, const Vector2D&);
+    void DrawImage(const std::string &image_name, const ObjectSize &image_size, const Vector2D &position);
+    void DrawGridImage(const std::string &image_name, const ObjectSize &image_size, const Vector2D &position);
+    void DrawText(const Text&);
     void Display();
     bool IsOpen() const;
     void Close();

@@ -1,6 +1,7 @@
 #include "screen.h"
 #include <source/sfml_facades/utility/sfml_color.h>
 #include <source/drawable_objects/interface_elements/rounded_rectangle.h>
+#include <source/drawable_objects/interface_elements/text.h>
 
 Screen::Screen(sf::RenderWindow& window) :
             width_(sf::VideoMode::getDesktopMode().width),
@@ -25,16 +26,20 @@ void Screen::DrawHexagon(const HexagonOptions& hexagon_options, const Vector2D& 
     window_.draw(hexagon_shape_);
 }
 
-void Screen::DrawImage(const std::string& image_name, const ObjectSize& image_size, const Vector2D& position) {
+void Screen::DrawImage(const std::string &image_name, const ObjectSize &image_size, const Vector2D &position) {
     sf::Sprite sprite;
-    sprite.setTexture(image_manager_.images[image_name]);
+    sprite.setTexture(assets_manager_.images_[image_name]);
 
     sf::FloatRect this_rect = sprite.getGlobalBounds();
     sprite.scale(image_size.width / this_rect.width, image_size.height / this_rect.height);
-    sprite.setPosition(position.x - image_size.width / 2 + draw_offset_.x,
-                       position.y - image_size.height / 2 + draw_offset_.y);
+    sprite.setPosition(position.x - image_size.width / 2,
+                       position.y - image_size.height / 2);
 
     window_.draw(sprite);
+}
+
+void Screen::DrawGridImage(const std::string& image_name, const ObjectSize& image_size, const Vector2D& position) {
+    DrawImage(image_name, image_size, position + draw_offset_);
 }
 
 void Screen::Display() {
@@ -57,6 +62,7 @@ const Vector2D& Screen::get_draw_offset() const {
 
 
 void Screen::DrawRoundedRectangle(const RoundedRectangle& rect) {
+    // drawing rounded rectangle using four circles and two rectangles
     sf::CircleShape sfml_circle;
     sfml_circle.setRadius(rect.corner_radius);
     sfml_circle.setOutlineColor(create_color(rect.border_color));
@@ -111,4 +117,15 @@ size_t Screen::get_height() const {
 
 size_t Screen::get_width() const {
     return width_;
+}
+
+void Screen::DrawText(const Text& text) {
+    static const std::string kFontName = "times new roman";
+    sf::Text sfml_text;
+    sfml_text.setFont(assets_manager_.fonts_[kFontName]);
+    sfml_text.setString(text.text);
+    sfml_text.setCharacterSize(text.size);
+    sfml_text.setFillColor(create_color(text.color));
+    sfml_text.setPosition(text.position.x, text.position.y);
+    window_.draw(sfml_text);
 }
