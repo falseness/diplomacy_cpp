@@ -6,9 +6,10 @@
 #include <iostream>
 
 bool UnitLogic::ClickLogic(Unit& unit, Grid& grid, std::pair<int, int> coord) {
-    if (!grid.logic_helper_.is_occupied(coord)) {
+    if (!grid.logic_helper_.is_occupied(coord) || coord == unit.get_coord()) {
         return true;
     }
+
     unit.MoveTo(grid, coord);
     return !unit.get_moves();
 }
