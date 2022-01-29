@@ -1,6 +1,8 @@
 #include "entity_info_interface.h"
 
 EntityInfoInterface::EntityInfoInterface(const Screen& screen) {
+    visible_ = false;
+
     auto w = static_cast<float>(screen.get_width());
     auto h = static_cast<float>(screen.get_height());
     float corner_radius = 0.03f * w;

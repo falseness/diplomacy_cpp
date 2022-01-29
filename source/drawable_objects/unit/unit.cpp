@@ -24,7 +24,10 @@ void Unit::set_cell(const Cell* cell) {
 
 bool Unit::HandleClick(SceneInfo& scene, const Vector2D &click_pos, const GameOptions &game_options) {
     std::pair<int, int> coord = CoordConverter::CalculateCoord(click_pos, game_options);
-    return UnitLogic::ClickLogic(*this, scene.grid, coord);
+    bool should_remove_selection = UnitLogic::ClickLogic(*this, scene.grid, coord);
+    if (should_remove_selection)
+        scene.entity_interface.set_visible(false);
+    return should_remove_selection;
 }
 
 unsigned int Unit::get_moves() const {
@@ -34,6 +37,7 @@ unsigned int Unit::get_moves() const {
 void Unit::Select(SceneInfo& scene) {
     UnitLogic::Select(*this, scene.grid);
     scene.entity_interface.update(get_info());
+    scene.entity_interface.set_visible(true);
 }
 
 
