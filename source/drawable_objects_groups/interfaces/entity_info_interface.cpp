@@ -24,16 +24,30 @@ EntityInfoInterface::EntityInfoInterface(const Screen& screen) {
     entity_name_.position.y = pos.y + this_height * 0.02f;
     entity_name_.size = static_cast<size_t>(this_height * 0.2f);
 
-
-    entity_image_.name = "peasant";
+    entity_info_.position.x = entity_name_.position.x;
+    entity_info_.position.y = entity_name_.position.y + entity_name_.size;
+    entity_info_.size = static_cast<size_t>(this_height * 0.1f);
 
 
     drawable_objects_.push_back(&background_);
     drawable_objects_.push_back(&entity_image_);
     drawable_objects_.push_back(&entity_name_);
+    drawable_objects_.push_back(&entity_info_);
 }
-
+#include <iostream>
 void EntityInfoInterface::update(const json& entity) {
     entity_image_.name = entity["name"];
     entity_name_.text = entity["name"];
+    //std::vector<std::string> tmp = entity["info"];
+    std::string entity_info;
+    for (const auto& item : entity["info"].items()) {
+        auto tmp = item.value().dump();
+        if (tmp.front() == '"' && tmp.back() == '"' && tmp.size() > 1) {
+            tmp.erase(tmp.begin());
+            tmp.pop_back();
+        }
+        entity_info += item.key() + ": " + tmp + "\n";
+    }
+
+    entity_info_.text = entity_info;
 }

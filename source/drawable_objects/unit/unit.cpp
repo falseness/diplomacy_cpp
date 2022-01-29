@@ -33,7 +33,7 @@ unsigned int Unit::get_moves() const {
 
 void Unit::Select(SceneInfo& scene) {
     UnitLogic::Select(*this, scene.grid);
-    scene.entity_interface.update(to_json());
+    scene.entity_interface.update(get_info());
 }
 
 
@@ -44,7 +44,22 @@ void Unit::MoveTo(Grid& grid, std::pair<int, int> coord) {
 
 json Unit::to_json() {
     auto result = Entity::to_json();
-    result["dmg"] = dmg_;
-    result["hp"] = hp_;
+    result["moves"] = moves_;
     return std::move(result);
+}
+
+json Unit::get_info() {
+    auto result = Entity::get_info();
+    result["info"]["hp"] = std::to_string(hp_) + " / " + std::to_string(get_maximum_hp());
+    result["info"]["dmg"] = dmg_;
+    result["info"]["moves"] = std::to_string(moves_) + " / " + std::to_string(get_speed());
+    return std::move(result);
+}
+
+unsigned int Unit::get_speed() const {
+    return get_unit_type_stats().speed;
+}
+
+unsigned int Unit::get_maximum_hp() const {
+    return get_unit_type_stats().hp;
 }

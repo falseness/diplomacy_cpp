@@ -18,9 +18,17 @@ std::pair<int, int> Entity::get_coord() const {
 json Entity::to_json() {
     json result;
     result["name"] = image_name_;
+
     auto coord = get_coord();
     result["coord"]["x"] = coord.first;
     result["coord"]["y"] = coord.second;
     result["hp"] = hp_;
     return std::move(result);
 }
+
+json Entity::get_info() {
+    json result;
+    result["name"] = image_name_;
+    return std::move(result);
+}
+

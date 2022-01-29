@@ -14,6 +14,7 @@ class EntityInfoInterface : public DrawableObjectsGroup {
     RoundedRectangle background_;
     Image entity_image_;
     Text entity_name_;
+    Text entity_info_;
 public:
     explicit EntityInfoInterface(const Screen& screen);
     void update(const json&);

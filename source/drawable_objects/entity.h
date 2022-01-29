@@ -20,4 +20,5 @@ public:
     Entity(const Cell*, std::string&&);
     std::pair<int, int> get_coord() const;
     virtual json to_json();
+    virtual json get_info();
 };
