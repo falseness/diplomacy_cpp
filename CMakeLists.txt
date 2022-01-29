@@ -37,7 +37,13 @@ set(    MAIN_SOURCE
         source/drawable_objects_groups/game_scene/grid_logic_helper.cpp
         source/drawable_objects_groups/interfaces/entity_info_interface.cpp
         source/drawable_objects/interface_elements/rounded_rectangle.cpp
-        source/drawable_objects/interface_elements/rounded_rectangle.cpp source/drawable_objects/interface_elements/text.cpp source/drawable_objects/interface_elements/text.h source/drawable_objects/interface_elements/image.cpp source/drawable_objects/interface_elements/image.h)
+        source/drawable_objects/interface_elements/text.cpp
+        source/drawable_objects/interface_elements/image.cpp
+        source/drawable_objects/building/building.cpp
+        source/drawable_objects/building/building_with_hp.cpp
+        source/drawable_objects/building/town.cpp
+        source/drawable_objects/building/suburb_building.cpp
+        )
 
 add_executable(Diplomacy ${MAIN_SOURCE})
 #---

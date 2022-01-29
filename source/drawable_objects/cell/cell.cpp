@@ -3,8 +3,8 @@
 #include <source/utility/vector2d.h>
 #include <iostream>
 
-Cell::Cell(std::pair<int, int> coord, size_t player_index_, const std::vector<Player>& players) : coord_(coord),
-    player_index_(player_index_), players_(players), hexagon_(*this), unit_(nullptr) {}
+Cell::Cell(std::pair<int, int> coord, size_t player_index_, const std::vector<Player>& players) :
+    coord_(std::move(coord)), player_index_(player_index_), players_(players), hexagon_(*this), unit_(nullptr) {}
 
 std::pair<int, int> Cell::get_coord() const {
     return coord_;
@@ -12,8 +12,11 @@ std::pair<int, int> Cell::get_coord() const {
 
 void Cell::Draw(Screen& screen, const GameOptions& game_options) {
     hexagon_.Draw(screen, game_options);
+    if (building_ != nullptr)
+        building_->Draw(screen, game_options);
     if (unit_ != nullptr)
         unit_->Draw(screen, game_options);
+
 }
 
 Vector2D Cell::get_pos(const GameOptions& game_options) const {
@@ -47,4 +50,8 @@ void Cell::MoveUnitTo(Cell& cell) {
     if (cell.unit_ != nullptr)
         throw std::invalid_argument("cell unit is not nullptr");
     cell.set_unit(std::move(unit_));
+}
+
+Building* Cell::get_building() {
+    return building_.get();
 }

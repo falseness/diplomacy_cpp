@@ -1,4 +1,5 @@
 #include <tuple>
+#include <source/drawable_objects/entity.h>
 
 #pragma once
 
@@ -9,5 +10,5 @@ class UnitLogic {
 public:
     static void Select(Unit& unit, Grid&);
     // true if should unselect unit
-    static bool ClickLogic(Unit& unit, Grid&, std::pair<int, int> coord);
+    static ClickResponse ClickLogic(Unit& unit, Grid&, std::pair<int, int> coord);
 };

@@ -3,6 +3,8 @@
 void AssetsManager::load_all_images() {
     images_["peasant"] = sf::Texture();
     images_["peasant"].loadFromFile("entities/units/peasant.png");
+    images_["town"] = sf::Texture();
+    images_["town"].loadFromFile("entities/buildings/town.png");
     images_["debug"] = sf::Texture();
     images_["debug"].loadFromFile("entities/debug_image.png");
 }

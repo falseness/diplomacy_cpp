@@ -41,6 +41,10 @@ void EntityInfoInterface::update(const json& entity) {
     entity_image_.name = entity["name"];
     entity_name_.text = entity["name"];
     //std::vector<std::string> tmp = entity["info"];
+    if (entity.find("info") == entity.end()) {
+        entity_info_.text = "";
+        return;
+    }
     std::string entity_info;
     for (const auto& item : entity["info"].items()) {
         auto tmp = item.value().dump();

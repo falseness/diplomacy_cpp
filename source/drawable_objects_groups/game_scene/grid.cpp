@@ -3,6 +3,8 @@
 #include <tuple>
 #include <source/drawable_objects/cell/coord_converter.h>
 #include <source/drawable_objects_groups/game_scene/game_scene.h>
+#include <source/drawable_objects/building/town.h>
+#include <cassert>
 
 Grid::Grid(const std::vector<Player>& players) : logic_helper_(kGridRowsCount, kGridColumnsCount) {
     size_t n = kGridRowsCount;
@@ -16,6 +18,9 @@ Grid::Grid(const std::vector<Player>& players) : logic_helper_(kGridRowsCount, k
         }
     }
     cells_[0][0]->CreateUnit<Unit>("peasant");
+    //static_cast<std::unique_ptr<Entity>>(std::make_unique<Unit>(cells_[0][0].get(), "peasant"));
+    //static_cast<std::unique_ptr<Building>>(std::make_unique<Town>(cells_[0][0].get()));
+    cells_[0][0]->CreateBuilding<Town>();
     selected_entity_ = nullptr;
 }
 
@@ -24,30 +29,31 @@ void Grid::HandleClick(SceneInfo& scene, const Vector2D& click_pos, const GameOp
     // но пока юнит просто телепортируется
     if (selected_entity_ == nullptr) {
         std::pair<int, int> coord = CoordConverter::CalculateCoord(click_pos, game_options);
-        if (CoordConverter::IsCoordOutOfRange(coord, cells_.size(), cells_[0].size()) ||
-                cells_[coord.first][coord.second]->get_unit() == nullptr)
+        if (CoordConverter::IsCoordOutOfRange(coord, cells_.size(), cells_[0].size()))
             return;
-        cells_[coord.first][coord.second]->get_unit()->Select(scene);
+
         selected_entity_ = cells_[coord.first][coord.second]->get_unit();
+        if (selected_entity_ == nullptr) {
+            selected_entity_ = cells_[coord.first][coord.second]->get_building();
+        }
+
+        if (selected_entity_ != nullptr)
+            selected_entity_->Select(scene);
         return;
     }
-    Unit* selected_unit = dynamic_cast<Unit*>(selected_entity_);
-    if (selected_unit->HandleClick(scene, click_pos, game_options))
-        selected_entity_ = nullptr;
-    else
-        selected_unit->Select(scene);
-    return;
-    /*
-    std::pair<int, int> coord = CoordConverter::CalculateCoord(click_pos, game_options);
-    if (CoordConverter::IsCoordOutOfRange(coord, cells_.size(), cells_[0].size()))
-        return;
+    auto click_response = selected_entity_->HandleClick(scene, click_pos, game_options);
 
-    const Unit* selected_unit = dynamic_cast<const Unit*>(selected_entity_);
-    selected_unit.Select();
-    std::pair<int, int> unit_coord = selected_unit->get_coord();
-    if (unit_coord == coord)
-        return;
-    cells_[unit_coord.first][unit_coord.second]->MoveUnitTo(*cells_[coord.first][coord.second]);*/
+    if (click_response.should_change_selection_to_building_on_same_cell) {
+        ChangeSelectedUnitToBuilding();
+    }
+    else if (click_response.should_remove_selection)
+        selected_entity_ = nullptr;
+
+    if (selected_entity_ != nullptr)
+        selected_entity_->Select(scene);
+
+    if (click_response.should_reclick)
+        HandleClick(scene, click_pos, game_options);
 }
 
 size_t Grid::get_rows_count() {
@@ -80,5 +86,13 @@ void Grid::MoveUnit(std::pair<int, int> from, std::pair<int, int> to) {
     cells_[from.first][from.second]->MoveUnitTo(*cells_[to.first][to.second]);
 }
 
+void Grid::ChangeSelectedUnitToBuilding() {
+    assert(selected_entity_ != nullptr);
+    auto coord = selected_entity_->get_coord();
+    selected_entity_ = cells_[coord.first][coord.second]->get_building();
+}
+
 const size_t Grid::kGridRowsCount = 15;
 const size_t Grid::kGridColumnsCount = 6;
+
+

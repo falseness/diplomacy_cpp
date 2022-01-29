@@ -1,5 +1,6 @@
 #include "entity.h"
 #include <source/drawable_objects/cell/cell.h>
+#include <source/drawable_objects_groups/game_scene/game_scene.h>
 
 Entity::Entity(const Cell* cell_, std::string&& image_name) : cell_(cell_), image_name_(std::move(image_name)) {}
 
@@ -22,7 +23,6 @@ json Entity::to_json() {
     auto coord = get_coord();
     result["coord"]["x"] = coord.first;
     result["coord"]["y"] = coord.second;
-    result["hp"] = hp_;
     return std::move(result);
 }
 
@@ -30,5 +30,10 @@ json Entity::get_info() {
     json result;
     result["name"] = image_name_;
     return std::move(result);
+}
+
+void Entity::Select(SceneInfo& scene) {
+    scene.entity_interface.update(get_info());
+    scene.entity_interface.set_visible(true);
 }
 

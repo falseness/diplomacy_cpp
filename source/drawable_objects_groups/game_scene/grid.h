@@ -16,6 +16,7 @@ class Grid : public DrawableObjectsGroup {
     Entity* selected_entity_;
     static const size_t kGridRowsCount;
     static const size_t kGridColumnsCount;
+    void ChangeSelectedUnitToBuilding();
 public:
     std::vector<std::pair<int, int>> get_neighbours(std::pair<int, int> coord);
     GridLogicHelper logic_helper_;
@@ -25,6 +26,7 @@ public:
     size_t get_rows_count();
     size_t get_columns_count();
     Grid& operator=(const Grid&) = delete;
+
 };
 
 

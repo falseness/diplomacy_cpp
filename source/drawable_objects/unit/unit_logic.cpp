@@ -5,15 +5,19 @@
 #include <source/drawable_objects_groups/game_scene/grid.h>
 #include <iostream>
 
-bool UnitLogic::ClickLogic(Unit& unit, Grid& grid, std::pair<int, int> coord) {
-    if (!grid.logic_helper_.is_occupied(coord) || coord == unit.get_coord()) {
-        return true;
+ClickResponse UnitLogic::ClickLogic(Unit& unit, Grid& grid, std::pair<int, int> coord) {
+    if (coord == unit.get_coord()) {
+        return {true, false, true};
+    }
+    if (!grid.logic_helper_.is_occupied(coord)) {
+        return {true, true, false};
     }
 
+
     unit.MoveTo(grid, coord);
-    return !unit.get_moves();
+    return {!unit.get_moves(), false, false};
 }
-#include <iostream>
+
 void UnitLogic::Select(Unit& unit, Grid& grid) {
     std::deque<std::pair<int, int>> coords;
     coords.push_back(unit.get_coord());
