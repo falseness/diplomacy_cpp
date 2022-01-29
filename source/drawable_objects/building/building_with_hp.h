@@ -10,4 +10,5 @@ public:
     const BuildingWithHpStats& get_stats() const;
     BuildingWithHp(const Cell* cell, std::string&& image_name);
     ~BuildingWithHp() override = default;
+    json get_info() const override;
 };

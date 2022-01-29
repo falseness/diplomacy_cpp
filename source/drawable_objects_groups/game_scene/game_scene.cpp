@@ -4,6 +4,7 @@
 GameScene::GameScene(Screen& screen, const GameOptions&) : info_(screen) {
     drawable_objects_.push_back(&info_.grid);
     drawable_objects_.push_back(&info_.entity_interface);
+    drawable_objects_.push_back(&info_.production_interface);
 }
 
 void GameScene::HandleClick(const Vector2D& click_pos, const GameOptions& game_options) {
@@ -11,4 +12,4 @@ void GameScene::HandleClick(const Vector2D& click_pos, const GameOptions& game_o
 }
 
 SceneInfo::SceneInfo(Screen& screen) : players({Player(Color(208, 208, 208)), Player(Color(255, 0, 0))}),
-                                       grid(players), entity_interface(screen) {}
+                                       grid(players), entity_interface(screen), production_interface(screen) {}

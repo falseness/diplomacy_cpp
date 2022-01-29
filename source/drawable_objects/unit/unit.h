@@ -21,6 +21,6 @@ public:
     unsigned int get_moves() const;
     void MoveTo(Grid& grid, std::pair<int, int> coord);
     virtual json to_json() override;
-    virtual json get_info() override;
+    virtual json get_info() const override;
     ~Unit() override = default;
 };

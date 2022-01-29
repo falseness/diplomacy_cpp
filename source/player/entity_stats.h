@@ -19,12 +19,16 @@ struct BuildingStats : public EntityStats {
     BuildingStats(PlayersEntitiesStats&, std::string);
 };
 
-struct BuildingWithHpStats : public BuildingStats {
+struct BuildingWithHpStats : virtual public BuildingStats {
     unsigned int hp;
     BuildingWithHpStats(PlayersEntitiesStats&, std::string, unsigned int);
 };
 
-struct SuburbBuildingStats : public BuildingStats {
+struct SuburbBuildingStats : virtual public BuildingStats {
     int income;
     explicit SuburbBuildingStats(PlayersEntitiesStats&, std::string, int);
+};
+
+struct TownStats : public BuildingWithHpStats, public SuburbBuildingStats {
+    TownStats(PlayersEntitiesStats&, std::string, unsigned int, int);
 };

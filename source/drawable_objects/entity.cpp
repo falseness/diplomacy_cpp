@@ -26,7 +26,7 @@ json Entity::to_json() {
     return std::move(result);
 }
 
-json Entity::get_info() {
+json Entity::get_info() const {
     json result;
     result["name"] = image_name_;
     return std::move(result);

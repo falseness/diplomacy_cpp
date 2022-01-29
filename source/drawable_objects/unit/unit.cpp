@@ -52,7 +52,7 @@ json Unit::to_json() {
     return std::move(result);
 }
 
-json Unit::get_info() {
+json Unit::get_info() const {
     auto result = Entity::get_info();
     result["info"]["hp"] = std::to_string(hp_) + " / " + std::to_string(get_maximum_hp());
     result["info"]["dmg"] = dmg_;

@@ -1,6 +1,7 @@
 #include <source/drawable_objects_groups/scene.h>
 #include <source/drawable_objects_groups/game_scene/grid.h>
-#include <source/drawable_objects_groups/interfaces/entity_info_interface.h>
+#include <source/drawable_objects_groups/interfaces/entity_info.h>
+#include <source/drawable_objects_groups/interfaces/production.h>
 
 #pragma once
 
@@ -10,6 +11,7 @@ private:
 public:
     Grid grid;
     EntityInfoInterface entity_interface;
+    ProductionInterface production_interface;
     explicit SceneInfo(Screen& screen);
 };
 

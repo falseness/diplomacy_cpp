@@ -24,3 +24,9 @@ SuburbBuildingStats::SuburbBuildingStats(PlayersEntitiesStats& all_stats, std::s
         BuildingStats(all_stats, name), income(income) {
     all_stats.suburb_buildings.emplace(std::move(name), *this);
 }
+
+TownStats::TownStats(PlayersEntitiesStats& all_stats, std::string name, unsigned int hp, int income) :
+    BuildingWithHpStats(all_stats, name, hp), SuburbBuildingStats(all_stats, name, income),
+    BuildingStats(all_stats, name) {
+    all_stats.towns.emplace(std::move(name), *this);
+}

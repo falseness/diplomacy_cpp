@@ -19,7 +19,7 @@ Grid::Grid(const std::vector<Player>& players) : logic_helper_(kGridRowsCount, k
     }
     cells_[0][0]->CreateUnit<Unit>("peasant");
     //static_cast<std::unique_ptr<Entity>>(std::make_unique<Unit>(cells_[0][0].get(), "peasant"));
-    //static_cast<std::unique_ptr<Building>>(std::make_unique<Town>(cells_[0][0].get()));
+    //static_cast<std::unique_ptr<Building>>(std::make_unique<TownStats>(cells_[0][0].get()));
     cells_[0][0]->CreateBuilding<Town>();
     selected_entity_ = nullptr;
 }

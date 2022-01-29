@@ -11,6 +11,7 @@ struct PlayersEntitiesStats {
     std::map<std::string, BuildingStats> buildings;
     std::map<std::string, BuildingWithHpStats> buildings_with_hp;
     std::map<std::string, SuburbBuildingStats> suburb_buildings;
+    std::map<std::string, TownStats> towns;
 };
 
 class Player {

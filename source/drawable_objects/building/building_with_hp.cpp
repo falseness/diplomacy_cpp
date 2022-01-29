@@ -8,3 +8,9 @@ BuildingWithHp::BuildingWithHp(const Cell *cell, std::string&& image_name) : Bui
 const BuildingWithHpStats &BuildingWithHp::get_stats() const {
     return cell_->get_player().get_stats().buildings_with_hp.find(image_name_)->second;
 }
+
+json BuildingWithHp::get_info() const {
+    auto result = Entity::get_info();
+    result["info"]["hp"] = hp_;
+    return result;
+}

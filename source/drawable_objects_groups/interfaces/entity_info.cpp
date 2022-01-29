@@ -1,4 +1,4 @@
-#include "entity_info_interface.h"
+#include "entity_info.h"
 
 EntityInfoInterface::EntityInfoInterface(const Screen& screen) {
     visible_ = false;

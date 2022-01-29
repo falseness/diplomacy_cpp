@@ -8,3 +8,13 @@ const SuburbBuildingStats& SuburbBuilding::get_stats() const {
 SuburbBuilding::SuburbBuilding(const Cell *cell, std::string &&image_name) : Building(cell, std::move(image_name)) {
 
 }
+
+json SuburbBuilding::get_info() const {
+    auto result = Entity::get_info();
+    result["info"]["income"] = get_income();
+    return result;
+}
+
+int SuburbBuilding::get_income() const {
+    return get_stats().income;
+}
