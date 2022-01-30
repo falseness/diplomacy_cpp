@@ -19,7 +19,9 @@ class Cell : public DrawableObject {
     std::unique_ptr<Unit> unit_;
     std::unique_ptr<Building> building_;
     void set_player(size_t);
+
 public:
+    static const float kColorAlphaRatio;
     template <typename UnitType, typename ...Args>
     void CreateUnit(Args&&... args) {
         if (unit_ != nullptr)

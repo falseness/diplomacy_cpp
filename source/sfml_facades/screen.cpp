@@ -14,9 +14,13 @@ void Screen::Clear() {
     window_.clear(background_color_);
 }
 
-void Screen::DrawHexagon(const HexagonOptions& hexagon_options, const Vector2D& position) {
+void Screen::DrawHexagon(const HexagonOptions& hexagon_options, const Vector2D& position, float ratio) {
     hexagon_shape_.setRadius(hexagon_options.radius);
-    hexagon_shape_.setFillColor(create_color(hexagon_options.fill_color));
+
+    auto sfml_color = sf::Color(hexagon_options.fill_color.red, hexagon_options.fill_color.green,
+        hexagon_options.fill_color.blue, static_cast<size_t>(ratio * 255));
+    hexagon_shape_.setFillColor(sfml_color);
+
     hexagon_shape_.setOutlineColor(create_color(hexagon_options.outline_color));
     hexagon_shape_.setOutlineThickness(hexagon_options.outline_thickness);
 

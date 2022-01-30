@@ -64,3 +64,5 @@ Building* Cell::get_building() {
 void Cell::set_player(size_t player_index) {
     player_index_ = player_index;
 }
+
+const float Cell::kColorAlphaRatio = 0.4f;
