@@ -19,8 +19,8 @@ void Game::EventsIteration() {
     }
     const std::pair<Vector2D, bool>& click_event = library_facade_.event_manager.get_click_event();
     if (click_event.second) {
-        const Vector2D& click_offset = library_facade_.screen.get_draw_offset();
-        game_scene_->HandleClick(click_event.first - click_offset, game_options_);
+        game_options_.draw_offset = library_facade_.screen.get_draw_offset();
+        game_scene_->HandleClick(click_event.first, game_options_);
     }
 }
 

@@ -67,3 +67,7 @@ unsigned int Unit::get_speed() const {
 unsigned int Unit::get_maximum_hp() const {
     return get_stats().hp;
 }
+
+void Unit::NextTurn() {
+    moves_ = get_speed();
+}

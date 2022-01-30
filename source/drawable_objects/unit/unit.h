@@ -11,6 +11,7 @@ class Unit : public Entity {
     int dmg_;
     unsigned int moves_;
 public:
+    void NextTurn();
     const UnitStats& get_stats() const;
     unsigned int get_speed() const;
     unsigned int get_maximum_hp() const;

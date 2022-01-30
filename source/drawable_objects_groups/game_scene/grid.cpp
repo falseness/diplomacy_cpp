@@ -25,13 +25,12 @@ Grid::Grid(Players& players) : logic_helper_(kGridRowsCount, kGridColumnsCount) 
     selected_entity_ = nullptr;
 }
 
-void Grid::HandleClick(SceneInfo& scene, const Vector2D& click_pos, const GameOptions& game_options) {
-    // когда-нибудь тут будет нормальный обработчик
-    // но пока юнит просто телепортируется
+bool Grid::HandleClick(SceneInfo& scene, const Vector2D& screen_click_pos, const GameOptions& game_options) {
+    Vector2D click_pos = screen_click_pos - game_options.draw_offset;
     if (selected_entity_ == nullptr) {
         std::pair<int, int> coord = CoordConverter::CalculateCoord(click_pos, game_options);
         if (CoordConverter::IsCoordOutOfRange(coord, cells_.size(), cells_[0].size()))
-            return;
+            return true;
 
         selected_entity_ = cells_[coord.first][coord.second]->get_unit();
         if (selected_entity_ == nullptr) {
@@ -40,7 +39,7 @@ void Grid::HandleClick(SceneInfo& scene, const Vector2D& click_pos, const GameOp
 
         if (selected_entity_ != nullptr)
             selected_entity_->Select(scene);
-        return;
+        return true;
     }
     auto click_response = selected_entity_->HandleClick(scene, click_pos, game_options);
 
@@ -55,6 +54,7 @@ void Grid::HandleClick(SceneInfo& scene, const Vector2D& click_pos, const GameOp
 
     if (click_response.should_reclick)
         HandleClick(scene, click_pos, game_options);
+    return true;
 }
 
 size_t Grid::get_rows_count() {

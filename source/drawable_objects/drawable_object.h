@@ -5,7 +5,6 @@
 
 class DrawableObject {
 public:
-    //virtual void HandleEvent(const sf::Event&) = 0;
     virtual void Draw(Screen&, const GameOptions&) = 0;
     virtual ~DrawableObject() = default;
 };

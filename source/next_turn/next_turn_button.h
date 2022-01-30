@@ -1,10 +1,14 @@
-//#include <source/drawable_objects_groups/game_scene/game_scene.h>
 #include <source/drawable_objects/interface_elements/triangle.h>
+#include <source/drawable_objects/clickable_object.h>
 
 #pragma once
 
-class NextTurnButton : public Triangle {
+class SceneInfo;
+
+class NextTurnButton : public Triangle, public ClickableObject {
+    static void NextTurn(SceneInfo&);
 public:
-    //void HandleClick(SceneInfo&, const Vector2D&, const GameOptions&);
+    explicit NextTurnButton(Screen&);
+    bool HandleClick(SceneInfo&, const Vector2D&, const GameOptions&) override;
     void Draw(Screen &, const GameOptions &) override;
 };

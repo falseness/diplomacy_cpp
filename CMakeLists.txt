@@ -43,7 +43,11 @@ set(    MAIN_SOURCE
         source/drawable_objects/building/building_with_hp.cpp
         source/drawable_objects/building/town.cpp
         source/drawable_objects/building/suburb_building.cpp
-        source/drawable_objects/building/barrack.cpp source/drawable_objects/building/barrack.h source/drawable_objects_groups/interfaces/production.cpp source/drawable_objects_groups/interfaces/production.h source/player/players.cpp source/player/players.h source/next_turn/next_turn_button.cpp source/next_turn/next_turn_button.h source/drawable_objects/interface_elements/triangle.cpp source/drawable_objects/interface_elements/triangle.h)
+        source/drawable_objects/building/barrack.cpp
+        source/drawable_objects_groups/interfaces/production.cpp
+        source/player/players.cpp
+        source/next_turn/next_turn_button.cpp
+        source/drawable_objects/interface_elements/triangle.cpp)
 
 add_executable(Diplomacy ${MAIN_SOURCE})
 #---

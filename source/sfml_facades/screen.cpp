@@ -135,9 +135,10 @@ void Screen::DrawTriangle(const Triangle& triangle) {
     static const size_t kTrianglePointsCount = 3;
     sf::ConvexShape convex;
     convex.setPointCount(kTrianglePointsCount);
-    convex.setPoint(0, {triangle.position.x - triangle.side / 2, triangle.position.y - triangle.side / 2});
-    convex.setPoint(1, {triangle.position.x + triangle.side / 2, triangle.position.y});
-    convex.setPoint(2, {triangle.position.x - triangle.side / 2, triangle.position.y + triangle.side / 2});
+    auto points = triangle.get_points();
+    for (size_t i = 0; i < points.size(); ++i) {
+        convex.setPoint(i, {points[i].x, points[i].y});
+    }
     convex.setOutlineColor(create_color(triangle.border_color));
     convex.setFillColor(create_color(triangle.background_color));
     convex.setOutlineThickness(triangle.border_width);

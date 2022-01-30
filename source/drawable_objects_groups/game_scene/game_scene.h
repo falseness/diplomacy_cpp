@@ -4,13 +4,12 @@
 #include <source/drawable_objects_groups/interfaces/production.h>
 #include <source/player/players.h>
 #include <source/next_turn/next_turn_button.h>
+#include <source/drawable_objects/clickable_object.h>
 
 #pragma once
 
 struct SceneInfo {
-private:
     Players players;
-public:
     Grid grid;
     EntityInfoInterface entity_interface;
     ProductionInterface production_interface;
@@ -20,6 +19,7 @@ public:
 class GameScene : public Scene {
     SceneInfo info_;
     NextTurnButton next_turn_button_;
+    std::vector<ClickableObject*> clickable_objects_;
 public:
     GameScene(Screen& screen, const GameOptions&);
     void HandleClick(const Vector2D&, const GameOptions&) override;

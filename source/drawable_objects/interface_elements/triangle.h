@@ -9,4 +9,6 @@ struct Triangle : DrawableObject {
     Color background_color = Color(255, 0, 0);
     Vector2D position{100, 100};
     float side = 100.0f;
+    std::vector<Vector2D> get_points() const;
+    bool is_inside(const Vector2D&) const;
 };

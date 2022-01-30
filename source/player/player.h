@@ -22,6 +22,7 @@ class Player {
     PlayersEntitiesStats entities_stats_;
     std::vector<Unit*> units_;
 public:
+    void NextTurn();
     void AddUnit(Unit*);
     const Color color_;
     explicit Player(const Color&);
