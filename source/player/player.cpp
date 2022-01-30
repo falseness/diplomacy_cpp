@@ -8,3 +8,7 @@ Player::Player(const Color& color) : color_(color) {
 const PlayersEntitiesStats& Player::get_stats() const {
     return entities_stats_;
 }
+
+void Player::AddUnit(Unit* new_unit) {
+    units_.push_back(new_unit);
+}

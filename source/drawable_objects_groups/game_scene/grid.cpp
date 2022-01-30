@@ -4,9 +4,10 @@
 #include <source/drawable_objects/cell/coord_converter.h>
 #include <source/drawable_objects_groups/game_scene/game_scene.h>
 #include <source/drawable_objects/building/town.h>
+#include <source/player/player.h>
 #include <cassert>
 
-Grid::Grid(const std::vector<Player>& players) : logic_helper_(kGridRowsCount, kGridColumnsCount) {
+Grid::Grid(Players& players) : logic_helper_(kGridRowsCount, kGridColumnsCount) {
     size_t n = kGridRowsCount;
     size_t m = kGridColumnsCount;
     cells_.resize(n);

@@ -8,6 +8,7 @@
 
 class RoundedRectangle;
 class Text;
+class Triangle;
 
 class Screen {
     sf::RenderWindow& window_;
@@ -24,6 +25,7 @@ public:
     Screen(sf::RenderWindow& window);
     void Clear();
     void DrawHexagon(const HexagonOptions&, const Vector2D&);
+    void DrawTriangle(const Triangle&);
     void DrawRoundedRectangle(const RoundedRectangle&);
     void DrawImage(const std::string &image_name, const ObjectSize &image_size, const Vector2D &position);
     void DrawGridImage(const std::string &image_name, const ObjectSize &image_size, const Vector2D &position);

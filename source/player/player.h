@@ -1,9 +1,13 @@
+#include <vector>
 #include <map>
 #include <source/utility/color.h>
 #include <source/player/entity_stats.h>
 #include <memory>
 
 #pragma once
+
+class Unit;
+class Building;
 
 struct PlayersEntitiesStats {
     std::map<std::string, EntityStats> entities;
@@ -16,9 +20,12 @@ struct PlayersEntitiesStats {
 
 class Player {
     PlayersEntitiesStats entities_stats_;
+    std::vector<Unit*> units_;
 public:
+    void AddUnit(Unit*);
     const Color color_;
     explicit Player(const Color&);
     const PlayersEntitiesStats& get_stats() const;
+
 };
 

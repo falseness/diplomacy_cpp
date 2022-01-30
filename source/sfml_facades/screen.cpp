@@ -2,6 +2,7 @@
 #include <source/sfml_facades/utility/sfml_color.h>
 #include <source/drawable_objects/interface_elements/rounded_rectangle.h>
 #include <source/drawable_objects/interface_elements/text.h>
+#include <source/drawable_objects/interface_elements/triangle.h>
 
 Screen::Screen(sf::RenderWindow& window) :
             width_(sf::VideoMode::getDesktopMode().width),
@@ -128,4 +129,17 @@ void Screen::DrawText(const Text& text) {
     sfml_text.setFillColor(create_color(text.color));
     sfml_text.setPosition(text.position.x, text.position.y);
     window_.draw(sfml_text);
+}
+
+void Screen::DrawTriangle(const Triangle& triangle) {
+    static const size_t kTrianglePointsCount = 3;
+    sf::ConvexShape convex;
+    convex.setPointCount(kTrianglePointsCount);
+    convex.setPoint(0, {triangle.position.x - triangle.side / 2, triangle.position.y - triangle.side / 2});
+    convex.setPoint(1, {triangle.position.x + triangle.side / 2, triangle.position.y});
+    convex.setPoint(2, {triangle.position.x - triangle.side / 2, triangle.position.y + triangle.side / 2});
+    convex.setOutlineColor(create_color(triangle.border_color));
+    convex.setFillColor(create_color(triangle.background_color));
+    convex.setOutlineThickness(triangle.border_width);
+    window_.draw(convex);
 }
