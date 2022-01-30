@@ -1,5 +1,4 @@
-//
-// Created by nikita on 29.01.2022.
-//
-
 #include "barrack.h"
+
+Barrack::Barrack(const Cell *cell, std::string &&image_name) :
+    SuburbBuilding(cell, std::string(image_name)), Building(cell, std::string(image_name)) {}

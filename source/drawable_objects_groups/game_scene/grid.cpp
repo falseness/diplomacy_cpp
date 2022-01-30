@@ -56,7 +56,7 @@ bool Grid::HandleClick(SceneInfo& scene, const Vector2D& screen_click_pos, const
         selected_entity_->Select(scene);
 
     if (click_response.should_reclick)
-        HandleClick(scene, click_pos, game_options);
+        HandleClick(scene, screen_click_pos, game_options);
     return true;
 }
 

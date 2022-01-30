@@ -2,6 +2,7 @@
 
 #pragma once
 
-class Barrack : public SuburbBuilding {
-
+class Barrack : virtual public SuburbBuilding {
+public:
+    Barrack(const Cell* cell, std::string&& image_name);
 };
