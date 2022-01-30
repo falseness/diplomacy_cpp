@@ -18,6 +18,7 @@ class Cell : public DrawableObject {
     Hexagon hexagon_;
     std::unique_ptr<Unit> unit_;
     std::unique_ptr<Building> building_;
+    void set_player(size_t);
 public:
     template <typename UnitType, typename ...Args>
     void CreateUnit(Args&&... args) {

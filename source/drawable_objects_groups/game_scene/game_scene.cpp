@@ -10,6 +10,7 @@ GameScene::GameScene(Screen& screen, const GameOptions&) : info_(screen), next_t
 
     clickable_objects_.push_back(&info_.grid);
     clickable_objects_.push_back(&next_turn_button_);
+    clickable_objects_.push_back(&info_.entity_interface);
 }
 
 void GameScene::HandleClick(const Vector2D& click_pos, const GameOptions& game_options) {

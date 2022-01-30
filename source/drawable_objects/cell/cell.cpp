@@ -54,8 +54,13 @@ void Cell::MoveUnitTo(Cell& cell) {
     if (cell.unit_ != nullptr)
         throw std::invalid_argument("cell unit is not nullptr");
     cell.set_unit(std::move(unit_));
+    cell.set_player(player_index_);
 }
 
 Building* Cell::get_building() {
     return building_.get();
+}
+
+void Cell::set_player(size_t player_index) {
+    player_index_ = player_index;
 }

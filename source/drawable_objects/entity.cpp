@@ -33,7 +33,7 @@ json Entity::get_info() const {
 }
 
 void Entity::Select(SceneInfo& scene) {
-    scene.entity_interface.update(get_info());
+    scene.entity_interface.update(get_info(), cell_->get_color());
     scene.entity_interface.set_visible(true);
 }
 

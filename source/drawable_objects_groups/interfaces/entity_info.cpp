@@ -36,11 +36,13 @@ EntityInfoInterface::EntityInfoInterface(const Screen& screen) {
     drawable_objects_.push_back(&entity_name_);
     drawable_objects_.push_back(&entity_info_);
 }
-#include <iostream>
-void EntityInfoInterface::update(const json& entity) {
+
+void EntityInfoInterface::update(const json& entity, const Color& color) {
+    background_.background_color = color;
+
     entity_image_.name = entity["name"];
     entity_name_.text = entity["name"];
-    //std::vector<std::string> tmp = entity["info"];
+
     if (entity.find("info") == entity.end()) {
         entity_info_.text = "";
         return;
@@ -56,4 +58,10 @@ void EntityInfoInterface::update(const json& entity) {
     }
 
     entity_info_.text = entity_info;
+}
+
+bool EntityInfoInterface::HandleClick(SceneInfo&, const Vector2D &click_pos, const GameOptions &game_options) {
+    if (!visible_)
+        return false;
+    return background_.is_inside(click_pos);
 }

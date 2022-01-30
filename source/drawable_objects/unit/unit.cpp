@@ -42,7 +42,18 @@ void Unit::Select(SceneInfo& scene) {
 
 void Unit::MoveTo(Grid& grid, std::pair<int, int> coord) {
     moves_ -= grid.logic_helper_.get_info(coord);
-    grid.MoveUnit(get_coord(), coord);
+
+    std::vector<std::pair<int, int>> path;
+    auto this_coord = coord;
+    while (this_coord != get_coord()) {
+        path.push_back(this_coord);
+        this_coord = grid.logic_helper_.get_parent(this_coord);
+    }
+    reverse(path.begin(), path.end());
+    for (auto next_coord : path) {
+        grid.MoveUnit(get_coord(), next_coord);
+    }
+
 }
 
 json Unit::to_json() {
