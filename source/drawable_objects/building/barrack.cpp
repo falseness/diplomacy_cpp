@@ -12,6 +12,7 @@ ClickResponse Barrack::HandleClick(SceneInfo& scene, const Vector2D& pos, const 
 }
 
 void Barrack::Select(SceneInfo& scene) {
+    scene.production_interface.update(this);
     scene.production_interface.set_visible(true);
     Entity::Select(scene);
 }

@@ -4,17 +4,17 @@
 #include <cassert>
 
 UnitFactory::UnitFactory(PlayersEntitiesFactories& all_factories, std::string&& unit_name) :
-    turn_(0), unit_name_(std::move(unit_name)) {
+        unit_name_(std::move(unit_name)) {
     assert(all_factories.units_production_stats.count(unit_name_));
 }
 
-void UnitFactory::NextTurn(const Player& player) {
-    if (get_turns_left(player))
-        ++turn_;
+void UnitFactory::NextTurn(const Player& player, ProductionInfo& production) const {
+    if (get_turns_left(player, production))
+        ++production.turns;
 }
 
-unsigned int UnitFactory::get_turns_left(const Player& player) const {
-    return player.get_factories_stats().units_production_stats.find(unit_name_)->second.turns - turn_;
+unsigned int UnitFactory::get_turns_left(const Player& player, const ProductionInfo& production) const {
+    return player.get_factories_stats().units_production_stats.find(unit_name_)->second.turns - production.turns;
 }
 
 UnitProductionStats::UnitProductionStats(PlayersEntitiesFactories& all_factories, std::string name,
