@@ -7,7 +7,7 @@ const BuildingStats& Building::get_stats() const {
     return cell_->get_player().get_stats().buildings.find(image_name_)->second;
 }
 
-Building::Building(const Cell *cell, std::string &&image_name) : Entity(cell, std::move(image_name)) {}
+Building::Building(Cell *cell, std::string &&image_name) : Entity(cell, std::move(image_name)) {}
 
 ClickResponse Building::HandleClick(SceneInfo& scene, const Vector2D &click_pos, const GameOptions &game_options) {
     scene.entity_interface.set_visible(false);

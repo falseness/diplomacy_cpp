@@ -2,7 +2,7 @@
 #include <source/drawable_objects/cell/cell.h>
 #include <source/drawable_objects_groups/game_scene/game_scene.h>
 
-Entity::Entity(const Cell* cell_, std::string&& image_name) : cell_(cell_), image_name_(std::move(image_name)) {}
+Entity::Entity(Cell* cell_, std::string&& image_name) : cell_(cell_), image_name_(std::move(image_name)) {}
 
 void Entity::Draw(Screen& screen, const GameOptions& game_options) {
     Vector2D pos = cell_->get_pos(game_options);
@@ -33,7 +33,14 @@ json Entity::get_info() const {
 }
 
 void Entity::Select(SceneInfo& scene) {
-    scene.entity_interface.update(get_info(), cell_->get_color());
+    scene.entity_interface.update(get_info(), get_color());
     scene.entity_interface.set_visible(true);
 }
 
+Color Entity::get_color() const {
+    return cell_->get_color();
+}
+
+Player& Entity::get_player() {
+    return cell_->get_player();
+}

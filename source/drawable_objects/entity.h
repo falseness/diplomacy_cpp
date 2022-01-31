@@ -18,16 +18,18 @@ struct ClickResponse {
 
 class Entity : public DrawableObject {
 protected:
-    const Cell* cell_;
+    Cell* cell_;
 public:
     const std::string image_name_;
     virtual void Draw(Screen&, const GameOptions&) override;
     virtual ClickResponse HandleClick(SceneInfo&, const Vector2D& click_pos, const GameOptions& game_options) = 0;
-    Entity(const Cell*, std::string&&);
-    std::pair<int, int> get_coord() const;
+    Entity(Cell*, std::string&&);
+    [[nodiscard]] std::pair<int, int> get_coord() const;
     virtual json to_json();
     virtual json get_info() const;
     virtual void Select(SceneInfo&);
+    Color get_color() const;
+    Player& get_player();
     ~Entity() override = default;
 };
 

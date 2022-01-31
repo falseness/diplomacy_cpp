@@ -20,5 +20,5 @@ void GameScene::HandleClick(const Vector2D& click_pos, const GameOptions& game_o
     }
 }
 
-SceneInfo::SceneInfo(Screen& screen) : players({Player(Color(208, 208, 208)), Player(Color(255, 0, 0))}, 1),
-                                       grid(players), entity_interface(screen), production_interface(screen) {}
+SceneInfo::SceneInfo(Screen& screen) : players({Color(80, 80, 80), Color(255, 0, 0)}, 1), grid(players),
+        entity_interface(screen), production_interface(screen) {}

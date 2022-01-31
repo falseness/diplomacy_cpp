@@ -3,6 +3,10 @@
 
 Player::Player(const Color& color) : color_(color) {
     UnitStats(entities_stats_, "peasant", 2, 2, 2);
+    UnitProductionStats(entities_factories_, "peasant", 10, 1);
+    CreateUnitFactory<UnitFactory>("peasant");
+
+    SuburbBuildingStats(entities_stats_, "barrack", -2);
     TownStats(entities_stats_, "town", 15, 11);
 }
 
@@ -19,3 +23,8 @@ void Player::NextTurn() {
         unit->NextTurn();
     }
 }
+
+const PlayersEntitiesFactories& Player::get_factories_stats() const {
+    return entities_factories_;
+}
+

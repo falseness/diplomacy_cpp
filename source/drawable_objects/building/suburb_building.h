@@ -4,9 +4,9 @@ class SuburbBuildingStats;
 
 class SuburbBuilding : virtual public Building {
 public:
-    const SuburbBuildingStats& get_stats() const;
-    SuburbBuilding(const Cell* cell, std::string&& image_name);
+    [[nodiscard]] const SuburbBuildingStats& get_stats() const;
+    SuburbBuilding(Cell* cell, std::string&& image_name);
     ~SuburbBuilding() override = default;
-    int get_income() const;
-    json get_info() const override;
+    [[nodiscard]] int get_income() const;
+    [[nodiscard]] json get_info() const override;
 };

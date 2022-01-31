@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.1)
 
 project(Diplomacy)
 
+set(CMAKE_CXX_STANDARD 20)
 #---
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
@@ -47,7 +48,7 @@ set(    MAIN_SOURCE
         source/drawable_objects_groups/interfaces/production.cpp
         source/player/players.cpp
         source/next_turn/next_turn_button.cpp
-        source/drawable_objects/interface_elements/triangle.cpp)
+        source/drawable_objects/interface_elements/triangle.cpp source/player/entity_factories.cpp source/player/entity_factories.h source/drawable_objects/interface_elements/rounded_rectangle_with_text.cpp source/drawable_objects/interface_elements/rounded_rectangle_with_text.h)
 
 add_executable(Diplomacy ${MAIN_SOURCE})
 #---

@@ -18,11 +18,11 @@ struct RoundedRectangle : DrawableObject {
     // radius 0 means no circle
     float corner_radius = 30;
     void set_pos(const Vector2D&);
-    float get_right() const;
-    float get_left() const;
-    float get_up() const;
-    float get_bottom() const;
+    [[nodiscard]] float get_right() const;
+    [[nodiscard]] float get_left() const;
+    [[nodiscard]] float get_up() const;
+    [[nodiscard]] float get_bottom() const;
     void Draw(Screen&, const GameOptions&) override;
     // check if point in rectangle
-    bool is_inside(const Vector2D&) const;
+    [[nodiscard]] bool is_inside(const Vector2D&) const;
 };

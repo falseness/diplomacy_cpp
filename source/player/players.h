@@ -6,6 +6,6 @@ class Players {
     size_t whoose_turn_;
 public:
     void NextTurn();
-    Players(std::vector<Player>&&, size_t);
+    Players(std::vector<Color>&& players_colors, size_t whoose_turn);
     Player& operator[](size_t);
 };

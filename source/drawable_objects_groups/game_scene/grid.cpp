@@ -25,6 +25,7 @@ Grid::Grid(Players& players) : logic_helper_(kGridRowsCount, kGridColumnsCount) 
     //static_cast<std::unique_ptr<Entity>>(std::make_unique<Unit>(cells_[0][0].get(), "peasant"));
     //static_cast<std::unique_ptr<Building>>(std::make_unique<TownStats>(cells_[0][0].get()));
     cells_[0][0]->CreateBuilding<Town>();
+    cells_[1][1]->CreateBuilding<Barrack>("barrack");
     selected_entity_ = nullptr;
 }
 

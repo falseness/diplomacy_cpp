@@ -4,5 +4,7 @@
 
 class Barrack : virtual public SuburbBuilding {
 public:
-    Barrack(const Cell* cell, std::string&& image_name);
+    Barrack(Cell* cell, std::string&& image_name);
+    ClickResponse HandleClick(SceneInfo&, const Vector2D&, const GameOptions&) override;
+    void Select(SceneInfo&) override;
 };

@@ -125,14 +125,7 @@ size_t Screen::get_width() const {
 }
 
 void Screen::DrawText(const Text& text) {
-    static const std::string kFontName = "times new roman";
-    sf::Text sfml_text;
-    sfml_text.setFont(assets_manager_.fonts_[kFontName]);
-    sfml_text.setString(text.text);
-    sfml_text.setCharacterSize(text.size);
-    sfml_text.setFillColor(create_color(text.color));
-    sfml_text.setPosition(text.position.x, text.position.y);
-    window_.draw(sfml_text);
+    window_.draw(get_sfml_text(text));
 }
 
 void Screen::DrawTriangle(const Triangle& triangle) {
@@ -147,4 +140,29 @@ void Screen::DrawTriangle(const Triangle& triangle) {
     convex.setFillColor(create_color(triangle.background_color));
     convex.setOutlineThickness(triangle.border_width);
     window_.draw(convex);
+}
+
+float Screen::get_width_of(const Text& text) const {
+    return get_sfml_text(text).getLocalBounds().width;
+}
+
+float Screen::get_height_of(const Text& text) const {
+    return get_sfml_text(text).getLocalBounds().height;
+}
+
+sf::Text Screen::get_sfml_text(const Text & text) const {
+    static const std::string kFontName = "times new roman";
+    sf::Text sfml_text;
+
+    sfml_text.setFont(assets_manager_.fonts_.find(kFontName)->second);
+    sfml_text.setString(text.text);
+    sfml_text.setCharacterSize(text.size);
+    sfml_text.setFillColor(create_color(text.color));
+    //sfml_text.setPosition(text.position.x, text.position.y);
+
+
+
+    sfml_text.setOrigin(sfml_text.getGlobalBounds().left, sfml_text.getGlobalBounds().top);
+    sfml_text.setPosition(text.position.x, text.position.y);
+    return sfml_text;
 }

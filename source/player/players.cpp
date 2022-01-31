@@ -1,8 +1,12 @@
 #include "players.h"
 #include <cassert>
 
-Players::Players(std::vector<Player>&& players, size_t whoose_turn = 1) : players_(std::move(players)),
-    whoose_turn_(whoose_turn){}
+
+Players::Players(std::vector<Color>&& players_colors, size_t whoose_turn = 1) : whoose_turn_(whoose_turn) {
+        for (auto&& color : players_colors) {
+            players_.emplace_back(color);
+        }
+}
 
 Player& Players::operator[](size_t index) {
     return players_[index];
@@ -15,3 +19,5 @@ void Players::NextTurn() {
     if (!whoose_turn_)
         NextTurn();
 }
+
+

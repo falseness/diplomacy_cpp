@@ -21,8 +21,9 @@ class Screen {
     Vector2D draw_offset_ = Vector2D(0, 0);
     size_t width_;
     size_t height_;
+    sf::Text get_sfml_text(const Text&) const;
 public:
-    Screen(sf::RenderWindow& window);
+    explicit Screen(sf::RenderWindow& window);
     void Clear();
     void DrawHexagon(const HexagonOptions&, const Vector2D&, float);
     void DrawTriangle(const Triangle&);
@@ -35,6 +36,8 @@ public:
     void Close();
     void set_draw_offset(const Vector2D&);
     const Vector2D& get_draw_offset() const;
+    float get_height_of(const Text&) const;
+    float get_width_of(const Text&) const;
 
     size_t get_width() const;
     size_t get_height() const;

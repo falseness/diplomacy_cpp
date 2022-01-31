@@ -39,10 +39,10 @@ public:
     }
     Cell(std::pair<int, int>, size_t player_index_, Players&);
     void Draw(Screen& screen, const GameOptions&);
-    std::pair<int, int> get_coord() const;
-    Vector2D get_pos(const GameOptions& game_options) const;
-    const Color& get_color() const;
-    const Player& get_player() const;
+    [[nodiscard]] std::pair<int, int> get_coord() const;
+    [[nodiscard]] Vector2D get_pos(const GameOptions& game_options) const;
+    [[nodiscard]] const Color& get_color() const;
+    [[nodiscard]] const Player& get_player() const;
     Player& get_player();
     bool IsStore(const Unit*) const;
     Unit* get_unit();

@@ -3,6 +3,7 @@
 #include <source/utility/color.h>
 #include <source/player/entity_stats.h>
 #include <memory>
+#include <source/player/entity_factories.h>
 
 #pragma once
 
@@ -18,15 +19,28 @@ struct PlayersEntitiesStats {
     std::map<std::string, TownStats> towns;
 };
 
+struct PlayersEntitiesFactories {
+    std::map<std::string, std::unique_ptr<UnitFactory>> units_factory;
+    std::map<std::string, UnitProductionStats> units_production_stats;
+};
+
 class Player {
     PlayersEntitiesStats entities_stats_;
+    PlayersEntitiesFactories entities_factories_;
     std::vector<Unit*> units_;
+    template <typename Factory>
+    void CreateUnitFactory(std::string name) {
+        auto ptr = std::make_unique<Factory>(entities_factories_, std::move(name));
+        entities_factories_.units_factory.template emplace(
+                name, std::move(static_cast<std::unique_ptr<UnitFactory>>(std::move(ptr))));
+    }
 public:
     void NextTurn();
     void AddUnit(Unit*);
     const Color color_;
     explicit Player(const Color&);
-    const PlayersEntitiesStats& get_stats() const;
 
+    [[nodiscard]] const PlayersEntitiesStats& get_stats() const;
+    [[nodiscard]] const PlayersEntitiesFactories& get_factories_stats() const;
 };
 

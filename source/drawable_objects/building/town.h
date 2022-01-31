@@ -8,6 +8,6 @@ class Town : public BuildingWithHp, public Barrack {
     static const std::string kTownImageName;
 public:
     json get_info() const override;
-    explicit Town(const Cell*);
+    explicit Town(Cell*);
     ~Town() override = default;
 };
