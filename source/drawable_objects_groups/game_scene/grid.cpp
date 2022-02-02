@@ -8,6 +8,7 @@
 #include <cassert>
 
 Grid::Grid(Players& players) : logic_helper_(kGridRowsCount, kGridColumnsCount) {
+
     size_t n = kGridRowsCount;
     size_t m = kGridColumnsCount;
     cells_.resize(n);
@@ -23,12 +24,11 @@ Grid::Grid(Players& players) : logic_helper_(kGridRowsCount, kGridColumnsCount) 
             drawable_objects_.push_back(cells_[i][j].get());
         }
     }
+
     empty_unit_ = std::make_unique<EmptyUnit>(cells_[0][0].get());
     selected_entity_= empty_unit_.get();
 
     cells_[0][1]->CreateUnit<Unit>("peasant");
-    //static_cast<std::unique_ptr<Entity>>(std::make_unique<Unit>(cells_[0][0].get(), "peasant"));
-    //static_cast<std::unique_ptr<Building>>(std::make_unique<TownStats>(cells_[0][0].get()));
     cells_[0][0]->CreateBuilding<Town>();
     cells_[1][1]->CreateBuilding<Barrack>("barrack");
     cells_[1][0]->CreateUnit<Unit>("peasant");

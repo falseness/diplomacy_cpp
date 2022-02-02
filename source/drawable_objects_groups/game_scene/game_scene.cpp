@@ -3,6 +3,7 @@
 
 
 GameScene::GameScene(Screen& screen, const GameOptions&) : info_(screen), next_turn_button_(screen) {
+
     drawable_objects_.push_back(&info_.grid);
     drawable_objects_.push_back(&next_turn_button_);
     drawable_objects_.push_back(&info_.entity_interface);

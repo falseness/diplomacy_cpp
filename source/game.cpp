@@ -6,7 +6,7 @@
 Game::Game() {
     game_options_ = GameOptions();
 
-    game_scene_ = new GameScene(library_facade_.screen, game_options_);
+    game_scene_ = std::make_unique<GameScene>(library_facade_.screen, game_options_);
     library_facade_.screen.set_draw_offset(Vector2D(100.f, 100.f));
 }
 
