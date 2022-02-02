@@ -28,3 +28,7 @@ const PlayersEntitiesFactories& Player::get_factories_stats() const {
     return entities_factories_;
 }
 
+int Player::get_gold() const {
+    return gold_;
+}
+

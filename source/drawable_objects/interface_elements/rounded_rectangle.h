@@ -18,6 +18,7 @@ struct RoundedRectangle : DrawableObject {
     // radius 0 means no circle
     float corner_radius = 30;
     void set_pos(const Vector2D&);
+    void add_to_pos(const Vector2D&);
     [[nodiscard]] float get_right() const;
     [[nodiscard]] float get_left() const;
     [[nodiscard]] float get_up() const;

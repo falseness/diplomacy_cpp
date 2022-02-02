@@ -8,7 +8,11 @@ struct Text : public DrawableObject {
     std::string text = "error";
     size_t size = 24;
     Color color = Color(255, 255, 255);
-    float get_height(const Screen&) const;
-    float get_width(const Screen&) const;
+    [[nodiscard]] float get_height(const Screen&) const;
+    [[nodiscard]] float get_width(const Screen&) const;
+    void Draw(Screen&, const GameOptions&) override;
+};
+
+class RightAlignedText : public Text {
     void Draw(Screen&, const GameOptions&) override;
 };

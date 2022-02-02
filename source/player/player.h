@@ -34,11 +34,13 @@ class Player {
         entities_factories_.units_factory.template emplace(
                 name, std::move(static_cast<std::unique_ptr<UnitFactory>>(std::move(ptr))));
     }
+    int gold_ = 0;
 public:
     void NextTurn();
     void AddUnit(Unit*);
     const Color color_;
     explicit Player(const Color&);
+    [[nodiscard]] int get_gold() const;
 
     [[nodiscard]] const PlayersEntitiesStats& get_stats() const;
     [[nodiscard]] const PlayersEntitiesFactories& get_factories_stats() const;

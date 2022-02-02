@@ -12,3 +12,11 @@ float Text::get_height(const Screen& screen) const {
 float Text::get_width(const Screen& screen) const {
     return screen.get_width_of(*this);
 }
+
+void RightAlignedText::Draw(Screen& screen, const GameOptions& game_options) {
+    Vector2D transition = {get_width(screen), 0};
+    position -= transition;
+    Text::Draw(screen, game_options);
+    screen.DrawText(*this);
+    position += transition;
+}

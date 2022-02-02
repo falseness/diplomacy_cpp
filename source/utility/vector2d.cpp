@@ -15,9 +15,21 @@ Vector2D& Vector2D::operator-=(const Vector2D& other) {
     return *this;
 }
 
+Vector2D& Vector2D::operator*=(float ratio) {
+    x *= ratio;
+    y *= ratio;
+    return *this;
+}
+
 Vector2D operator+(const Vector2D& vector1, const Vector2D& vector2) {
     Vector2D result(vector1);
     result += vector2;
+    return result;
+}
+
+Vector2D operator*(const Vector2D& v, float ratio) {
+    Vector2D result(v);
+    result *= ratio;
     return result;
 }
 

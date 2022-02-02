@@ -15,26 +15,28 @@ class PlayersEntitiesFactories;
 class ProductionInterface: public DrawableObjectsGroup {
     RoundedRectangle background_;
     Barrack* barrack_ = nullptr;
-    const PlayersEntitiesFactories* factories_ = nullptr;
     Image gold_image_;
-
-    Vector2D first_button_position_;
-    RoundedRectangleWithText button_;
+    RightAlignedText gold_text_;
 
     class ProductionSlots : public DrawableObjectsGroup {
         Vector2D interval_between_;
         Image production_image_;
         Text cost_text_;
         RoundedRectangleWithText button_;
+        Barrack* barrack_ = nullptr;
+        void add_to_pos(const Vector2D&);
     public:
-        ProductionSlots(Vector2D pos, float background_width, float background_height,
-                        float screen_w, float screen_h);
+        static const std::string kCostTextStart;
+        void update(Barrack*);
+        ProductionSlots(Vector2D pos, float background_width, float background_height, const Screen&);
+        void Draw(Screen& screen, const GameOptions&) override;
     };
 
-    std::unique_ptr<ProductionSlots> production_slots_;
+    std::unique_ptr<ProductionInterface::ProductionSlots> production_slots_;
 public:
     static const float kHeightWidthBestRatio;
     explicit ProductionInterface(const Screen& screen);
     void update(Barrack*);
+    void Draw(Screen& screen, const GameOptions&) override;
 
 };

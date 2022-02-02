@@ -32,3 +32,7 @@ void RoundedRectangle::Draw(Screen& screen, const GameOptions &) {
 bool RoundedRectangle::is_inside(const Vector2D& pos) const {
     return get_left() <= pos.x && pos.x <= get_right() && get_up() <= pos.y && pos.y <= get_bottom();
 }
+
+void RoundedRectangle::add_to_pos(const Vector2D& transition) {
+    set_pos(Vector2D(left_side_x, up_side_y) + transition);
+}
