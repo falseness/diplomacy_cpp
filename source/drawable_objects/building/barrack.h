@@ -6,9 +6,10 @@
 class Barrack : virtual public SuburbBuilding {
     ProductionInfo production_;
     bool production_in_progress_ = false;
-    [[nodiscard]] unsigned int get_turns_left() const;
 public:
+    [[nodiscard]] unsigned int get_turns_left() const;
     [[nodiscard]] bool is_production_in_progress() const;
+    [[nodiscard]] std::string get_training_unit_name() const;
     void StartProduction(ProductionInfo);
     Barrack(Cell* cell, std::string&& image_name);
     ClickResponse HandleClick(SceneInfo&, const Vector2D&, const GameOptions&) override;

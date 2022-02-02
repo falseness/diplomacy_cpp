@@ -51,8 +51,13 @@ json Barrack::get_info() const
 }
 
 unsigned int Barrack::get_turns_left() const {
-    assert(production_in_progress_);
+    assert(is_production_in_progress());
     const auto& factories = get_player().get_factories_stats();
     const auto& factory = *factories.units_factory.find(production_.unit_name)->second;
     return factory.get_turns_left(get_player(), production_);
+}
+
+std::string Barrack::get_training_unit_name() const {
+    assert(is_production_in_progress());
+    return production_.unit_name;
 }

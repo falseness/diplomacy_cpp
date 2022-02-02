@@ -6,6 +6,7 @@
 #include <source/drawable_objects_groups/drawable_objects_group.h>
 #include <source/drawable_objects/clickable_object.h>
 #include <source/drawable_objects/interface_elements/rounded_rectangle_with_text.h>
+#include <source/player/player.h>
 #include <nlohmann/json.hpp>
 
 #pragma once
@@ -26,6 +27,8 @@ class ProductionInterface: public DrawableObjectsGroup, public ClickableObject {
         RoundedRectangleWithText button_;
         Barrack* barrack_ = nullptr;
         void add_to_pos(const Vector2D&);
+        void set_button_text(const std::pair<std::string, UnitProductionStats>&);
+        bool is_should_display_button(const std::pair<std::string, UnitProductionStats>&) const;
     public:
         static const std::string kCostTextStart;
         void update(Barrack*);

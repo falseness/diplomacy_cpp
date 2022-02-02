@@ -12,7 +12,7 @@ Town::Town(Cell* cell) : BuildingWithHp(cell, std::string(Town::kTownImageName))
 }
 
 json Town::get_info() const {
-    auto result = SuburbBuilding::get_info();
+    auto result = Barrack::get_info();
     result["info"]["hp"] = BuildingWithHp::get_info()["info"]["hp"];
     return result;
 }

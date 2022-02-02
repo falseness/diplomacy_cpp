@@ -4,7 +4,7 @@
 #pragma once
 
 
-class Town : public BuildingWithHp, public Barrack {
+class Town : public Barrack, public BuildingWithHp {
     static const std::string kTownImageName;
 public:
     json get_info() const override;

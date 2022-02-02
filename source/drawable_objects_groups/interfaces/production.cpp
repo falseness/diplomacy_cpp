@@ -76,7 +76,6 @@ ProductionInterface::ProductionSlots::ProductionSlots(Vector2D pos, float backgr
     button_.background_color = Color(247, 247, 247);
     button_.text.color = Color(116, 116, 116);
     button_.text.size = static_cast<size_t>(screen_w * 0.04f * 1.15f * ProductionInterface::kHeightWidthBestRatio);
-    button_.text.text = "train";
 }
 
 void ProductionInterface::ProductionSlots::update(Barrack* barrack) {
@@ -97,7 +96,10 @@ void ProductionInterface::ProductionSlots::Draw(Screen &screen, const GameOption
 
         cost_text_.text = kCostTextStart + std::to_string(stat->second.cost);
         cost_text_.Draw(screen, game_options);
-        button_.Draw(screen, game_options);
+
+        set_button_text(*stat);
+        if (is_should_display_button(*stat))
+            button_.Draw(screen, game_options);
         add_to_pos(interval_between_);
     }
     add_to_pos(interval_between_ * static_cast<float>(-i));
@@ -157,4 +159,23 @@ bool ProductionInterface::ProductionSlots::HandleClick(SceneInfo& scene, const V
 
 const std::string ProductionInterface::ProductionSlots::kCostTextStart = "cost: ";
 
+void ProductionInterface::ProductionSlots::set_button_text(const std::pair<std::string, UnitProductionStats>& stat) {
+    static const std::string kTrainButtonText = "train";
+    assert(barrack_ != nullptr);
+    if (!barrack_->is_production_in_progress()) {
+        button_.text.text = kTrainButtonText;
+        return;
+    }
 
+    if (is_should_display_button(stat)) {
+        button_.text.text = std::to_string(barrack_->get_turns_left()) + "/" + std::to_string(stat.second.turns);
+    }
+}
+
+bool ProductionInterface::ProductionSlots::is_should_display_button(
+        const std::pair<std::string, UnitProductionStats>& stat) const {
+    assert(barrack_ != nullptr);
+    if (!barrack_->is_production_in_progress())
+        return true;
+    return stat.first == barrack_->get_training_unit_name();
+}
