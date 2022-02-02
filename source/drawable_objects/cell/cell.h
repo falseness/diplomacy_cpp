@@ -6,20 +6,21 @@
 #include <tuple>
 #include <source/utility/vector2d.h>
 
+#pragma once
+
 class Players;
 class Player;
 
-#pragma once
-
 class Cell : public DrawableObject {
-    std::pair<int, int> coord_;
     size_t player_index_;
     Players& players_;
     Hexagon hexagon_;
     std::unique_ptr<Unit> unit_;
     std::unique_ptr<Building> building_;
+    bool is_suburb_;
     void set_player(size_t);
 
+    std::pair<int, int> coord_;
 public:
     static const float kColorAlphaRatio;
     template <typename UnitType, typename ...Args>
@@ -35,7 +36,7 @@ public:
         building_ = std::move(static_cast<std::unique_ptr<Building>>(
                 std::make_unique<BuildingType>(this, std::forward<Args>(args)...)));
     }
-    Cell(std::pair<int, int>, size_t player_index_, Players&);
+    Cell(std::pair<int, int>, size_t player_index_, Players&, bool is_suburb = false);
     void Draw(Screen& screen, const GameOptions&) override;
     [[nodiscard]] std::pair<int, int> get_coord() const;
     [[nodiscard]] Vector2D get_pos(const GameOptions& game_options) const;
@@ -49,6 +50,7 @@ public:
     [[nodiscard]] bool is_my_turn() const;
     [[nodiscard]] bool is_passable() const;
     [[nodiscard]] bool is_hittable() const;
+    [[nodiscard]] bool is_suburb() const;
     void DeleteUnit();
     void DeleteBuilding();
     void MoveUnitTo(Cell&);

@@ -9,6 +9,6 @@ class Cell;
 class Hexagon : public DrawableObject {
     const Cell& cell_;
 public:
-    Hexagon(const Cell&);
+    explicit Hexagon(const Cell&);
     void Draw(Screen&, const GameOptions&);
 };

@@ -1,10 +1,11 @@
 #include <source/drawable_objects_groups/drawable_objects_group.h>
 #include <source/sfml_facades/screen.h>
-#include <source/drawable_objects/cell/cell.h>
 #include <source/options/options.h>
 #include <source/player/player.h>
 #include <vector>
 #include <tuple>
+#include <source/drawable_objects/cell/cell.h>
+#include <source/drawable_objects/unit/unit.h>
 #include <source/drawable_objects/clickable_object.h>
 #include "grid_logic_helper.h"
 
@@ -13,6 +14,7 @@
 
 class Players;
 class SceneInfo;
+class Entity;
 
 class Grid : public DrawableObjectsGroup, public ClickableObject {
     std::vector<std::vector<std::unique_ptr<Cell>>> cells_;

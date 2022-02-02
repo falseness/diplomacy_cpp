@@ -3,7 +3,8 @@
 #include "unit_logic.h"
 #include <source/drawable_objects/unit/unit.h>
 #include <source/drawable_objects_groups/game_scene/grid.h>
-#include <iostream>
+#include <source/drawable_objects/cell/cell.h>
+
 
 ClickResponse UnitLogic::ClickLogic(Unit& unit, Grid& grid, std::pair<int, int> coord) {
     if (coord == unit.get_coord()) {
@@ -41,7 +42,7 @@ void UnitLogic::Select(Unit& unit, Grid& grid) {
             grid.logic_helper_.set_parent(new_coord, coord);
             if (!grid.get_cell(new_coord)->is_passable()) {
                 if (grid.get_cell(new_coord)->is_hittable()) {
-                    grid.logic_helper_.set_info(new_coord, unit.get_moves());
+                    grid.logic_helper_.set_info(new_coord, static_cast<int>(unit.get_moves()));
                 }
                 continue;
             }

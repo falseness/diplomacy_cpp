@@ -4,10 +4,10 @@
 #include <source/player/players.h>
 
 
-Cell::Cell(std::pair<int, int> coord, size_t player_index_, Players& players) :
+Cell::Cell(std::pair<int, int> coord, size_t player_index_, Players& players, bool is_suburb) :
     coord_(std::move(coord)), player_index_(player_index_), players_(players), hexagon_(*this),
-    unit_(std::move(std::make_unique<EmptyUnit>(this))), building_(std::move(std::make_unique<EmptyBuilding>(this))) {
-}
+    unit_(std::move(std::make_unique<EmptyUnit>(this))), building_(std::move(std::make_unique<EmptyBuilding>(this))),
+    is_suburb_(is_suburb){}
 
 std::pair<int, int> Cell::get_coord() const {
     return coord_;
@@ -15,9 +15,9 @@ std::pair<int, int> Cell::get_coord() const {
 
 void Cell::Draw(Screen& screen, const GameOptions& game_options) {
     hexagon_.Draw(screen, game_options);
-    if (building_ != nullptr)
+    if (!building_->is_empty())
         building_->Draw(screen, game_options);
-    if (unit_ != nullptr)
+    if (!unit_->is_empty())
         unit_->Draw(screen, game_options);
 
 }
@@ -54,6 +54,8 @@ void Cell::set_unit(std::unique_ptr<Unit>&& new_unit) {
 
 void Cell::MoveUnitTo(Cell& cell) {
     assert(cell.unit_->is_empty());
+    if (!cell.is_my_turn() && cell.is_suburb())
+        cell.is_suburb_ = false;
     cell.set_unit(std::move(unit_));
     cell.set_player(player_index_);
 
@@ -90,4 +92,8 @@ void Cell::DeleteUnit() {
 void Cell::DeleteBuilding() {
     get_player().DeleteBuilding(building_.get());
     building_ = std::make_unique<EmptyBuilding>(this);
+}
+
+bool Cell::is_suburb() const {
+    return is_suburb_;
 }
