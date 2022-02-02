@@ -4,7 +4,7 @@
 
 class BuildingStats;
 
-class Building : public Entity {
+class Building : public virtual Entity {
     [[nodiscard]] const BuildingStats& get_stats() const;
 public:
     Building(Cell* cell, std::string&& image_name);

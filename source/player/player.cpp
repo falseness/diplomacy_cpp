@@ -3,7 +3,7 @@
 #include <source/drawable_objects/building/building.h>
 
 Player::Player(const Color& color) : color_(color) {
-    UnitStats(entities_stats_, "peasant", 2, 2, 2);
+    UnitStats(entities_stats_, "peasant", 2, 1, 2);
 
     UnitStats(entities_stats_, "", 0, 0, 0);
     BuildingStats(entities_stats_, "");
@@ -48,5 +48,17 @@ void Player::AddBuilding(Building* building) {
 
 Color Player::get_color() const {
     return color_;
+}
+
+void Player::DeleteBuilding(Building* building) {
+    auto it = std::find(buildings_.begin(), buildings_.end(), building);
+    assert(it != buildings_.end());
+    buildings_.erase(it);
+}
+
+void Player::DeleteUnit(Unit* unit) {
+    auto it = std::find(units_.begin(), units_.end(), unit);
+    assert(it != units_.end());
+    units_.erase(it);
 }
 

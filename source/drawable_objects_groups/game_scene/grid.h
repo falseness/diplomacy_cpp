@@ -31,6 +31,7 @@ public:
     size_t get_rows_count();
     size_t get_columns_count();
     Grid& operator=(const Grid&) = delete;
-    const Cell* get_cell(std::pair<int, int> coord) const;
+    [[nodiscard]] const Cell* get_cell(std::pair<int, int> coord) const;
+    [[nodiscard]] Cell* get_cell(std::pair<int, int> coord);
 };
 

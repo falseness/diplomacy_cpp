@@ -3,7 +3,8 @@
 #include <cassert>
 
 Barrack::Barrack(Cell *cell, std::string &&image_name) :
-    SuburbBuilding(cell, std::string(image_name)), Building(cell, std::string(image_name)) {}
+    SuburbBuilding(cell, std::string(image_name)), Building(cell, std::string(image_name)),
+    Entity(cell, std::string(image_name)) {}
 
 ClickResponse Barrack::HandleClick(SceneInfo& scene, const Vector2D& pos, const GameOptions& game_options) {
     auto result = Building::HandleClick(scene, pos, game_options);

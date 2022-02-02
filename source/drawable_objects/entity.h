@@ -37,4 +37,5 @@ public:
     [[nodiscard]] const Player& get_player() const;
     [[nodiscard]] virtual bool is_passable() const = 0;
     ~Entity() override = default;
+    [[nodiscard]] virtual bool is_hittable() const;
 };

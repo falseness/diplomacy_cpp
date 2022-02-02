@@ -57,4 +57,8 @@ bool Entity::is_empty() const {
     return image_name_ == Entity::kEmptyEntityName;
 }
 
+bool Entity::is_hittable() const {
+    return false;
+}
+
 const std::string Entity::kEmptyEntityName;

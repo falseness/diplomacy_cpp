@@ -11,4 +11,5 @@ public:
     explicit Town(Cell*);
     ~Town() override = default;
     [[nodiscard]] bool is_passable() const override;
+    [[nodiscard]] bool is_hittable() const override;
 };

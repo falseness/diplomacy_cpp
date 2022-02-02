@@ -48,5 +48,8 @@ public:
     void set_unit(std::unique_ptr<Unit>&&);
     [[nodiscard]] bool is_my_turn() const;
     [[nodiscard]] bool is_passable() const;
+    [[nodiscard]] bool is_hittable() const;
+    void DeleteUnit();
+    void DeleteBuilding();
     void MoveUnitTo(Cell&);
 };

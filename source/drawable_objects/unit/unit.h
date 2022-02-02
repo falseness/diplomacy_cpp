@@ -1,4 +1,4 @@
-#include <source/drawable_objects/entity.h>
+#include <source/drawable_objects/hittable_entity.h>
 #include <source/player/entity_stats.h>
 
 #pragma once
@@ -6,15 +6,16 @@
 class Grid;
 class SceneInfo;
 
-class Unit : public Entity {
-    unsigned int hp_;
+class Unit : public HittableEntity {
     int dmg_;
     unsigned int moves_;
+protected:
+    void Kill() override;
 public:
     void NextTurn() override;
     [[nodiscard]] const UnitStats& get_stats() const;
     [[nodiscard]] unsigned int get_speed() const;
-    [[nodiscard]] unsigned int get_maximum_hp() const;
+    [[nodiscard]] unsigned int get_maximum_hp() const override;
     void Select(SceneInfo&) override;
     ClickResponse HandleClick(SceneInfo&, const Vector2D& click_pos, const GameOptions& game_options) override;
     Unit(Cell*, std::string&&);
@@ -30,6 +31,7 @@ public:
 class EmptyUnit : public Unit {
 public:
     [[nodiscard]] bool is_passable() const override;
+    [[nodiscard]] bool is_hittable() const override;
     explicit EmptyUnit(Cell*);
     void Draw(Screen&, const GameOptions&) override;
     void Select(SceneInfo&) override;

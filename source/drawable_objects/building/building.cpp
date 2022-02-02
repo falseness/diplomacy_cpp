@@ -26,6 +26,7 @@ bool EmptyBuilding::is_passable() const {
     return true;
 }
 
-EmptyBuilding::EmptyBuilding(Cell* cell) : Building(cell, std::string(Entity::kEmptyEntityName)) {}
+EmptyBuilding::EmptyBuilding(Cell* cell) : Building(cell, std::string(Entity::kEmptyEntityName)),
+    Entity(cell, std::string(Entity::kEmptyEntityName)) {}
 
 void EmptyBuilding::Draw(Screen &, const GameOptions &) {}

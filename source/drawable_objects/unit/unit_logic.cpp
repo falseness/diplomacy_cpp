@@ -26,6 +26,7 @@ void UnitLogic::Select(Unit& unit, Grid& grid) {
     grid.logic_helper_.set_info(coords.front(), 0);
     grid.logic_helper_.set_parent(coords.front(), coords.front());
 
+
     while (!coords.empty()) {
         std::pair<int, int> coord = coords.front();
         coords.pop_front();
@@ -34,11 +35,17 @@ void UnitLogic::Select(Unit& unit, Grid& grid) {
             continue;
         auto neighbours = grid.get_neighbours(coord);
         for (auto new_coord : neighbours) {
-            if (grid.logic_helper_.is_visited(new_coord) || !grid.get_cell(new_coord)->is_passable())
+            if (grid.logic_helper_.is_visited(new_coord))
                 continue;
             grid.logic_helper_.visit(new_coord);
-            grid.logic_helper_.set_info(new_coord, moves_count + 1);
             grid.logic_helper_.set_parent(new_coord, coord);
+            if (!grid.get_cell(new_coord)->is_passable()) {
+                if (grid.get_cell(new_coord)->is_hittable()) {
+                    grid.logic_helper_.set_info(new_coord, unit.get_moves());
+                }
+                continue;
+            }
+            grid.logic_helper_.set_info(new_coord, moves_count + 1);
             coords.push_back(new_coord);
         }
     }

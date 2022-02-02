@@ -77,3 +77,17 @@ bool Cell::is_my_turn() const {
 bool Cell::is_passable() const {
     return building_->is_passable() && unit_->is_passable();
 }
+
+bool Cell::is_hittable() const {
+    return building_->is_hittable() || unit_->is_hittable();
+}
+
+void Cell::DeleteUnit() {
+    get_player().DeleteUnit(unit_.get());
+    unit_ = std::make_unique<EmptyUnit>(this);
+}
+
+void Cell::DeleteBuilding() {
+    get_player().DeleteBuilding(building_.get());
+    building_ = std::make_unique<EmptyBuilding>(this);
+}

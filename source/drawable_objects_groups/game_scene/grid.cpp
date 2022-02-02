@@ -13,8 +13,10 @@ Grid::Grid(Players& players) : logic_helper_(kGridRowsCount, kGridColumnsCount) 
     cells_.resize(n);
     for (size_t i = 0; i < cells_.size(); ++i) {
         for (size_t j = 0; j < n; ++j) {
-            if (i == 0 && j == 0 || i == 1 && j == 1)
+            if (i == 0 && j == 0 || i == 1 && j == 1 || i == 0 && j == 1)
                 cells_[i].push_back(std::make_unique<Cell>(std::make_pair(i, j), 1, players));
+            else if (i == 1 && j == 0)
+                cells_[i].push_back(std::make_unique<Cell>(std::make_pair(i, j), 2, players));
             else
                 cells_[i].push_back(std::make_unique<Cell>(std::make_pair(i, j), 0, players));
 
@@ -24,11 +26,12 @@ Grid::Grid(Players& players) : logic_helper_(kGridRowsCount, kGridColumnsCount) 
     empty_unit_ = std::make_unique<EmptyUnit>(cells_[0][0].get());
     selected_entity_= empty_unit_.get();
 
-    cells_[0][0]->CreateUnit<Unit>("peasant");
+    cells_[0][1]->CreateUnit<Unit>("peasant");
     //static_cast<std::unique_ptr<Entity>>(std::make_unique<Unit>(cells_[0][0].get(), "peasant"));
     //static_cast<std::unique_ptr<Building>>(std::make_unique<TownStats>(cells_[0][0].get()));
     cells_[0][0]->CreateBuilding<Town>();
     cells_[1][1]->CreateBuilding<Barrack>("barrack");
+    cells_[1][0]->CreateUnit<Unit>("peasant");
 }
 
 bool Grid::HandleClick(SceneInfo& scene, const Vector2D& screen_click_pos, const GameOptions& game_options) {
@@ -107,6 +110,10 @@ void Grid::RemoveSelection() {
 }
 
 const Cell* Grid::get_cell(std::pair<int, int> coord) const {
+    return cells_[coord.first][coord.second].get();
+}
+
+Cell* Grid::get_cell(std::pair<int, int> coord) {
     return cells_[coord.first][coord.second].get();
 }
 

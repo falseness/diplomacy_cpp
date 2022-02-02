@@ -1,4 +1,6 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.13)
+add_compile_options(-fsanitize=address)
+add_link_options(-fsanitize=address)
 
 project(Diplomacy)
 
@@ -48,7 +50,7 @@ set(    MAIN_SOURCE
         source/drawable_objects_groups/interfaces/production.cpp
         source/player/players.cpp
         source/next_turn/next_turn_button.cpp
-        source/drawable_objects/interface_elements/triangle.cpp source/player/entity_factories.cpp source/player/entity_factories.h source/drawable_objects/interface_elements/rounded_rectangle_with_text.cpp source/drawable_objects/interface_elements/rounded_rectangle_with_text.h)
+        source/drawable_objects/interface_elements/triangle.cpp source/player/entity_factories.cpp source/player/entity_factories.h source/drawable_objects/interface_elements/rounded_rectangle_with_text.cpp source/drawable_objects/interface_elements/rounded_rectangle_with_text.h source/drawable_objects/hittable_entity.cpp source/drawable_objects/hittable_entity.h)
 
 add_executable(Diplomacy ${MAIN_SOURCE})
 #---

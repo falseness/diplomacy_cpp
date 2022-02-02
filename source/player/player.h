@@ -40,7 +40,9 @@ class Player {
 public:
     void NextTurn();
     void AddUnit(Unit*);
+    void DeleteUnit(Unit*);
     void AddBuilding(Building*);
+    void DeleteBuilding(Building*);
     const Color color_;
     explicit Player(const Color&);
     [[nodiscard]] int get_gold() const;

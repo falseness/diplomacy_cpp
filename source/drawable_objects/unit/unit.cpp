@@ -4,6 +4,7 @@
 #include <source/drawable_objects_groups/game_scene/grid.h>
 #include <source/drawable_objects/unit/unit_logic.h>
 #include <source/drawable_objects_groups/game_scene/game_scene.h>
+#include <algorithm>
 
 const UnitStats& Unit::get_stats() const {
     return cell_->get_player().get_stats().units.find(image_name_)->second;
@@ -57,9 +58,25 @@ void Unit::MoveTo(Grid& grid, std::pair<int, int> coord) {
     }
     reverse(path.begin(), path.end());
     for (auto next_coord : path) {
-        grid.MoveUnit(get_coord(), next_coord);
-    }
+        auto cell = grid.get_cell(next_coord);
+        if (cell->is_passable()) {
+            grid.MoveUnit(get_coord(), next_coord);
+            continue;
+        }
+        assert(next_coord == path.back());
 
+        if (cell->get_building()->is_hittable()) {
+            auto building = dynamic_cast<HittableEntity*>(cell->get_building());
+            assert(building != nullptr);
+            building->Hit(dmg_);
+        }
+        else if (cell->get_unit()->is_hittable()) {
+            cell->get_unit()->Hit(dmg_);
+        }
+        if (cell->is_passable()) {
+            grid.MoveUnit(get_coord(), next_coord);
+        }
+    }
 }
 
 json Unit::to_json() {
@@ -70,8 +87,7 @@ json Unit::to_json() {
 }
 
 json Unit::get_info() const {
-    auto result = Entity::get_info();
-    result["info"]["hp"] = std::to_string(hp_) + " / " + std::to_string(get_maximum_hp());
+    auto result = HittableEntity::get_info();
     result["info"]["dmg"] = dmg_;
     if (is_my_turn())
         result["info"]["moves"] = std::to_string(moves_) + " / " + std::to_string(get_speed());
@@ -96,12 +112,21 @@ bool Unit::is_passable() const {
     return false;
 }
 
+void Unit::Kill() {
+    cell_->DeleteUnit();
+}
+
 bool EmptyUnit::is_passable() const {
     return true;
 }
 
-EmptyUnit::EmptyUnit(Cell* cell) : Unit(cell, std::string(Entity::kEmptyEntityName)) {}
+EmptyUnit::EmptyUnit(Cell* cell) : Unit(cell, std::string(Entity::kEmptyEntityName)),
+    Entity(cell, std::string(Entity::kEmptyEntityName)) {}
 
 void EmptyUnit::Draw(Screen &, const GameOptions &) {}
 
 void EmptyUnit::Select(SceneInfo&) {}
+
+bool EmptyUnit::is_hittable() const {
+    return false;
+}

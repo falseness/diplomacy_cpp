@@ -8,7 +8,7 @@ const std::string Town::kTownImageName = "town";
 
 Town::Town(Cell* cell) : BuildingWithHp(cell, std::string(Town::kTownImageName)),
     Barrack(cell, std::string(Town::kTownImageName)), SuburbBuilding(cell, std::string(Town::kTownImageName)),
-    Building(cell, std::string(kTownImageName)) {
+    Building(cell, std::string(kTownImageName)), Entity(cell, std::string(kTownImageName)) {
 }
 
 json Town::get_info() const {
@@ -18,5 +18,9 @@ json Town::get_info() const {
 }
 
 bool Town::is_passable() const {
-    return false;
+    return BuildingWithHp::is_passable();
+}
+
+bool Town::is_hittable() const {
+    return BuildingWithHp::is_hittable();
 }
