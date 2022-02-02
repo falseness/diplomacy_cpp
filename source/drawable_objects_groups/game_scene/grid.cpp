@@ -21,27 +21,29 @@ Grid::Grid(Players& players) : logic_helper_(kGridRowsCount, kGridColumnsCount) 
             drawable_objects_.push_back(cells_[i][j].get());
         }
     }
+    empty_unit_ = std::make_unique<EmptyUnit>(cells_[0][0].get());
+    selected_entity_= empty_unit_.get();
+
     cells_[0][0]->CreateUnit<Unit>("peasant");
     //static_cast<std::unique_ptr<Entity>>(std::make_unique<Unit>(cells_[0][0].get(), "peasant"));
     //static_cast<std::unique_ptr<Building>>(std::make_unique<TownStats>(cells_[0][0].get()));
     cells_[0][0]->CreateBuilding<Town>();
     cells_[1][1]->CreateBuilding<Barrack>("barrack");
-    selected_entity_ = nullptr;
 }
 
 bool Grid::HandleClick(SceneInfo& scene, const Vector2D& screen_click_pos, const GameOptions& game_options) {
     Vector2D click_pos = screen_click_pos - game_options.draw_offset;
-    if (selected_entity_ == nullptr) {
+    if (selected_entity_->is_empty()) {
         std::pair<int, int> coord = CoordConverter::CalculateCoord(click_pos, game_options);
         if (CoordConverter::IsCoordOutOfRange(coord, cells_.size(), cells_[0].size()))
             return true;
 
         selected_entity_ = cells_[coord.first][coord.second]->get_unit();
-        if (selected_entity_ == nullptr) {
+        if (selected_entity_->is_empty()) {
             selected_entity_ = cells_[coord.first][coord.second]->get_building();
         }
 
-        if (selected_entity_ != nullptr)
+        if (!selected_entity_->is_empty())
             selected_entity_->Select(scene);
         return true;
     }
@@ -51,9 +53,9 @@ bool Grid::HandleClick(SceneInfo& scene, const Vector2D& screen_click_pos, const
         ChangeSelectedUnitToBuilding();
     }
     else if (click_response.should_remove_selection)
-        selected_entity_ = nullptr;
+        RemoveSelection();
 
-    if (selected_entity_ != nullptr)
+    if (!selected_entity_->is_empty())
         selected_entity_->Select(scene);
 
     if (click_response.should_reclick)
@@ -99,5 +101,9 @@ void Grid::ChangeSelectedUnitToBuilding() {
 
 const size_t Grid::kGridRowsCount = 15;
 const size_t Grid::kGridColumnsCount = 6;
+
+void Grid::RemoveSelection() {
+    selected_entity_ = empty_unit_.get();
+}
 
 

@@ -5,7 +5,9 @@
 
 
 Cell::Cell(std::pair<int, int> coord, size_t player_index_, Players& players) :
-    coord_(std::move(coord)), player_index_(player_index_), players_(players), hexagon_(*this), unit_(nullptr) {}
+    coord_(std::move(coord)), player_index_(player_index_), players_(players), hexagon_(*this),
+    unit_(std::move(std::make_unique<EmptyUnit>(this))), building_(std::move(std::make_unique<EmptyBuilding>(this))) {
+}
 
 std::pair<int, int> Cell::get_coord() const {
     return coord_;
@@ -22,8 +24,8 @@ void Cell::Draw(Screen& screen, const GameOptions& game_options) {
 
 Vector2D Cell::get_pos(const GameOptions& game_options) const {
     std::pair<float, float> transition_coord = CoordConverter::BiasToTransition(coord_.first, coord_.second);
-    return Vector2D(transition_coord.first * game_options.hexagon_offset.x,
-                 transition_coord.second * game_options.hexagon_offset.y);
+    return {transition_coord.first * game_options.hexagon_offset.x,
+                 transition_coord.second * game_options.hexagon_offset.y};
 }
 
 const Color& Cell::get_color() const {
@@ -51,10 +53,11 @@ void Cell::set_unit(std::unique_ptr<Unit>&& new_unit) {
 }
 
 void Cell::MoveUnitTo(Cell& cell) {
-    if (cell.unit_ != nullptr)
-        throw std::invalid_argument("cell unit is not nullptr");
+    assert(cell.unit_->is_empty());
     cell.set_unit(std::move(unit_));
     cell.set_player(player_index_);
+
+    unit_ = std::make_unique<EmptyUnit>(this);
 }
 
 Building* Cell::get_building() {
@@ -66,3 +69,11 @@ void Cell::set_player(size_t player_index) {
 }
 
 const float Cell::kColorAlphaRatio = 0.4f;
+
+bool Cell::is_my_turn() const {
+    return player_index_ == players_.get_whoose_turn();
+}
+
+bool Cell::is_passable() const {
+    return building_->is_passable() && unit_->is_passable();
+}

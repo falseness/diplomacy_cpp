@@ -48,3 +48,13 @@ Player& Entity::get_player() {
 const Player& Entity::get_player() const {
     return cell_->get_player();
 }
+
+bool Entity::is_my_turn() const {
+    return cell_->is_my_turn();
+}
+
+bool Entity::is_empty() const {
+    return image_name_ == Entity::kEmptyEntityName;
+}
+
+const std::string Entity::kEmptyEntityName;

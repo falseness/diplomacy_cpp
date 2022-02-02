@@ -11,7 +11,7 @@ class Unit : public Entity {
     int dmg_;
     unsigned int moves_;
 public:
-    void NextTurn();
+    void NextTurn() override;
     [[nodiscard]] const UnitStats& get_stats() const;
     [[nodiscard]] unsigned int get_speed() const;
     [[nodiscard]] unsigned int get_maximum_hp() const;
@@ -21,7 +21,16 @@ public:
     void set_cell(Cell*);
     [[nodiscard]] unsigned int get_moves() const;
     void MoveTo(Grid& grid, std::pair<int, int> coord);
-    virtual json to_json() override;
-    virtual json get_info() const override;
+    [[nodiscard]] json to_json() override;
+    [[nodiscard]] json get_info() const override;
+    [[nodiscard]] bool is_passable() const override;
     ~Unit() override = default;
+};
+
+class EmptyUnit : public Unit {
+public:
+    [[nodiscard]] bool is_passable() const override;
+    explicit EmptyUnit(Cell*);
+    void Draw(Screen&, const GameOptions&) override;
+    void Select(SceneInfo&) override;
 };

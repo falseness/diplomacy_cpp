@@ -9,4 +9,5 @@ public:
     ~SuburbBuilding() override = default;
     [[nodiscard]] int get_income() const;
     [[nodiscard]] json get_info() const override;
+    [[nodiscard]] bool is_passable() const override;
 };

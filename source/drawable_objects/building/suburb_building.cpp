@@ -18,3 +18,7 @@ json SuburbBuilding::get_info() const {
 int SuburbBuilding::get_income() const {
     return get_stats().income;
 }
+
+bool SuburbBuilding::is_passable() const {
+    return true;
+}

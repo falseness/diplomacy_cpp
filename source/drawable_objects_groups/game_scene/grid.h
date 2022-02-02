@@ -16,11 +16,13 @@ class SceneInfo;
 
 class Grid : public DrawableObjectsGroup, public ClickableObject {
     std::vector<std::vector<std::unique_ptr<Cell>>> cells_;
+    std::unique_ptr<EmptyUnit> empty_unit_;
     Entity* selected_entity_;
     static const size_t kGridRowsCount;
     static const size_t kGridColumnsCount;
     void ChangeSelectedUnitToBuilding();
 public:
+    void RemoveSelection();
     std::vector<std::pair<int, int>> get_neighbours(std::pair<int, int> coord);
     GridLogicHelper logic_helper_;
     explicit Grid(Players&);
@@ -31,6 +33,4 @@ public:
     Grid& operator=(const Grid&) = delete;
 
 };
-
-
 

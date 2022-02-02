@@ -16,3 +16,7 @@ json Town::get_info() const {
     result["info"]["hp"] = BuildingWithHp::get_info()["info"]["hp"];
     return result;
 }
+
+bool Town::is_passable() const {
+    return false;
+}

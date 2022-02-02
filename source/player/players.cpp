@@ -20,4 +20,8 @@ void Players::NextTurn() {
         NextTurn();
 }
 
+size_t Players::get_whoose_turn() const {
+    return whoose_turn_;
+}
+
 

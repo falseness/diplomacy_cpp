@@ -12,3 +12,10 @@ public:
     void NextTurn() override;
     ~Building() override = default;
 };
+
+class EmptyBuilding : public Building {
+public:
+    [[nodiscard]] bool is_passable() const override;
+    explicit EmptyBuilding(Cell*);
+    void Draw(Screen&, const GameOptions&) override;
+};

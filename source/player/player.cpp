@@ -4,6 +4,10 @@
 
 Player::Player(const Color& color) : color_(color) {
     UnitStats(entities_stats_, "peasant", 2, 2, 2);
+
+    UnitStats(entities_stats_, "", 0, 0, 0);
+    BuildingStats(entities_stats_, "");
+
     UnitProductionStats(entities_factories_, "peasant", 10, 1);
     CreateUnitFactory<UnitFactory>("peasant");
 
@@ -16,7 +20,8 @@ const PlayersEntitiesStats& Player::get_stats() const {
 }
 
 void Player::AddUnit(Unit* new_unit) {
-    units_.push_back(new_unit);
+    if (!new_unit->is_empty())
+        units_.push_back(new_unit);
 }
 
 void Player::NextTurn() {
@@ -37,6 +42,7 @@ int Player::get_gold() const {
 }
 
 void Player::AddBuilding(Building* building) {
+
     buildings_.push_back(building);
 }
 

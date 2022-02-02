@@ -13,8 +13,10 @@ ClickResponse Barrack::HandleClick(SceneInfo& scene, const Vector2D& pos, const 
 }
 
 void Barrack::Select(SceneInfo& scene) {
-    scene.production_interface.update(this);
-    scene.production_interface.set_visible(true);
+    if (is_my_turn()) {
+        scene.production_interface.update(this);
+        scene.production_interface.set_visible(true);
+    }
     Entity::Select(scene);
 }
 
@@ -24,7 +26,7 @@ void Barrack::NextTurn() {
     const auto& factories = get_player().get_factories_stats();
     const auto& factory = *factories.units_factory.find(production_.unit_name)->second;
     factory.NextTurn(get_player(), production_);
-    if (!get_turns_left() && cell_->get_unit() == nullptr) {
+    if (!get_turns_left() && cell_->get_unit()->is_empty()) {
         factory.CreateUnit(cell_, production_);
         production_in_progress_ = false;
     }
@@ -61,3 +63,4 @@ std::string Barrack::get_training_unit_name() const {
     assert(is_production_in_progress());
     return production_.unit_name;
 }
+

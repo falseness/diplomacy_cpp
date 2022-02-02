@@ -6,7 +6,7 @@ BuildingWithHp::BuildingWithHp(Cell *cell, std::string&& image_name) : Building(
     hp_ = get_stats().hp;
 }
 
-const BuildingWithHpStats &BuildingWithHp::get_stats() const {
+const BuildingWithHpStats& BuildingWithHp::get_stats() const {
     return cell_->get_player().get_stats().buildings_with_hp.find(image_name_)->second;
 }
 
@@ -14,4 +14,8 @@ json BuildingWithHp::get_info() const {
     auto result = Entity::get_info();
     result["info"]["hp"] = hp_;
     return result;
+}
+
+bool BuildingWithHp::is_passable() const {
+    return false;
 }

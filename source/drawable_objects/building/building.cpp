@@ -8,7 +8,8 @@ const BuildingStats& Building::get_stats() const {
 }
 
 Building::Building(Cell *cell, std::string &&image_name) : Entity(cell, std::move(image_name)) {
-    get_player().AddBuilding(this);
+    if (!is_empty())
+        get_player().AddBuilding(this);
 }
 
 ClickResponse Building::HandleClick(SceneInfo& scene, const Vector2D &click_pos, const GameOptions &game_options) {
@@ -20,3 +21,11 @@ ClickResponse Building::HandleClick(SceneInfo& scene, const Vector2D &click_pos,
 }
 
 void Building::NextTurn() {}
+
+bool EmptyBuilding::is_passable() const {
+    return true;
+}
+
+EmptyBuilding::EmptyBuilding(Cell* cell) : Building(cell, std::string(Entity::kEmptyEntityName)) {}
+
+void EmptyBuilding::Draw(Screen &, const GameOptions &) {}

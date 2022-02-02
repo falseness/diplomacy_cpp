@@ -24,21 +24,19 @@ public:
     static const float kColorAlphaRatio;
     template <typename UnitType, typename ...Args>
     void CreateUnit(Args&&... args) {
-        if (unit_ != nullptr)
-            throw std::out_of_range("unit in cell is not nullptr");
+        assert(unit_->is_empty());
         unit_ = std::move(std::make_unique<UnitType>(this, std::forward<Args>(args)...));
         get_player().AddUnit(unit_.get());
     }
     template <typename BuildingType, typename ...Args>
     void CreateBuilding(Args&&... args) {
-        if (building_ != nullptr) {
-            throw std::out_of_range("building in cell is not nullptr");
-        }
+        assert(building_->is_empty());
+
         building_ = std::move(static_cast<std::unique_ptr<Building>>(
                 std::make_unique<BuildingType>(this, std::forward<Args>(args)...)));
     }
     Cell(std::pair<int, int>, size_t player_index_, Players&);
-    void Draw(Screen& screen, const GameOptions&);
+    void Draw(Screen& screen, const GameOptions&) override;
     [[nodiscard]] std::pair<int, int> get_coord() const;
     [[nodiscard]] Vector2D get_pos(const GameOptions& game_options) const;
     [[nodiscard]] const Color& get_color() const;
@@ -48,5 +46,7 @@ public:
     Unit* get_unit();
     Building* get_building();
     void set_unit(std::unique_ptr<Unit>&&);
+    [[nodiscard]] bool is_my_turn() const;
+    [[nodiscard]] bool is_passable() const;
     void MoveUnitTo(Cell&);
 };

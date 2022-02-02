@@ -24,6 +24,12 @@ void Unit::set_cell(Cell* cell) {
 
 ClickResponse Unit::HandleClick(SceneInfo& scene, const Vector2D &click_pos, const GameOptions &game_options) {
     std::pair<int, int> coord = CoordConverter::CalculateCoord(click_pos, game_options);
+
+    if (!is_my_turn()) {
+        scene.entity_interface.set_visible(false);
+        return {true, coord != get_coord(), coord == get_coord()};
+    }
+
     ClickResponse click_response = UnitLogic::ClickLogic(*this, scene.grid, coord);
     if (click_response.should_remove_selection)
         scene.entity_interface.set_visible(false);
@@ -82,3 +88,17 @@ unsigned int Unit::get_maximum_hp() const {
 void Unit::NextTurn() {
     moves_ = get_speed();
 }
+
+bool Unit::is_passable() const {
+    return false;
+}
+
+bool EmptyUnit::is_passable() const {
+    return true;
+}
+
+EmptyUnit::EmptyUnit(Cell* cell) : Unit(cell, std::string(Entity::kEmptyEntityName)) {}
+
+void EmptyUnit::Draw(Screen &, const GameOptions &) {}
+
+void EmptyUnit::Select(SceneInfo&) {}

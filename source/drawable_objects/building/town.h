@@ -7,7 +7,8 @@
 class Town : public Barrack, public BuildingWithHp {
     static const std::string kTownImageName;
 public:
-    json get_info() const override;
+    [[nodiscard]] json get_info() const override;
     explicit Town(Cell*);
     ~Town() override = default;
+    [[nodiscard]] bool is_passable() const override;
 };

@@ -15,6 +15,7 @@ NextTurnButton::NextTurnButton(Screen& screen) {
 
 void NextTurnButton::NextTurn(SceneInfo& scene) {
     scene.players.NextTurn();
+    scene.grid.RemoveSelection();
     scene.entity_interface.set_visible(false);
     scene.production_interface.set_visible(false);
 }
