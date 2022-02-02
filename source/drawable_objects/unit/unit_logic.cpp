@@ -34,7 +34,7 @@ void UnitLogic::Select(Unit& unit, Grid& grid) {
             continue;
         auto neighbours = grid.get_neighbours(coord);
         for (auto new_coord : neighbours) {
-            if (grid.logic_helper_.is_visited(new_coord))
+            if (grid.logic_helper_.is_visited(new_coord) || !grid.get_cell(new_coord)->is_passable())
                 continue;
             grid.logic_helper_.visit(new_coord);
             grid.logic_helper_.set_info(new_coord, moves_count + 1);

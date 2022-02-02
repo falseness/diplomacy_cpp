@@ -106,4 +106,8 @@ void Grid::RemoveSelection() {
     selected_entity_ = empty_unit_.get();
 }
 
+const Cell* Grid::get_cell(std::pair<int, int> coord) const {
+    return cells_[coord.first][coord.second].get();
+}
+
 
