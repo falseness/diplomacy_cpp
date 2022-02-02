@@ -9,4 +9,5 @@ public:
     void NextTurn();
     Players(std::vector<Color>&& players_colors, size_t whoose_turn);
     Player& operator[](size_t);
+    const Player& operator[](size_t) const;
 };

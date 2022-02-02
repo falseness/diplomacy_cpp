@@ -73,7 +73,10 @@ json Unit::get_info() const {
     auto result = Entity::get_info();
     result["info"]["hp"] = std::to_string(hp_) + " / " + std::to_string(get_maximum_hp());
     result["info"]["dmg"] = dmg_;
-    result["info"]["moves"] = std::to_string(moves_) + " / " + std::to_string(get_speed());
+    if (is_my_turn())
+        result["info"]["moves"] = std::to_string(moves_) + " / " + std::to_string(get_speed());
+    else
+        result["info"]["speed"] = std::to_string(get_speed());
     return std::move(result);
 }
 

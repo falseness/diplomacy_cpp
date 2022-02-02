@@ -6,7 +6,7 @@
 class SceneInfo;
 
 class NextTurnButton : public Triangle, public ClickableObject {
-    static void NextTurn(SceneInfo&);
+    void NextTurn(SceneInfo&);
 public:
     explicit NextTurnButton(Screen&);
     bool HandleClick(SceneInfo&, const Vector2D&, const GameOptions&) override;

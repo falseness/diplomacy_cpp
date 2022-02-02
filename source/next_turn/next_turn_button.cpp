@@ -18,6 +18,8 @@ void NextTurnButton::NextTurn(SceneInfo& scene) {
     scene.grid.RemoveSelection();
     scene.entity_interface.set_visible(false);
     scene.production_interface.set_visible(false);
+
+    background_color = scene.players[scene.players.get_whoose_turn()].get_color();
 }
 
 bool NextTurnButton::HandleClick(SceneInfo& scene, const Vector2D& pos, const GameOptions &) {

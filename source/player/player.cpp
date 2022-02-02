@@ -46,3 +46,7 @@ void Player::AddBuilding(Building* building) {
     buildings_.push_back(building);
 }
 
+Color Player::get_color() const {
+    return color_;
+}
+

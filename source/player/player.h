@@ -44,7 +44,7 @@ public:
     const Color color_;
     explicit Player(const Color&);
     [[nodiscard]] int get_gold() const;
-
+    [[nodiscard]] Color get_color() const;
     [[nodiscard]] const PlayersEntitiesStats& get_stats() const;
     [[nodiscard]] const PlayersEntitiesFactories& get_factories_stats() const;
 };

@@ -24,4 +24,8 @@ size_t Players::get_whoose_turn() const {
     return whoose_turn_;
 }
 
+const Player &Players::operator[](size_t index) const {
+    return players_[index];
+}
+
 
