@@ -4,6 +4,7 @@
 #include <source/drawable_objects/interface_elements/text.h>
 #include <source/drawable_objects/interface_elements/image.h>
 #include <source/drawable_objects_groups/drawable_objects_group.h>
+#include <source/drawable_objects/clickable_object.h>
 #include <source/drawable_objects/interface_elements/rounded_rectangle_with_text.h>
 #include <nlohmann/json.hpp>
 
@@ -12,13 +13,13 @@
 class Barrack;
 class PlayersEntitiesFactories;
 
-class ProductionInterface: public DrawableObjectsGroup {
+class ProductionInterface: public DrawableObjectsGroup, public ClickableObject {
     RoundedRectangle background_;
     Barrack* barrack_ = nullptr;
     Image gold_image_;
     RightAlignedText gold_text_;
 
-    class ProductionSlots : public DrawableObjectsGroup {
+    class ProductionSlots : public DrawableObjectsGroup, public ClickableObject {
         Vector2D interval_between_;
         Image production_image_;
         Text cost_text_;
@@ -29,6 +30,7 @@ class ProductionInterface: public DrawableObjectsGroup {
         static const std::string kCostTextStart;
         void update(Barrack*);
         ProductionSlots(Vector2D pos, float background_width, float background_height, const Screen&);
+        bool HandleClick(SceneInfo&, const Vector2D& click_pos, const GameOptions& game_options) override;
         void Draw(Screen& screen, const GameOptions&) override;
     };
 
@@ -37,6 +39,7 @@ public:
     static const float kHeightWidthBestRatio;
     explicit ProductionInterface(const Screen& screen);
     void update(Barrack*);
+    bool HandleClick(SceneInfo&, const Vector2D& click_pos, const GameOptions& game_options) override;
     void Draw(Screen& screen, const GameOptions&) override;
 
 };

@@ -4,6 +4,7 @@
 #include <source/player/entity_stats.h>
 #include <memory>
 #include <source/player/entity_factories.h>
+#include <list>
 
 #pragma once
 
@@ -27,7 +28,8 @@ struct PlayersEntitiesFactories {
 class Player {
     PlayersEntitiesStats entities_stats_;
     PlayersEntitiesFactories entities_factories_;
-    std::vector<Unit*> units_;
+    std::list<Unit*> units_;
+    std::list<Building*> buildings_;
     template <typename Factory>
     void CreateUnitFactory(std::string name) {
         auto ptr = std::make_unique<Factory>(entities_factories_, std::move(name));
@@ -38,6 +40,7 @@ class Player {
 public:
     void NextTurn();
     void AddUnit(Unit*);
+    void AddBuilding(Building*);
     const Color color_;
     explicit Player(const Color&);
     [[nodiscard]] int get_gold() const;

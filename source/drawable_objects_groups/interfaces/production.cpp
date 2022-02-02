@@ -99,7 +99,6 @@ void ProductionInterface::ProductionSlots::Draw(Screen &screen, const GameOption
         cost_text_.Draw(screen, game_options);
         button_.Draw(screen, game_options);
         add_to_pos(interval_between_);
-
     }
     add_to_pos(interval_between_ * static_cast<float>(-i));
 }
@@ -121,4 +120,41 @@ void ProductionInterface::Draw(Screen &screen, const GameOptions& game_options) 
     DrawableObjectsGroup::Draw(screen, game_options);
 }
 
+bool ProductionInterface::HandleClick(SceneInfo& scene, const Vector2D &click_pos, const GameOptions &game_options) {
+    if (!visible_ || !background_.is_inside(click_pos))
+        return false;
+    production_slots_->HandleClick(scene, click_pos, game_options);
+    return true;
+}
+
+bool ProductionInterface::ProductionSlots::HandleClick(SceneInfo& scene, const Vector2D& pos,
+                                                       const GameOptions &game_options) {
+    if (!visible_)
+        return false;
+    assert(barrack_ != nullptr);
+
+    if (barrack_->is_production_in_progress())
+        return false;
+
+    const auto& factories = barrack_->get_player().get_factories_stats();
+    const auto& units_stats = factories.units_production_stats;
+
+    int i = 0;
+
+    for (auto stat = units_stats.begin(); stat != units_stats.end(); ++stat, ++i) {
+        if (button_.is_inside(pos)) {
+            barrack_->StartProduction(ProductionInfo{stat->first, 0});
+            barrack_->Select(scene);
+            add_to_pos(interval_between_ * static_cast<float>(-i));
+            return true;
+        }
+        add_to_pos(interval_between_);
+    }
+    add_to_pos(interval_between_ * static_cast<float>(-i));
+
+    return false;
+}
+
 const std::string ProductionInterface::ProductionSlots::kCostTextStart = "cost: ";
+
+

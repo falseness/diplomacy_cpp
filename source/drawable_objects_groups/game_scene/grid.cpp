@@ -13,7 +13,7 @@ Grid::Grid(Players& players) : logic_helper_(kGridRowsCount, kGridColumnsCount) 
     cells_.resize(n);
     for (size_t i = 0; i < cells_.size(); ++i) {
         for (size_t j = 0; j < n; ++j) {
-            if (i == j && !i)
+            if (i == 0 && j == 0 || i == 1 && j == 1)
                 cells_[i].push_back(std::make_unique<Cell>(std::make_pair(i, j), 1, players));
             else
                 cells_[i].push_back(std::make_unique<Cell>(std::make_pair(i, j), 0, players));

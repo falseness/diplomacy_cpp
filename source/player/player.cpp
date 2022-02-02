@@ -1,5 +1,6 @@
 #include "player.h"
 #include <source/drawable_objects/unit/unit.h>
+#include <source/drawable_objects/building/building.h>
 
 Player::Player(const Color& color) : color_(color) {
     UnitStats(entities_stats_, "peasant", 2, 2, 2);
@@ -19,8 +20,11 @@ void Player::AddUnit(Unit* new_unit) {
 }
 
 void Player::NextTurn() {
-    for (auto& unit : units_) {
+    for (auto unit : units_) {
         unit->NextTurn();
+    }
+    for (auto building : buildings_) {
+        building->NextTurn();
     }
 }
 
@@ -30,5 +34,9 @@ const PlayersEntitiesFactories& Player::get_factories_stats() const {
 
 int Player::get_gold() const {
     return gold_;
+}
+
+void Player::AddBuilding(Building* building) {
+    buildings_.push_back(building);
 }
 

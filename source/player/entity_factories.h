@@ -8,6 +8,7 @@ class PlayersEntitiesFactories;
 class Cell;
 
 struct ProductionInfo {
+    std::string unit_name;
     unsigned int turns;
 };
 
@@ -18,11 +19,10 @@ struct UnitProductionStats {
 };
 
 class UnitFactory {
-    std::string unit_name_;
 public:
-    [[nodiscard]] unsigned int get_turns_left(const Player&, const ProductionInfo&) const;
+    [[nodiscard]] virtual unsigned int get_turns_left(const Player&, const ProductionInfo&) const;
     void NextTurn(const Player&, ProductionInfo&) const;
     explicit UnitFactory(PlayersEntitiesFactories& all_factories, std::string&&);
-    virtual void CreateUnit(Cell*);
+    virtual void CreateUnit(Cell*, const ProductionInfo& production) const;
     virtual ~UnitFactory() = default;
 };

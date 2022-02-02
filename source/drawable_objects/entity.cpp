@@ -44,3 +44,7 @@ Color Entity::get_color() const {
 Player& Entity::get_player() {
     return cell_->get_player();
 }
+
+const Player& Entity::get_player() const {
+    return cell_->get_player();
+}
