@@ -3,6 +3,7 @@
 #include <source/drawable_objects/interface_elements/rounded_rectangle.h>
 #include <source/drawable_objects/interface_elements/text.h>
 #include <source/drawable_objects/interface_elements/triangle.h>
+#include <cassert>
 
 Screen::Screen(sf::RenderWindow& window) :
             width_(sf::VideoMode::getDesktopMode().width),
@@ -147,7 +148,14 @@ float Screen::get_width_of(const Text& text) const {
 }
 
 float Screen::get_height_of(const Text& text) const {
-    return get_sfml_text(text).getLocalBounds().height;
+    // sfml function doesnt work properly is text doesnt contain all symbols
+    std::string all_symbols_string;
+    for (char symbol = 'a'; symbol <= 'z'; ++symbol) {
+        all_symbols_string += symbol;
+    }
+    Text other(text);
+    other.text = all_symbols_string;
+    return get_sfml_text(other).getLocalBounds().height;
 }
 
 sf::Text Screen::get_sfml_text(const Text & text) const {
@@ -158,11 +166,19 @@ sf::Text Screen::get_sfml_text(const Text & text) const {
     sfml_text.setString(text.text);
     sfml_text.setCharacterSize(text.size);
     sfml_text.setFillColor(create_color(text.color));
-    //sfml_text.setPosition(text.position.x, text.position.y);
-
-
 
     sfml_text.setOrigin(sfml_text.getGlobalBounds().left, sfml_text.getGlobalBounds().top);
     sfml_text.setPosition(text.position.x, text.position.y);
     return sfml_text;
+}
+
+void Screen::DrawVerticalLine(float x, float y_bottom, float y_up, float width, Color color) {
+    sf::RectangleShape rect;
+    rect.setFillColor(create_color(color));
+    float height = y_bottom - y_up;
+    assert(height >= 0);
+    rect.setSize({width, height});
+    rect.setPosition(x, y_up);
+
+    window_.draw(rect);
 }

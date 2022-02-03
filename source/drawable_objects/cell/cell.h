@@ -2,7 +2,7 @@
 #include <source/drawable_objects/cell/hexagon.h>
 #include <source/drawable_objects/unit/unit.h>
 #include <source/drawable_objects/building/building.h>
-#include <source/options/options.h>
+#include "source/options/game.h"
 #include <tuple>
 #include <source/utility/vector2d.h>
 

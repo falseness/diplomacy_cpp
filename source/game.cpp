@@ -1,7 +1,7 @@
 #include <iostream>
 #include "game.h"
 #include <source/drawable_objects_groups/game_scene/game_scene.h>
-#include <source/options/options.h>
+#include "source/options/game.h"
 
 Game::Game() {
     game_options_ = GameOptions();

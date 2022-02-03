@@ -4,7 +4,7 @@
 #include <source/drawable_objects_groups/game_scene/grid.h>
 #include <source/drawable_objects/unit/unit_logic.h>
 #include <source/drawable_objects_groups/game_scene/game_scene.h>
-#include <algorithm>
+#include <source/drawable_objects/hittable_entity.h>
 
 const UnitStats& Unit::get_stats() const {
     return cell_->get_player().get_stats().units.find(image_name_)->second;

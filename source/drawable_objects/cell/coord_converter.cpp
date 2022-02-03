@@ -16,6 +16,7 @@ std::pair<int, int> CoordConverter::TransitionToBias(const std::pair<int, int>& 
     return std::make_pair(coord.first, (coord.second - (coord.first & 1)) / 2);
 }
 
+// order of cells is fixed and it is used in SelectionBorder class
 std::vector<std::pair<int, int>> CoordConverter::CalculateNearestHexagons(
         const std::pair<int, int>& transition_coord) {
     const size_t nearest_hexagons_count = 4;

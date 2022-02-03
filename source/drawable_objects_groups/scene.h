@@ -1,6 +1,6 @@
 #include <source/drawable_objects_groups/drawable_objects_group.h>
 #include <source/sfml_facades/screen.h>
-#include <source/options/options.h>
+#include "source/options/game.h"
 
 #pragma once
 

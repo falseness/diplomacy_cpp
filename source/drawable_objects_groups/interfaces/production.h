@@ -17,9 +17,11 @@ class PlayersEntitiesFactories;
 class ProductionInterface: public DrawableObjectsGroup, public ClickableObject {
     RoundedRectangle background_;
     Barrack* barrack_ = nullptr;
-    Image gold_image_;
     RightAlignedText gold_text_;
-
+protected:
+    Image gold_image_;
+    [[nodiscard]] float get_center_x() const;
+    [[nodiscard]] float get_width() const;
     class ProductionSlots : public DrawableObjectsGroup, public ClickableObject {
         Vector2D interval_between_;
         Image production_image_;
@@ -28,16 +30,24 @@ class ProductionInterface: public DrawableObjectsGroup, public ClickableObject {
         Barrack* barrack_ = nullptr;
         void add_to_pos(const Vector2D&);
         void set_button_text(const std::pair<std::string, UnitProductionStats>&);
-        bool is_should_display_button(const std::pair<std::string, UnitProductionStats>&) const;
+        [[nodiscard]] bool is_should_display_button(const std::pair<std::string, UnitProductionStats>&) const;
     public:
+        static const Color kButtonBackgroundColor;
+        static const Color kButtonTextColor;
+        static float get_button_corner_radius(const Screen&);
+        static float get_button_border_width(const Screen&);
+        static size_t get_button_text_size(const Screen&);
+
         static const std::string kCostTextStart;
         void update(Barrack*);
         ProductionSlots(Vector2D pos, float background_width, float background_height, const Screen&);
         bool HandleClick(SceneInfo&, const Vector2D& click_pos, const GameOptions& game_options) override;
         void Draw(Screen& screen, const GameOptions&) override;
     };
-
+    static float get_margin_between_gold_image_and_slots(const Screen&);
+private:
     std::unique_ptr<ProductionInterface::ProductionSlots> production_slots_;
+
 public:
     static const float kHeightWidthBestRatio;
     explicit ProductionInterface(const Screen& screen);

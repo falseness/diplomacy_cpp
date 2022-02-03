@@ -23,6 +23,11 @@ struct RoundedRectangle : DrawableObject {
     [[nodiscard]] float get_left() const;
     [[nodiscard]] float get_up() const;
     [[nodiscard]] float get_bottom() const;
+    void set_center_x(float center_x);
+    void set_center_y(float center_y);
+    [[nodiscard]] float get_center_x() const;
+    [[nodiscard]] float get_center_y() const;
+    [[nodiscard]] Vector2D get_center() const;
     void Draw(Screen&, const GameOptions&) override;
     // check if point in rectangle
     [[nodiscard]] bool is_inside(const Vector2D&) const;

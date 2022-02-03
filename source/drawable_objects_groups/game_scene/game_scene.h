@@ -2,6 +2,7 @@
 #include <source/drawable_objects_groups/game_scene/grid.h>
 #include <source/drawable_objects_groups/interfaces/entity_info.h>
 #include <source/drawable_objects_groups/interfaces/production.h>
+#include <source/drawable_objects_groups/interfaces/town_production.h>
 #include <source/player/players.h>
 #include <source/next_turn/next_turn_button.h>
 #include <source/drawable_objects/clickable_object.h>
@@ -13,6 +14,7 @@ struct SceneInfo {
     Grid grid;
     EntityInfoInterface entity_interface;
     ProductionInterface production_interface;
+    TownProductionInterface town_production_interface;
     explicit SceneInfo(Screen& screen);
 };
 

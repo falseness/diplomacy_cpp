@@ -3,6 +3,5 @@
 
 struct RoundedRectangleWithText : public RoundedRectangle {
     Text text;
-    void move_text_to_center(Screen& screen);
     void Draw(Screen&, const GameOptions&) override;
 };

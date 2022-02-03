@@ -1,4 +1,4 @@
-#include <source/options/options.h>
+#include "game.h"
 #include <cmath>
 
 GameOptions::GameOptions() : neutral_player_index(0), hexagon_options(Color(0, 0, 0)),

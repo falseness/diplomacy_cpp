@@ -8,11 +8,13 @@ GameScene::GameScene(Screen& screen, const GameOptions&) : info_(screen), next_t
     drawable_objects_.push_back(&next_turn_button_);
     drawable_objects_.push_back(&info_.entity_interface);
     drawable_objects_.push_back(&info_.production_interface);
+    drawable_objects_.push_back(&info_.town_production_interface);
 
     clickable_objects_.push_back(&info_.grid);
     clickable_objects_.push_back(&next_turn_button_);
     clickable_objects_.push_back(&info_.entity_interface);
     clickable_objects_.push_back(&info_.production_interface);
+    clickable_objects_.push_back(&info_.town_production_interface);
 }
 
 void GameScene::HandleClick(const Vector2D& click_pos, const GameOptions& game_options) {
@@ -24,4 +26,4 @@ void GameScene::HandleClick(const Vector2D& click_pos, const GameOptions& game_o
 
 SceneInfo::SceneInfo(Screen& screen) :
         players({Color(80, 80, 80), Color(255, 0, 0), Color(0, 255, 0)}, 1), grid(players),
-        entity_interface(screen), production_interface(screen) {}
+        entity_interface(screen), production_interface(screen), town_production_interface(screen) {}

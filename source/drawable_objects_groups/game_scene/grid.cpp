@@ -31,7 +31,7 @@ Grid::Grid(Players& players) : logic_helper_(kGridRowsCount, kGridColumnsCount) 
     selected_entity_= empty_unit_.get();
 
     cells_[0][1]->CreateUnit<Unit>("peasant");
-    cells_[0][0]->CreateBuilding<Town>();
+    cells_[0][0]->CreateBuilding<Town>("town", std::vector<std::pair<int, int>>({{0, 0}, {0, 1}, {1, 0}}));
     cells_[1][1]->CreateBuilding<Barrack>("barrack");
     cells_[1][0]->CreateUnit<Unit>("peasant");
 }

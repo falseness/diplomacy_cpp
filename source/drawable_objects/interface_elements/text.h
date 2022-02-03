@@ -10,6 +10,7 @@ struct Text : public DrawableObject {
     Color color = Color(255, 255, 255);
     [[nodiscard]] float get_height(const Screen&) const;
     [[nodiscard]] float get_width(const Screen&) const;
+    void set_center(Vector2D pos, const Screen&);
     void Draw(Screen&, const GameOptions&) override;
 };
 

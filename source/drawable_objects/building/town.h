@@ -5,10 +5,12 @@
 
 
 class Town : public Barrack, public BuildingWithHp {
-    static const std::string kTownImageName;
+    std::vector<std::pair<int, int>> suburbs_;
+    void set_production_interface_visible(SceneInfo& scene, bool) const override;
+    void update_production_interface(SceneInfo& scene) override;
 public:
     [[nodiscard]] json get_info() const override;
-    explicit Town(Cell*);
+    Town(Cell*, std::string&&, std::vector<std::pair<int, int>>&&);
     ~Town() override = default;
     [[nodiscard]] bool is_passable() const override;
     [[nodiscard]] bool is_hittable() const override;

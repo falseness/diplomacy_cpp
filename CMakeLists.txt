@@ -22,7 +22,7 @@ set(    MAIN_SOURCE
         source/drawable_objects_groups/game_scene/game_scene.cpp
         source/drawable_objects_groups/game_scene/grid.cpp
         source/drawable_objects/cell/hexagon.cpp
-        source/options/options.cpp source/drawable_objects/cell/cell.cpp
+        source/options/game.cpp source/drawable_objects/cell/cell.cpp
         source/drawable_objects/cell/coord_converter.cpp
         source/sfml_facades/library_facade.cpp
         source/utility/color.cpp
@@ -50,7 +50,12 @@ set(    MAIN_SOURCE
         source/drawable_objects_groups/interfaces/production.cpp
         source/player/players.cpp
         source/next_turn/next_turn_button.cpp
-        source/drawable_objects/interface_elements/triangle.cpp source/player/entity_factories.cpp source/player/entity_factories.h source/drawable_objects/interface_elements/rounded_rectangle_with_text.cpp source/drawable_objects/interface_elements/rounded_rectangle_with_text.h source/drawable_objects/hittable_entity.cpp source/drawable_objects/hittable_entity.h)
+        source/drawable_objects/interface_elements/triangle.cpp
+        source/player/entity_factories.cpp
+        source/drawable_objects/interface_elements/rounded_rectangle_with_text.cpp
+        source/drawable_objects_groups/interfaces/town_production.cpp
+        source/drawable_objects/interface_elements/switch_button.cpp
+        source/drawable_objects/hittable_entity.cpp source/drawable_objects/selection_border.h source/drawable_objects/selection_border.cpp source/drawable_objects/selection_border.h source/utility/segment.cpp source/utility/segment.h)
 
 add_executable(Diplomacy ${MAIN_SOURCE})
 #---

@@ -10,14 +10,14 @@ Barrack::Barrack(Cell *cell, std::string &&image_name) :
 ClickResponse Barrack::HandleClick(SceneInfo& scene, const Vector2D& pos, const GameOptions& game_options) {
     auto result = Building::HandleClick(scene, pos, game_options);
     if (result.should_remove_selection)
-        scene.production_interface.set_visible(false);
+        set_production_interface_visible(scene, false);
     return result;
 }
 
 void Barrack::Select(SceneInfo& scene) {
     if (is_my_turn()) {
-        scene.production_interface.update(this);
-        scene.production_interface.set_visible(true);
+        set_production_interface_visible(scene, true);
+        update_production_interface(scene);
     }
     Entity::Select(scene);
 }
@@ -66,3 +66,10 @@ std::string Barrack::get_training_unit_name() const {
     return production_.unit_name;
 }
 
+void Barrack::set_production_interface_visible(SceneInfo &scene, bool visibility) const {
+    scene.production_interface.set_visible(visibility);
+}
+
+void Barrack::update_production_interface(SceneInfo &scene) {
+    scene.production_interface.update(this);
+}
