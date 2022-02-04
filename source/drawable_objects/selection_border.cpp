@@ -5,14 +5,11 @@
 #include <iostream>
 void SelectionBorder::Draw(Screen& screen, const GameOptions& game_options) {
     static const Color kLineColor = Color::kWhite;
-    const float border_width = game_options.hexagon_options.radius * 0.05f;
+    const float border_width = game_options.hexagon_options.radius * 0.075f;
 
     for (auto encoded_segment : segments_) {
         auto segment = CalculateSegment(encoded_segment.first, encoded_segment.second, screen, game_options);
-        //auto offset = screen.get_draw_offset();
-        Vector2D tmp = {-game_options.hexagon_options.outline_thickness , -game_options.hexagon_options.outline_thickness};
-        screen.DrawLine(segment.pos1,
-                        segment.pos2, 10, kLineColor);
+        screen.DrawLine(segment.pos1, segment.pos2, border_width, kLineColor);
     }
 }
 
@@ -37,5 +34,8 @@ void SelectionBorder::UpdateBorder(const GameOptions& game_options) {
     // temporary:
     for (size_t i = 0; i < 6; ++i) {
         AddLine({1, 1}, i);
+    }
+    for (size_t i = 0; i < 6; ++i) {
+        AddLine({0, 0}, i);
     }
 }

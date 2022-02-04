@@ -18,20 +18,7 @@ void Screen::Clear() {
 }
 
 void Screen::DrawHexagon(const HexagonOptions& hexagon_options, const Vector2D& position, float opacity) {
-    auto my_options = hexagon_options;
-    auto border_width = my_options.outline_thickness;
-    auto color = my_options.fill_color;
-    my_options.fill_color = my_options.outline_color;
-    my_options.radius += border_width;
-    my_options.outline_thickness = 0;
-
-    set_hexagon_shape(my_options, position, opacity);
-
-    window_.draw(hexagon_shape_);
-    my_options.radius -= border_width;
-    my_options.fill_color = color;
-    set_hexagon_shape(my_options, position, opacity);
-
+    set_hexagon_shape(hexagon_options, position, opacity);
     window_.draw(hexagon_shape_);
 }
 
@@ -192,51 +179,20 @@ void Screen::DrawLine(Vector2D begin, Vector2D end, float width, Color color) {
 
     sf::RectangleShape line({dt.get_length(), width});
     line.setFillColor(create_color(color));
-    //line.setOrigin({0, width / 2});
+
     line.setRotation(Geometry::RadiansToDegrees(angle));
     line.setPosition(begin.x, begin.y);
-
-    /*sf::Vector2f point1(begin.x, begin.y);
-    sf::Vector2f point2(end.x, end.y);
-
-    sf::LineShape line(point1, point2);
-    line.setThickness(width);
-    line.setFillColor(create_color(color));
-    */
-    //auto tmp = line.getLocalBounds()
-
 
     window_.draw(line);
 }
 
-Vector2D Screen::get_point_of_hexagon(uint8_t point, const HexagonOptions& hexagon_options, const Vector2D& position_tmp,
+Vector2D Screen::get_point_of_hexagon(uint8_t point, const HexagonOptions& hexagon_options, const Vector2D& position,
                                       float opacity) {
     HexagonOptions my_hexagon_options = hexagon_options;
-    my_hexagon_options.radius += my_hexagon_options.outline_thickness * 3 / 2;
-    auto position = position_tmp;
-    //position -=
+    my_hexagon_options.radius += my_hexagon_options.outline_thickness;
     set_hexagon_shape(my_hexagon_options, position, opacity);
-
     auto sfml_result = hexagon_shape_.getTransform().transformPoint(hexagon_shape_.getPoint(point));
     Vector2D result = {sfml_result.x, sfml_result.y};
-    // sfml function doesn't work properly so need some code to fix this:
-    return result;
-    Vector2D sfml_fix[] = {{0, 0}, {0, 0}, {-hexagon_options.outline_thickness, 0},
-                           {-hexagon_options.outline_thickness, 0},
-                           {0, -hexagon_options.outline_thickness},
-                           {-hexagon_options.outline_thickness, -hexagon_options.outline_thickness}};
-    result += sfml_fix[point];
-    return result;
-    /*
-    if (point == 2)
-        point +=
-    if (point == 0 || point == 1)
-        return result;
-    if (point == 2 || point == 3)
-        result -= {hexagon_options.outline_thickness, 0};
-    else
-        result -= {hexagon_options.outline_thickness, hexagon_options.outline_thickness};*/
-
     return result;
 }
 
