@@ -1,10 +1,8 @@
 #include <deque>
-#include <tuple>
 #include "unit_logic.h"
 #include <source/drawable_objects/cell/coord_converter.h>
 #include <source/drawable_objects/unit/unit.h>
 #include <source/drawable_objects_groups/game_scene/grid.h>
-#include <source/drawable_objects/cell/cell.h>
 #include <source/drawable_objects_groups/game_scene/game_scene.h>
 
 
@@ -49,18 +47,20 @@ void UnitLogic::Select(SceneInfo& scene, Unit& unit) {
         for (auto new_coord : neighbours) {
             if (grid.is_coord_out_of_range(new_coord) || grid.logic_helper_.is_visited(new_coord))
                 continue;
-            grid.logic_helper_.visit(new_coord);
-            visited_coords.push_back(new_coord);
 
-            grid.logic_helper_.set_parent(new_coord, coord);
-            if (!grid.get_cell(new_coord)->is_passable()) {
-                if (grid.get_cell(new_coord)->is_hittable()) {
-                    grid.logic_helper_.set_info(new_coord, static_cast<int>(unit.get_moves()));
-                }
+            if (!grid.get_cell(new_coord)->is_passable() && !grid.get_cell(new_coord)->is_hittable()) {
                 continue;
             }
-            grid.logic_helper_.set_info(new_coord, moves_count + 1);
-            coords.push_back(new_coord);
+            grid.logic_helper_.visit(new_coord);
+            visited_coords.push_back(new_coord);
+            grid.logic_helper_.set_parent(new_coord, coord);
+
+            if (grid.get_cell(new_coord)->is_hittable())
+                grid.logic_helper_.set_info(new_coord, static_cast<int>(max_moves));
+            else {
+                grid.logic_helper_.set_info(new_coord, moves_count + 1);
+                coords.push_back(new_coord);
+            }
         }
     }
     scene.selection_border.UpdateBorder(visited_coords);
