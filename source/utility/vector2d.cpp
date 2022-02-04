@@ -1,5 +1,7 @@
 #include <cstdint>
 #include "vector2d.h"
+#include <source/utility/geometry.h>
+#include <cmath>
 
 Vector2D::Vector2D(float init_x, float init_y) : x(init_x), y(init_y) {}
 
@@ -19,6 +21,14 @@ Vector2D& Vector2D::operator*=(float ratio) {
     x *= ratio;
     y *= ratio;
     return *this;
+}
+
+float Vector2D::get_squared_length() const {
+    return Geometry::PythagoreanSquared(x, y);
+}
+
+float Vector2D::get_length() const {
+    return sqrtf(get_squared_length());
 }
 
 Vector2D operator+(const Vector2D& vector1, const Vector2D& vector2) {

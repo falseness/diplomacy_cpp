@@ -23,3 +23,8 @@ void TownProductionInterface::update(Town* town) {
     unit_and_building_switch_.get_selected_text().color = town->get_color();
     ProductionInterface::update(town);
 }
+
+void TownProductionInterface::Draw(Screen& screen, const GameOptions& game_options) {
+    ProductionInterface::Draw(screen, game_options);
+
+}

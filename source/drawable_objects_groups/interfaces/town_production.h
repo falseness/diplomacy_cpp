@@ -8,4 +8,5 @@ class TownProductionInterface : public ProductionInterface {
 public:
     explicit TownProductionInterface(const Screen& screen);
     void update(Town*);
+    void Draw(Screen&, const GameOptions&) override;
 };

@@ -3,6 +3,8 @@
 #include <source/drawable_objects/interface_elements/rounded_rectangle.h>
 #include <source/drawable_objects/interface_elements/text.h>
 #include <source/drawable_objects/interface_elements/triangle.h>
+#include <cmath>
+#include <source/utility/geometry.h>
 #include <cassert>
 
 Screen::Screen(sf::RenderWindow& window) :
@@ -181,4 +183,16 @@ void Screen::DrawVerticalLine(float x, float y_bottom, float y_up, float width, 
     rect.setPosition(x, y_up);
 
     window_.draw(rect);
+}
+
+void Screen::DrawLine(Vector2D begin, Vector2D end, float width, Color color) {
+    Vector2D dt = end - begin;
+    float angle = atan2f(dt.y, dt.x);
+
+    sf::RectangleShape line({dt.get_length(), width});
+    line.setFillColor(create_color(color));
+    line.setPosition(begin.x, begin.y);
+    line.setRotation(Geometry::RadiansToDegrees(angle));
+
+    window_.draw(line);
 }

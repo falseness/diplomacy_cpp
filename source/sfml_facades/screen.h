@@ -31,6 +31,7 @@ public:
     void DrawImage(const std::string &image_name, const ObjectSize &image_size, const Vector2D &position);
     void DrawGridImage(const std::string &image_name, const ObjectSize &image_size, const Vector2D &position);
     void DrawVerticalLine(float x, float y_bottom, float y_up, float width, Color color);
+    void DrawLine(Vector2D begin, Vector2D end, float width, Color color);
     void DrawText(const Text&);
     void Display();
     bool IsOpen() const;
