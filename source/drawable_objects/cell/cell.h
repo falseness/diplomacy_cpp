@@ -5,6 +5,7 @@
 #include "source/options/game.h"
 #include <tuple>
 #include <source/utility/vector2d.h>
+#include <source/utility/segment.h>
 
 #pragma once
 
@@ -54,4 +55,5 @@ public:
     void DeleteUnit();
     void DeleteBuilding();
     void MoveUnitTo(Cell&);
+    Segment get_side(uint8_t, Screen&, const GameOptions&) const;
 };

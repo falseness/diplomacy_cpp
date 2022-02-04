@@ -97,3 +97,7 @@ void Cell::DeleteBuilding() {
 bool Cell::is_suburb() const {
     return is_suburb_;
 }
+
+Segment Cell::get_side(uint8_t side_index, Screen& screen, const GameOptions& game_options) const {
+    return hexagon_.get_side(side_index, screen, game_options);
+}

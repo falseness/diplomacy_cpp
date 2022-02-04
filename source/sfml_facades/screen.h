@@ -22,6 +22,7 @@ class Screen {
     size_t width_;
     size_t height_;
     sf::Text get_sfml_text(const Text&) const;
+    void set_hexagon_shape(const HexagonOptions&, const Vector2D&, float);
 public:
     explicit Screen(sf::RenderWindow& window);
     void Clear();
@@ -40,6 +41,7 @@ public:
     const Vector2D& get_draw_offset() const;
     float get_height_of(const Text&) const;
     float get_width_of(const Text&) const;
+    Vector2D get_point_of_hexagon(uint8_t point, const HexagonOptions&, const Vector2D&, float);
 
     size_t get_width() const;
     size_t get_height() const;

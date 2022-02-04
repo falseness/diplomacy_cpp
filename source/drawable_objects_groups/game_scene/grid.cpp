@@ -76,15 +76,15 @@ size_t Grid::get_columns_count() {
     return cells_[0].size();
 }
 
+// order of cells is fixed and it is used in SelectionBorder class
 std::vector<std::pair<int, int>> Grid::get_neighbours(std::pair<int, int> coord) {
-    static const size_t maximum_neighbour_cells = 6;
-    static const std::pair<int, int> neighborhood[2][maximum_neighbour_cells] = {
+    static const std::pair<int, int> neighborhood[2][Grid::kHexagonMaximumNeighbours] = {
             {{0, -1}, {1, -1}, {1, 0}, {0, 1}, {-1, 0}, {-1, -1}},
             {{0, -1}, {1, 0}, {1, 1}, {0, 1}, {-1, 1}, {-1, 0}}
     };
     std::vector<std::pair<int, int>> result;
     size_t parity = coord.first & 1;
-    for (size_t neighbour_number = 0; neighbour_number < maximum_neighbour_cells; ++neighbour_number) {
+    for (size_t neighbour_number = 0; neighbour_number < Grid::kHexagonMaximumNeighbours; ++neighbour_number) {
         result.emplace_back(coord.first + neighborhood[parity][neighbour_number].first,
                           coord.second + neighborhood[parity][neighbour_number].second);
         if (CoordConverter::IsCoordOutOfRange(result.back(), cells_.size(), cells_[0].size()))

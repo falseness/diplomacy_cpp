@@ -24,6 +24,7 @@ class Grid : public DrawableObjectsGroup, public ClickableObject {
     static const size_t kGridColumnsCount;
     void ChangeSelectedUnitToBuilding();
 public:
+    static const uint8_t kHexagonMaximumNeighbours = 6;
     void RemoveSelection();
     std::vector<std::pair<int, int>> get_neighbours(std::pair<int, int> coord);
     GridLogicHelper logic_helper_;

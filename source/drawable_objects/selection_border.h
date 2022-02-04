@@ -4,12 +4,12 @@
 class Grid;
 
 class SelectionBorder : public DrawableObject {
-    std::vector<std::pair<Vector2D, u_int8_t>> segments_;
+    std::vector<std::pair<std::pair<int, int>, u_int8_t>> segments_;
     const Grid& grid_;
-    static Segment CalculateSegment(Vector2D pos, u_int8_t side, const GameOptions&);
+    Segment CalculateSegment(std::pair<int, int>, u_int8_t side, Screen& screen, const GameOptions&);
 
     void Clear();
-    void AddLine(Vector2D pos, u_int8_t side);
+    void AddLine(std::pair<int, int>, u_int8_t side);
 public:
     explicit SelectionBorder(const Grid&);
     void UpdateBorder(const GameOptions& game_options);
