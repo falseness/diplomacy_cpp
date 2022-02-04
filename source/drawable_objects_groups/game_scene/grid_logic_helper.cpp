@@ -10,6 +10,8 @@ bool GridLogicHelper::is_visited(std::pair<size_t, size_t> coord) const {
 }
 
 GridLogicHelper::GridLogicHelper(size_t grid_rows_count, size_t grid_columns_count) {
+    counter_ = kCellInitializationValue;
+
     visited_cells_.resize(grid_rows_count);
     cells_info_.resize(grid_rows_count);
     cells_parent_.resize(grid_rows_count);
