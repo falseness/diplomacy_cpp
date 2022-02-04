@@ -188,10 +188,15 @@ void Screen::DrawLine(Vector2D begin, Vector2D end, float width, Color color) {
 
 Vector2D Screen::get_point_of_hexagon(uint8_t point, const HexagonOptions& hexagon_options, const Vector2D& position,
                                       float opacity) {
+    // need shift to synchronize order with Grid::get_neighbours()
+    static const uint8_t kPointsShift = 4;
+
+
     HexagonOptions my_hexagon_options = hexagon_options;
     my_hexagon_options.radius += my_hexagon_options.outline_thickness;
     set_hexagon_shape(my_hexagon_options, position, opacity);
-    auto sfml_result = hexagon_shape_.getTransform().transformPoint(hexagon_shape_.getPoint(point));
+    auto sfml_result = hexagon_shape_.getTransform().transformPoint(
+            hexagon_shape_.getPoint((point + kPointsShift) % hexagon_shape_.getPointCount()));
     Vector2D result = {sfml_result.x, sfml_result.y};
     return result;
 }

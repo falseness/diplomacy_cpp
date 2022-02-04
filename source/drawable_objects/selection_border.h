@@ -8,11 +8,12 @@ class SelectionBorder : public DrawableObject {
     const Grid& grid_;
     Segment CalculateSegment(std::pair<int, int>, u_int8_t side, Screen& screen, const GameOptions&);
 
-    void Clear();
     void AddLine(std::pair<int, int>, u_int8_t side);
 public:
+    void Clear();
+    void SelectCell(std::pair<int, int> coord);
     explicit SelectionBorder(const Grid&);
-    void UpdateBorder(const GameOptions& game_options);
+    void UpdateBorder(const std::vector<std::pair<int, int>>& visited_cells);
 
     void Draw(Screen&, const GameOptions&) override;
 };

@@ -5,7 +5,7 @@ void GridLogicHelper::increment_counter() {
     ++counter_;
 }
 
-bool GridLogicHelper::is_visited(std::pair<size_t, size_t> coord) {
+bool GridLogicHelper::is_visited(std::pair<size_t, size_t> coord) const {
     return visited_cells_[coord.first][coord.second] == counter_;
 }
 

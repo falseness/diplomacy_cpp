@@ -13,6 +13,7 @@ Building::Building(Cell *cell, std::string &&image_name) : Entity(cell, std::mov
 }
 
 ClickResponse Building::HandleClick(SceneInfo& scene, const Vector2D &click_pos, const GameOptions &game_options) {
+    scene.selection_border.Clear();
     scene.entity_interface.set_visible(false);
 
     std::pair<int, int> coord = CoordConverter::CalculateCoord(click_pos, game_options);
@@ -21,6 +22,11 @@ ClickResponse Building::HandleClick(SceneInfo& scene, const Vector2D &click_pos,
 }
 
 void Building::NextTurn() {}
+
+void Building::Select(SceneInfo& scene) {
+    scene.selection_border.SelectCell(get_coord());
+    Entity::Select(scene);
+}
 
 bool EmptyBuilding::is_passable() const {
     return true;

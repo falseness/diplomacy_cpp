@@ -19,7 +19,7 @@ void Barrack::Select(SceneInfo& scene) {
         set_production_interface_visible(scene, true);
         update_production_interface(scene);
     }
-    Entity::Select(scene);
+    Building::Select(scene);
 }
 
 void Barrack::NextTurn() {

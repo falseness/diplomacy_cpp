@@ -26,7 +26,7 @@ class Grid : public DrawableObjectsGroup, public ClickableObject {
 public:
     static const uint8_t kHexagonMaximumNeighbours = 6;
     void RemoveSelection();
-    std::vector<std::pair<int, int>> get_neighbours(std::pair<int, int> coord);
+    [[nodiscard]] std::vector<std::pair<int, int>> get_neighbours(std::pair<int, int> coord) const;
     GridLogicHelper logic_helper_;
     explicit Grid(Players&);
     bool HandleClick(SceneInfo&, const Vector2D&, const GameOptions&) override;
@@ -36,5 +36,6 @@ public:
     Grid& operator=(const Grid&) = delete;
     [[nodiscard]] const Cell* get_cell(std::pair<int, int> coord) const;
     [[nodiscard]] Cell* get_cell(std::pair<int, int> coord);
+    [[nodiscard]] bool is_coord_out_of_range(std::pair<int, int> coord) const;
 };
 

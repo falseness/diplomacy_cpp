@@ -77,7 +77,7 @@ size_t Grid::get_columns_count() {
 }
 
 // order of cells is fixed and it is used in SelectionBorder class
-std::vector<std::pair<int, int>> Grid::get_neighbours(std::pair<int, int> coord) {
+std::vector<std::pair<int, int>> Grid::get_neighbours(std::pair<int, int> coord) const {
     static const std::pair<int, int> neighborhood[2][Grid::kHexagonMaximumNeighbours] = {
             {{0, -1}, {1, -1}, {1, 0}, {0, 1}, {-1, 0}, {-1, -1}},
             {{0, -1}, {1, 0}, {1, 1}, {0, 1}, {-1, 1}, {-1, 0}}
@@ -87,8 +87,6 @@ std::vector<std::pair<int, int>> Grid::get_neighbours(std::pair<int, int> coord)
     for (size_t neighbour_number = 0; neighbour_number < Grid::kHexagonMaximumNeighbours; ++neighbour_number) {
         result.emplace_back(coord.first + neighborhood[parity][neighbour_number].first,
                           coord.second + neighborhood[parity][neighbour_number].second);
-        if (CoordConverter::IsCoordOutOfRange(result.back(), cells_.size(), cells_[0].size()))
-            result.pop_back();
     }
 
     return std::move(result);
@@ -117,6 +115,10 @@ const Cell* Grid::get_cell(std::pair<int, int> coord) const {
 
 Cell* Grid::get_cell(std::pair<int, int> coord) {
     return cells_[coord.first][coord.second].get();
+}
+
+bool Grid::is_coord_out_of_range(std::pair<int, int> coord) const {
+    return CoordConverter::IsCoordOutOfRange(coord, cells_.size(), cells_[0].size());
 }
 
 

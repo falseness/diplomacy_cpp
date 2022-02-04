@@ -10,7 +10,7 @@ class GridLogicHelper {
 public:
     GridLogicHelper(size_t grid_rows_count, size_t grid_columns_count);
     void increment_counter();
-    bool is_visited(std::pair<size_t, size_t>);
+    [[nodiscard]] bool is_visited(std::pair<size_t, size_t>) const;
     void visit(std::pair<size_t, size_t>);
     int get_info(std::pair<size_t, size_t>);
     void set_info(std::pair<size_t, size_t>, int value);

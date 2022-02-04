@@ -24,6 +24,7 @@ void Unit::set_cell(Cell* cell) {
 }
 
 ClickResponse Unit::HandleClick(SceneInfo& scene, const Vector2D &click_pos, const GameOptions &game_options) {
+    scene.selection_border.Clear();
     std::pair<int, int> coord = CoordConverter::CalculateCoord(click_pos, game_options);
 
     if (!is_my_turn()) {
@@ -42,7 +43,7 @@ unsigned int Unit::get_moves() const {
 }
 
 void Unit::Select(SceneInfo& scene) {
-    UnitLogic::Select(*this, scene.grid);
+    UnitLogic::Select(scene, *this);
     Entity::Select(scene);
 }
 

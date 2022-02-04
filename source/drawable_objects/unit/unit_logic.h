@@ -5,10 +5,11 @@
 
 class Unit;
 class Grid;
+class SceneInfo;
 
 class UnitLogic {
 public:
-    static void Select(Unit& unit, Grid&);
+    static void Select(SceneInfo&, Unit&);
     // true if should unselect unit
     static ClickResponse ClickLogic(Unit& unit, Grid&, std::pair<int, int> coord);
 };

@@ -1,8 +1,8 @@
 #include "selection_border.h"
 #include <source/drawable_objects_groups/game_scene/grid.h>
-
 #include <cmath>
-#include <iostream>
+#include <cassert>
+
 void SelectionBorder::Draw(Screen& screen, const GameOptions& game_options) {
     static const Color kLineColor = Color::kWhite;
     const float border_width = game_options.hexagon_options.radius * 0.075f;
@@ -26,16 +26,23 @@ void SelectionBorder::Clear() {
     segments_.clear();
 }
 
-SelectionBorder::SelectionBorder(const Grid& grid) : grid_(grid) {
+SelectionBorder::SelectionBorder(const Grid& grid) : grid_(grid) {}
 
+void SelectionBorder::UpdateBorder(const std::vector<std::pair<int, int>>& visited_cells) {
+    Clear();
+    for (auto coord : visited_cells) {
+        assert(grid_.logic_helper_.is_visited(coord));
+        auto neighbours = grid_.get_neighbours(coord);
+        for (size_t i = 0; i < neighbours.size(); ++i) {
+            if (grid_.is_coord_out_of_range(neighbours[i]) || !grid_.logic_helper_.is_visited(neighbours[i]))
+                AddLine(coord, i);
+        }
+    }
 }
 
-void SelectionBorder::UpdateBorder(const GameOptions& game_options) {
-    // temporary:
-    for (size_t i = 0; i < 6; ++i) {
-        AddLine({1, 1}, i);
-    }
-    for (size_t i = 0; i < 6; ++i) {
-        AddLine({0, 0}, i);
+void SelectionBorder::SelectCell(std::pair<int, int> coord) {
+    Clear();
+    for (size_t i = 0; i < Grid::kHexagonMaximumNeighbours; ++i) {
+        AddLine(coord, i);
     }
 }

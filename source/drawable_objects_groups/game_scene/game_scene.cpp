@@ -3,8 +3,6 @@
 
 
 GameScene::GameScene(Screen& screen, const GameOptions& game_options) : info_(screen), next_turn_button_(screen) {
-    info_.selection_border.UpdateBorder(game_options);
-
     drawable_objects_.push_back(&info_.grid);
     drawable_objects_.push_back(&info_.selection_border);
     drawable_objects_.push_back(&next_turn_button_);
