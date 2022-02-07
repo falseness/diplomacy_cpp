@@ -1,16 +1,18 @@
-#include <source/drawable_objects/drawable_object.h>
-#include <source/drawable_objects/cell/hexagon.h>
-#include <source/drawable_objects/unit/unit.h>
-#include <source/drawable_objects/building/building.h>
+#include "source/drawable_objects/drawable_object.h"
+#include "source/drawable_objects/cell/hexagon.h"
+#include "source/drawable_objects/unit/unit.h"
+#include "source/drawable_objects/building/building.h"
 #include "source/options/game.h"
 #include <tuple>
-#include <source/utility/vector2d.h>
-#include <source/utility/segment.h>
+#include "source/utility/vector2d.h"
+#include "source/utility/segment.h"
+#include "source/player/player.h"
 
 #pragma once
 
 class Players;
-class Player;
+
+
 
 class Cell : public DrawableObject {
     size_t player_index_;
@@ -52,6 +54,7 @@ public:
     [[nodiscard]] bool is_passable() const;
     [[nodiscard]] bool is_hittable() const;
     [[nodiscard]] bool is_suburb() const;
+    void set_suburb(bool suburb_state);
     void DeleteUnit();
     void DeleteBuilding();
     void MoveUnitTo(Cell&);

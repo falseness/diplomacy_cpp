@@ -1,10 +1,13 @@
 #include <vector>
 #include <map>
-#include <source/utility/color.h>
-#include <source/player/entity_stats.h>
-#include <memory>
-#include <source/player/entity_factories.h>
+#include "source/utility/color.h"
+#include "source/player/entity_stats.h"
+#include "source/player/factories/entity.h"
+#include "source/player/factories/building.h"
+
 #include <list>
+#include <memory>
+
 
 #pragma once
 
@@ -22,7 +25,9 @@ struct PlayersEntitiesStats {
 
 struct PlayersEntitiesFactories {
     std::map<std::string, std::unique_ptr<UnitFactory>> units_factory;
-    std::map<std::string, UnitProductionStats> units_production_stats;
+    std::map<std::string, std::unique_ptr<BuildingFactory>> buildings_factory;
+    std::map<std::string, EntityProductionStats> units_production_stats;
+    std::map<std::string, EntityProductionStats> buildings_production_stats;
 };
 
 class Player {
@@ -32,9 +37,15 @@ class Player {
     std::list<Building*> buildings_;
     template <typename Factory>
     void CreateUnitFactory(std::string name) {
-        auto ptr = std::make_unique<Factory>(entities_factories_, std::move(name));
+        auto ptr = std::make_unique<Factory>(entities_factories_, name);
         entities_factories_.units_factory.template emplace(
-                name, std::move(static_cast<std::unique_ptr<UnitFactory>>(std::move(ptr))));
+                std::move(name), std::move(static_cast<std::unique_ptr<UnitFactory>>(std::move(ptr))));
+    }
+    template <typename Factory>
+    void CreateBuildingFactory(std::string name) {
+        auto ptr = std::make_unique<Factory>(entities_factories_, name);
+        entities_factories_.buildings_factory.template emplace(
+                std::move(name), std::move(static_cast<std::unique_ptr<BuildingFactory>>(std::move(ptr))));
     }
     int gold_ = 0;
 public:

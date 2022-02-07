@@ -26,6 +26,8 @@ void Unit::set_cell(Cell* cell) {
 ClickResponse Unit::HandleClick(SceneInfo& scene, const Vector2D &click_pos, const GameOptions &game_options) {
     scene.selection_border.Clear();
     std::pair<int, int> coord = CoordConverter::CalculateCoord(click_pos, game_options);
+    if (scene.grid.is_coord_out_of_range(coord))
+        return {true, false, false};
 
     if (!is_my_turn()) {
         scene.entity_interface.set_visible(false);

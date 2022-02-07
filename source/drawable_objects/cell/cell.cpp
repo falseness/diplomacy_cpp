@@ -101,3 +101,7 @@ bool Cell::is_suburb() const {
 Segment Cell::get_side(uint8_t side_index, Screen& screen, const GameOptions& game_options) const {
     return hexagon_.get_side(side_index, screen, game_options);
 }
+
+void Cell::set_suburb(bool suburb_state) {
+    is_suburb_ = suburb_state;
+}

@@ -47,15 +47,19 @@ set(    MAIN_SOURCE
         source/drawable_objects/building/town.cpp
         source/drawable_objects/building/suburb_building.cpp
         source/drawable_objects/building/barrack.cpp
-        source/drawable_objects_groups/interfaces/production.cpp
+        source/drawable_objects_groups/interfaces/unit_production.cpp
         source/player/players.cpp
         source/next_turn/next_turn_button.cpp
         source/drawable_objects/interface_elements/triangle.cpp
-        source/player/entity_factories.cpp
+        source/player/factories/entity.cpp
         source/drawable_objects/interface_elements/rounded_rectangle_with_text.cpp
         source/drawable_objects_groups/interfaces/town_production.cpp
         source/drawable_objects/interface_elements/switch_button.cpp
-        source/drawable_objects/hittable_entity.cpp source/drawable_objects/selection_border.h source/drawable_objects/selection_border.cpp source/drawable_objects/selection_border.h source/utility/segment.cpp source/utility/segment.h)
+        source/drawable_objects/hittable_entity.cpp
+        source/drawable_objects/selection_border.cpp
+        source/utility/segment.cpp
+        source/player/factories/building.cpp
+        )
 
 add_executable(Diplomacy ${MAIN_SOURCE})
 #---

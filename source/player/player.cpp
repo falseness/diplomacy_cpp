@@ -2,14 +2,18 @@
 #include <source/drawable_objects/unit/unit.h>
 #include <source/drawable_objects/building/building.h>
 
+
 Player::Player(const Color& color) : color_(color) {
     UnitStats(entities_stats_, "peasant", 2, 1, 2);
 
     UnitStats(entities_stats_, "", 0, 0, 0);
     BuildingStats(entities_stats_, "");
 
-    UnitProductionStats(entities_factories_, "peasant", 10, 1);
+    EntityProductionStats(entities_factories_.units_production_stats, "peasant", 10, 1);
     CreateUnitFactory<UnitFactory>("peasant");
+
+    EntityProductionStats(entities_factories_.buildings_production_stats, "suburb", 1, 0);
+    CreateBuildingFactory<SuburbFactory>("suburb");
 
     SuburbBuildingStats(entities_stats_, "barrack", -2);
     TownStats(entities_stats_, "town", 15, 11);

@@ -1,7 +1,6 @@
 #include <string>
 #include <source/drawable_objects/drawable_object.h>
 #include <nlohmann/json.hpp>
-#include <source/player/player.h>
 
 using json = nlohmann::json;
 
@@ -9,6 +8,7 @@ using json = nlohmann::json;
 
 class Cell;
 class SceneInfo;
+class Player;
 
 struct ClickResponse {
     bool should_remove_selection;

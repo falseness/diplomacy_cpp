@@ -1,4 +1,4 @@
-#include "production.h"
+#include "unit_production.h"
 #include <source/drawable_objects/building/barrack.h>
 #include <cassert>
 
@@ -12,8 +12,8 @@ ProductionInterface::ProductionInterface(const Screen &screen) : production_slot
 
     Vector2D pos(w * 0.68f, h * 0.01f);
 
-    float this_height = h * 0.4f;
-    float this_width = w - pos.x;
+    this_height = h * 0.4f;
+    this_width = w - pos.x;
 
     background_.set_pos(Vector2D(pos.x, pos.y));
     background_.height = this_height;
@@ -31,16 +31,19 @@ ProductionInterface::ProductionInterface(const Screen &screen) : production_slot
     gold_text_.position = {gold_image_.position.x + w * 0.22f * 1.15f * 0.92f, gold_image_.position.y};
     gold_text_.size = static_cast<size_t>(w * 1.15f * 0.03f);
 
-    auto margin = get_margin_between_gold_image_and_slots(screen);
-    production_slots_ = std::make_unique<ProductionSlots>(
-            Vector2D(gold_image_.position.x , pos.y + gold_image_.size.height + margin),
-            this_width, this_height, screen);
+
+    production_slots_ = std::make_unique<ProductionSlots>(get_slots_pos(screen), this_width, this_height, screen);
 
 
     drawable_objects_.push_back(&background_);
     drawable_objects_.push_back(&gold_image_);
     drawable_objects_.push_back(&gold_text_);
     drawable_objects_.push_back(production_slots_.get());
+}
+
+Vector2D ProductionInterface::get_slots_pos(const Screen& screen) const {
+    auto margin = get_margin_between_gold_image_and_slots(screen);
+    return {gold_image_.position.x , background_.get_up() + gold_image_.size.height + margin};
 }
 
 void ProductionInterface::update(Barrack* barrack) {
@@ -90,22 +93,7 @@ void ProductionInterface::ProductionSlots::Draw(Screen &screen, const GameOption
     if (!visible_)
         return;
     assert(barrack_ != nullptr);
-    const auto& factories = barrack_->get_player().get_factories_stats();
-    const auto& units_stats = factories.units_production_stats;
-    int i = 0;
-    for (auto stat = units_stats.begin(); stat != units_stats.end(); ++stat, ++i) {
-        production_image_.name = stat->first;
-        production_image_.Draw(screen, game_options);
-
-        cost_text_.text = ProductionSlots::kCostTextStart + std::to_string(stat->second.cost);
-        cost_text_.Draw(screen, game_options);
-
-        set_button_text(*stat);
-        if (is_should_display_button(*stat))
-            button_.Draw(screen, game_options);
-        add_to_pos(interval_between_);
-    }
-    add_to_pos(interval_between_ * static_cast<float>(-i));
+    DrawButtonsByStats(screen, game_options, barrack_->get_player().get_factories_stats().units_production_stats);
 }
 
 void ProductionInterface::ProductionSlots::add_to_pos(const Vector2D& transition) {
@@ -144,6 +132,8 @@ float ProductionInterface::get_width() const {
     return background_.width - background_.corner_radius / 2;
 }
 
+
+
 bool ProductionInterface::ProductionSlots::HandleClick(SceneInfo& scene, const Vector2D& pos,
                                                        const GameOptions &game_options) {
     if (!visible_)
@@ -154,27 +144,12 @@ bool ProductionInterface::ProductionSlots::HandleClick(SceneInfo& scene, const V
         return false;
 
     const auto& factories = barrack_->get_player().get_factories_stats();
-    const auto& units_stats = factories.units_production_stats;
-
-    int i = 0;
-
-    for (auto stat = units_stats.begin(); stat != units_stats.end(); ++stat, ++i) {
-        if (button_.is_inside(pos)) {
-            barrack_->StartProduction(ProductionInfo{stat->first, 0});
-            barrack_->Select(scene);
-            add_to_pos(interval_between_ * static_cast<float>(-i));
-            return true;
-        }
-        add_to_pos(interval_between_);
-    }
-    add_to_pos(interval_between_ * static_cast<float>(-i));
-
-    return false;
+    return CheckButtonsClick(pos, scene, factories);
 }
 
 const std::string ProductionInterface::ProductionSlots::kCostTextStart = "cost: ";
 
-void ProductionInterface::ProductionSlots::set_button_text(const std::pair<std::string, UnitProductionStats>& stat) {
+void ProductionInterface::ProductionSlots::set_button_text(const std::pair<std::string, EntityProductionStats>& stat) {
     static const std::string kTrainButtonText = "train";
     assert(barrack_ != nullptr);
     if (!barrack_->is_production_in_progress()) {
@@ -188,7 +163,7 @@ void ProductionInterface::ProductionSlots::set_button_text(const std::pair<std::
 }
 
 bool ProductionInterface::ProductionSlots::is_should_display_button(
-        const std::pair<std::string, UnitProductionStats>& stat) const {
+        const std::pair<std::string, EntityProductionStats>& stat) const {
     assert(barrack_ != nullptr);
     if (!barrack_->is_production_in_progress())
         return true;
@@ -205,4 +180,32 @@ float ProductionInterface::ProductionSlots::get_button_border_width(const Screen
 
 size_t ProductionInterface::ProductionSlots::get_button_text_size(const Screen& screen) {
     return static_cast<size_t>(screen.get_width() * 0.04f * 1.15f * ProductionInterface::kHeightWidthBestRatio);
+}
+
+bool ProductionInterface::ProductionSlots::CheckButtonsClick(const Vector2D &pos, SceneInfo& scene,
+                                                             const PlayersEntitiesFactories& factories) {
+    auto stat = get_corresponding_stat(pos, factories.units_production_stats);
+    if (stat == factories.units_production_stats.end())
+        return false;
+    barrack_->StartProduction(ProductionInfo{stat->first, 0});
+    barrack_->Select(scene);
+    return true;
+}
+
+void ProductionInterface::ProductionSlots::DrawButtonsByStats(
+        Screen &screen, const GameOptions& game_options, const std::map<std::string, EntityProductionStats>& stats) {
+    int i = 0;
+    for (auto stat = stats.begin(); stat != stats.end(); ++stat, ++i) {
+        production_image_.name = stat->first;
+        production_image_.Draw(screen, game_options);
+
+        cost_text_.text = ProductionSlots::kCostTextStart + std::to_string(stat->second.cost);
+        cost_text_.Draw(screen, game_options);
+
+        set_button_text(*stat);
+        if (is_should_display_button(*stat))
+            button_.Draw(screen, game_options);
+        add_to_pos(interval_between_);
+    }
+    add_to_pos(interval_between_ * static_cast<float>(-i));
 }

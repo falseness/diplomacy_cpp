@@ -15,10 +15,7 @@ ClickResponse Barrack::HandleClick(SceneInfo& scene, const Vector2D& pos, const 
 }
 
 void Barrack::Select(SceneInfo& scene) {
-    if (is_my_turn()) {
-        set_production_interface_visible(scene, true);
-        update_production_interface(scene);
-    }
+    SelectionProductionInterface(scene);
     Building::Select(scene);
 }
 
@@ -26,10 +23,10 @@ void Barrack::NextTurn() {
     if (!production_in_progress_)
         return;
     const auto& factories = get_player().get_factories_stats();
-    const auto& factory = *factories.units_factory.find(production_.unit_name)->second;
+    const auto& factory = *factories.units_factory.find(production_.name)->second;
     factory.NextTurn(get_player(), production_);
     if (!get_turns_left() && cell_->get_unit()->is_empty()) {
-        factory.CreateUnit(cell_, production_);
+        factory.Create(cell_, production_);
         production_in_progress_ = false;
     }
 }
@@ -48,7 +45,7 @@ json Barrack::get_info() const
 {
     auto result = SuburbBuilding::get_info();
     if (production_in_progress_) {
-        result["info"]["training"] = production_.unit_name;
+        result["info"]["training"] = production_.name;
         result["info"]["turns"] = get_turns_left();
     }
     return result;
@@ -57,19 +54,26 @@ json Barrack::get_info() const
 unsigned int Barrack::get_turns_left() const {
     assert(is_production_in_progress());
     const auto& factories = get_player().get_factories_stats();
-    const auto& factory = *factories.units_factory.find(production_.unit_name)->second;
+    const auto& factory = *factories.units_factory.find(production_.name)->second;
     return factory.get_turns_left(get_player(), production_);
 }
 
 std::string Barrack::get_training_unit_name() const {
     assert(is_production_in_progress());
-    return production_.unit_name;
+    return production_.name;
 }
 
 void Barrack::set_production_interface_visible(SceneInfo &scene, bool visibility) const {
     scene.production_interface.set_visible(visibility);
 }
 
-void Barrack::update_production_interface(SceneInfo &scene) {
+void Barrack::UpdateProductionInterface(SceneInfo &scene) {
     scene.production_interface.update(this);
+}
+
+void Barrack::SelectionProductionInterface(SceneInfo &scene) {
+    if (is_my_turn()) {
+        set_production_interface_visible(scene, true);
+        UpdateProductionInterface(scene);
+    }
 }

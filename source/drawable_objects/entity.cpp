@@ -1,6 +1,7 @@
 #include "entity.h"
 #include <source/drawable_objects/cell/cell.h>
 #include <source/drawable_objects_groups/game_scene/game_scene.h>
+#include <source/player/player.h>
 
 Entity::Entity(Cell* cell_, std::string&& image_name) : cell_(cell_), image_name_(std::move(image_name)) {}
 

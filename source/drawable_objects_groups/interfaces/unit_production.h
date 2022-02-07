@@ -15,10 +15,14 @@ class Barrack;
 class PlayersEntitiesFactories;
 
 class ProductionInterface: public DrawableObjectsGroup, public ClickableObject {
-    RoundedRectangle background_;
     Barrack* barrack_ = nullptr;
     RightAlignedText gold_text_;
 protected:
+    float this_height;
+    float this_width;
+    [[nodiscard]] Vector2D get_slots_pos(const Screen& screen) const;
+
+    RoundedRectangle background_;
     Image gold_image_;
     [[nodiscard]] float get_center_x() const;
     [[nodiscard]] float get_width() const;
@@ -29,9 +33,29 @@ protected:
         RoundedRectangleWithText button_;
         Barrack* barrack_ = nullptr;
         void add_to_pos(const Vector2D&);
-        void set_button_text(const std::pair<std::string, UnitProductionStats>&);
-        [[nodiscard]] bool is_should_display_button(const std::pair<std::string, UnitProductionStats>&) const;
+        void set_button_text(const std::pair<std::string, EntityProductionStats>&);
+        [[nodiscard]] bool is_should_display_button(const std::pair<std::string, EntityProductionStats>&) const;
+
+    protected:
+        template <typename T>
+        auto get_corresponding_stat(const Vector2D& pos, const std::map<std::string, T>& stats) {
+            int i = 0;
+            for (auto stat = stats.begin(); stat != stats.end(); ++stat, ++i) {
+                if (button_.is_inside(pos)) {
+                    add_to_pos(interval_between_ * static_cast<float>(-i));
+                    return stat;
+                }
+                add_to_pos(interval_between_);
+            }
+            add_to_pos(interval_between_ * static_cast<float>(-i));
+            return stats.end();
+        }
+        virtual void DrawButtonsByStats(Screen &screen, const GameOptions& game_options,
+                                        const std::map<std::string, EntityProductionStats>& stats);
+        virtual bool CheckButtonsClick(const Vector2D& pos, SceneInfo& scene,
+                                       const PlayersEntitiesFactories& factories);
     public:
+
         static const Color kButtonBackgroundColor;
         static const Color kButtonTextColor;
         static float get_button_corner_radius(const Screen&);
@@ -45,7 +69,6 @@ protected:
         void Draw(Screen& screen, const GameOptions&) override;
     };
     static float get_margin_between_gold_image_and_slots(const Screen&);
-private:
     std::unique_ptr<ProductionInterface::ProductionSlots> production_slots_;
 
 public:

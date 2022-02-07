@@ -28,6 +28,51 @@ void Town::set_production_interface_visible(SceneInfo& scene, bool visibility) c
     scene.town_production_interface.set_visible(visibility);
 }
 
-void Town::update_production_interface(SceneInfo &scene) {
+void Town::UpdateProductionInterface(SceneInfo &scene) {
     scene.town_production_interface.update(this);
+}
+
+std::vector<std::pair<int, int>> Town::get_suburbs() const {
+    return suburbs_;
+}
+
+void Town::set_building_production_plan(std::string production_plan) {
+    assert(!production_plan.empty());
+    building_production_plan_ = std::move(production_plan);
+}
+
+void Town::Select(SceneInfo& scene) {
+    if (building_production_plan_.empty()) {
+        Barrack::Select(scene);
+        return;
+    }
+    SelectionProductionInterface(scene);
+    scene.entity_interface.set_visible(true);
+}
+
+ClickResponse Town::HandleClick(SceneInfo& scene, const Vector2D& pos, const GameOptions& game_options) {
+    if (building_production_plan_.empty()) {
+        return Barrack::HandleClick(scene, pos, game_options);
+    }
+    auto response = get_player().get_factories_stats().buildings_factory.
+            find(building_production_plan_)->second->HandleClick(scene, pos, game_options, this);
+    if (response.should_remove_selection) {
+        building_production_plan_ = "";
+        scene.selection_border.Clear();
+        scene.entity_interface.set_visible(false);
+        set_production_interface_visible(scene, false);
+    }
+    return response;
+}
+
+void Town::NextTurn() {
+    building_production_plan_ = "";
+    Barrack::NextTurn();
+}
+
+void Town::AddSuburb(std::pair<int, int> coord, Grid& grid) {
+    auto cell = grid.get_cell(coord);
+    assert(!cell->is_suburb());
+    cell->set_suburb(true);
+    suburbs_.push_back(coord);
 }

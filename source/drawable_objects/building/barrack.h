@@ -1,5 +1,6 @@
-#include <source/drawable_objects/building/suburb_building.h>
-#include <source/player/entity_stats.h>
+#include "source/drawable_objects/building/suburb_building.h"
+#include "source/player/entity_stats.h"
+#include "source/player/factories/entity.h"
 
 #pragma once
 
@@ -8,7 +9,8 @@ class Barrack : virtual public SuburbBuilding {
     bool production_in_progress_ = false;
 protected:
     virtual void set_production_interface_visible(SceneInfo& scene, bool) const;
-    virtual void update_production_interface(SceneInfo& scene);
+    virtual void UpdateProductionInterface(SceneInfo& scene);
+    virtual void SelectionProductionInterface(SceneInfo& scene);
 public:
     [[nodiscard]] unsigned int get_turns_left() const;
     [[nodiscard]] bool is_production_in_progress() const;

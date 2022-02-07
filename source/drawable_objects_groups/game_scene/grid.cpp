@@ -31,7 +31,7 @@ Grid::Grid(Players& players) : logic_helper_(kGridRowsCount, kGridColumnsCount) 
     selected_entity_= empty_unit_.get();
 
     cells_[0][1]->CreateUnit<Unit>("peasant");
-    cells_[0][0]->CreateBuilding<Town>("town", std::vector<std::pair<int, int>>({{0, 0}, {0, 1}, {1, 0}}));
+    cells_[0][0]->CreateBuilding<Town>("town", std::vector<std::pair<int, int>>({{0, 0}, {0, 1}, {1, 1}}));
     cells_[1][1]->CreateBuilding<Barrack>("barrack");
     cells_[1][0]->CreateUnit<Unit>("peasant");
 }
@@ -114,6 +114,7 @@ const Cell* Grid::get_cell(std::pair<int, int> coord) const {
 }
 
 Cell* Grid::get_cell(std::pair<int, int> coord) {
+    assert(!is_coord_out_of_range(coord));
     return cells_[coord.first][coord.second].get();
 }
 

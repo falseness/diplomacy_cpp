@@ -1,4 +1,5 @@
 #include "suburb_building.h"
+#include <source/player/player.h>
 #include <source/drawable_objects/cell/cell.h>
 
 const SuburbBuildingStats& SuburbBuilding::get_stats() const {
