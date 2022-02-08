@@ -11,6 +11,8 @@ void AssetsManager::load_all_images() {
     images_["gold"].loadFromFile("other_images/gold.png");
     images_["debug"] = sf::Texture();
     images_["debug"].loadFromFile("entities/debug_image.png");
+    images_["suburb"] = sf::Texture();
+    images_["suburb"].loadFromFile("other_images/suburb.png");
 }
 
 void AssetsManager::load_all_fonts() {
