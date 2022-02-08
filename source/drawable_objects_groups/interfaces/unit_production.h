@@ -38,10 +38,11 @@ protected:
     private:
         Barrack* barrack_ = nullptr;
         void add_to_pos(const Vector2D&);
-        void set_button_text(const std::pair<std::string, EntityProductionStats>&);
-        [[nodiscard]] bool is_should_display_button(const std::pair<std::string, EntityProductionStats>&) const;
 
     protected:
+        [[nodiscard]] virtual bool is_should_display_button(const std::pair<std::string, EntityProductionStats>&) const;
+        virtual void set_button_text(const std::pair<std::string, EntityProductionStats>&);
+
         template <typename T>
         auto get_corresponding_stat(const Vector2D& pos, const std::map<std::string, T>& stats) {
             int i = 0;

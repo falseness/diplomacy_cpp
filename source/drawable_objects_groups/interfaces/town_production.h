@@ -9,6 +9,9 @@ class TownProductionInterface : public ProductionInterface {
         Town* town_ = nullptr;
         bool CheckButtonsClick(const Vector2D& pos, SceneInfo& scene,
                                const PlayersEntitiesFactories& factories) override;
+        void set_button_text(const std::pair<std::string, EntityProductionStats>& stat) override;
+        [[nodiscard]] bool is_should_display_button(
+                const std::pair<std::string, EntityProductionStats>& stat) const override;
     public:
         void Draw(Screen& screen, const GameOptions&) override;
         BuildingProductionSlots(Vector2D pos, float background_width, float background_height, const Screen&);

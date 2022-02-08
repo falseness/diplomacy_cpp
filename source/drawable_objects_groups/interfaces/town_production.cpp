@@ -108,3 +108,20 @@ void TownProductionInterface::BuildingProductionSlots::UnSelect(SceneInfo& scene
     town_->clear_building_production_plan();
     town_->Select(scene);
 }
+
+void TownProductionInterface::BuildingProductionSlots::set_button_text(
+        const std::pair<std::string, EntityProductionStats>& stat) {
+    static const std::string kDefaultString = "build";
+    static const std::string kSelectedButtonString = "choose";
+    if (last_click_.empty()) {
+        button_.text.text = kDefaultString;
+        return;
+    }
+    if (is_should_display_button(stat))
+        button_.text.text = kSelectedButtonString;
+}
+
+bool TownProductionInterface::BuildingProductionSlots::is_should_display_button(
+        const std::pair<std::string, EntityProductionStats>& stat) const {
+    return last_click_.empty() || stat.first == last_click_;
+}
