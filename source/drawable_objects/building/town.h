@@ -19,6 +19,9 @@ public:
     [[nodiscard]] bool is_hittable() const override;
     void Select(SceneInfo&) override;
     void set_building_production_plan(std::string production_plan);
+    inline void clear_building_production_plan() {
+        building_production_plan_ = "";
+    }
     void AddSuburb(std::pair<int, int>, Grid& grid);
     ClickResponse HandleClick(SceneInfo&, const Vector2D&, const GameOptions&) override;
     void NextTurn() override;

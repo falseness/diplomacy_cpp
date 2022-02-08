@@ -14,6 +14,7 @@ class TownProductionInterface : public ProductionInterface {
         BuildingProductionSlots(Vector2D pos, float background_width, float background_height, const Screen&);
         void update(Town* town);
         void ReClick(SceneInfo& scene);
+        void UnSelect(SceneInfo&);
         [[nodiscard]] float get_bottom() const override;
     };
     BuildingProductionSlots building_slots_;

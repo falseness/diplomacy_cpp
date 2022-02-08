@@ -67,7 +67,7 @@ ClickResponse Town::HandleClick(SceneInfo& scene, const Vector2D& pos, const Gam
 }
 
 void Town::NextTurn() {
-    building_production_plan_ = "";
+    clear_building_production_plan();
     Barrack::NextTurn();
 }
 

@@ -46,6 +46,7 @@ bool TownProductionInterface::HandleClick(SceneInfo& scene, const Vector2D &clic
     }
     if (building_slots_.HandleClick(scene, click_pos, game_options))
         return true;
+    building_slots_.UnSelect(scene);
 
     return ProductionInterface::HandleClick(scene, click_pos, game_options);
 }
@@ -100,4 +101,10 @@ float TownProductionInterface::BuildingProductionSlots::get_bottom() const {
     assert(town_ != nullptr);
     size_t buttons_count = town_->get_player().get_factories_stats().buildings_production_stats.size();
     return button_.get_bottom() + static_cast<float>(buttons_count) * interval_between_.y;
+}
+
+void TownProductionInterface::BuildingProductionSlots::UnSelect(SceneInfo& scene) {
+    last_click_ = "";
+    town_->clear_building_production_plan();
+    town_->Select(scene);
 }
