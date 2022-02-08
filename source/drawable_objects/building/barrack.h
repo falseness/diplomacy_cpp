@@ -16,7 +16,7 @@ public:
     [[nodiscard]] bool is_production_in_progress() const;
     [[nodiscard]] std::string get_training_unit_name() const;
     void StartProduction(ProductionInfo);
-    Barrack(Cell* cell, std::string&& image_name);
+    Barrack(Cell* cell, std::string image_name);
     ClickResponse HandleClick(SceneInfo&, const Vector2D&, const GameOptions&) override;
     void Select(SceneInfo&) override;
     void NextTurn() override;

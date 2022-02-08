@@ -19,6 +19,7 @@ struct ClickResponse {
 class Entity : public DrawableObject {
 protected:
     Cell* cell_;
+    virtual void DrawImage(Screen &screen, const GameOptions &game_options, const Vector2D &pos) const;
 public:
     static const std::string kEmptyEntityName;
     const std::string image_name_;
@@ -38,4 +39,6 @@ public:
     [[nodiscard]] virtual bool is_passable() const = 0;
     ~Entity() override = default;
     [[nodiscard]] virtual bool is_hittable() const;
+
+
 };

@@ -52,14 +52,13 @@ set(    MAIN_SOURCE
         source/next_turn/next_turn_button.cpp
         source/drawable_objects/interface_elements/triangle.cpp
         source/player/factories/entity.cpp
+        source/player/factories/building.cpp
         source/drawable_objects/interface_elements/rounded_rectangle_with_text.cpp
         source/drawable_objects_groups/interfaces/town_production.cpp
         source/drawable_objects/interface_elements/switch_button.cpp
         source/drawable_objects/hittable_entity.cpp
         source/drawable_objects/selection_border.cpp
-        source/utility/segment.cpp
-        source/player/factories/building.cpp
-        )
+        source/utility/segment.cpp source/player/factories/suburb_building.h)
 
 add_executable(Diplomacy ${MAIN_SOURCE})
 #---

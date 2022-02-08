@@ -1,7 +1,6 @@
 #include "building.h"
 #include "source/drawable_objects/building/town.h"
 #include "source/drawable_objects_groups/game_scene/game_scene.h"
-#include "source/drawable_objects/cell/coord_converter.h"
 #include "deque"
 #include <cassert>
 
@@ -14,7 +13,7 @@ unsigned int BuildingFactory::get_turns_left(const Player& player, const Product
             second.turns - production.turns;
 }
 
-void SuburbFactory::Select(SceneInfo& scene, const Town* town) {
+void BuildingFactory::Select(SceneInfo& scene, const Town* town) {
     auto suburbs = town->get_suburbs();
 
     std::vector<std::pair<int, int>> visited_cells;
@@ -48,13 +47,7 @@ void SuburbFactory::Select(SceneInfo& scene, const Town* town) {
                 continue;
             if (grid.logic_helper_.is_visited(neighbour) && grid.logic_helper_.get_info(neighbour) != -1)
                 continue;
-            bool is_suburb = grid.logic_helper_.is_visited(neighbour);
-            grid.logic_helper_.visit(neighbour);
-            visited_cells.push_back(neighbour);
-            grid.logic_helper_.set_info(neighbour, distance + 1);
-            if (is_suburb)
-                coords.push_back(neighbour);
-
+            BFSBody(visited_cells, grid, coords, distance, neighbour);
         }
     }
 
@@ -66,6 +59,17 @@ void SuburbFactory::Select(SceneInfo& scene, const Town* town) {
     scene.selection_border.UpdateBorder(visited_cells);
 }
 
+void SuburbFactory::BFSBody(std::vector<std::pair<int, int>>& visited_cells, Grid& grid,
+                              std::deque<std::pair<int, int>>& coords, int distance,
+                              const std::pair<int, int>& neighbour) const {
+    bool is_suburb = grid.logic_helper_.is_visited(neighbour);
+    grid.logic_helper_.visit(neighbour);
+    visited_cells.push_back(neighbour);
+    grid.logic_helper_.set_info(neighbour, distance + 1);
+    if (is_suburb)
+        coords.push_back(neighbour);
+}
+
 SuburbFactory::SuburbFactory(PlayersEntitiesFactories &all_factories, std::string name) :
     BuildingFactory(all_factories, std::move(name)){}
 
@@ -73,12 +77,10 @@ SuburbFactory::SuburbFactory(PlayersEntitiesFactories &all_factories, std::strin
 ClickResponse SuburbFactory::HandleClick(SceneInfo &scene, const Vector2D &click_pos,
                                          const GameOptions &game_options, Town* town) {
     std::pair<int, int> coord = CoordConverter::CalculateCoord(click_pos, game_options);
-    Grid& grid = scene.grid;
-    if (grid.is_coord_out_of_range(coord) || !grid.logic_helper_.is_visited(coord) ||
-            grid.get_cell(coord)->is_suburb() || grid.logic_helper_.get_info(coord) == -1)
+    if (!is_correct_click(scene, coord) || scene.grid.get_cell(coord)->is_suburb())
         return {true, false, false};
 
-    int distance = grid.logic_helper_.get_info(coord);
+    int distance = scene.grid.logic_helper_.get_info(coord);
     int cost = kArithmeticProgressionDelta * (distance - 1) + kBaseCost;
     assert(!scene.grid.get_cell(coord)->is_suburb());
     town->AddSuburb(coord, scene.grid);
@@ -86,3 +88,12 @@ ClickResponse SuburbFactory::HandleClick(SceneInfo &scene, const Vector2D &click
 
     return {false, false, false};
 }
+
+bool BuildingFactory::is_correct_click(SceneInfo &scene, std::pair<int, int> coord) {
+    Grid& grid = scene.grid;
+    return !grid.is_coord_out_of_range(coord) && grid.logic_helper_.is_visited(coord) &&
+        grid.logic_helper_.get_info(coord) != -1;
+}
+
+
+

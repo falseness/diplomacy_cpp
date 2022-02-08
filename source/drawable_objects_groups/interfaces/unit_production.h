@@ -26,11 +26,16 @@ protected:
     Image gold_image_;
     [[nodiscard]] float get_center_x() const;
     [[nodiscard]] float get_width() const;
+    virtual void UpdateSize();
     class ProductionSlots : public DrawableObjectsGroup, public ClickableObject {
+    protected:
         Vector2D interval_between_;
+    private:
         Image production_image_;
         Text cost_text_;
+    protected:
         RoundedRectangleWithText button_;
+    private:
         Barrack* barrack_ = nullptr;
         void add_to_pos(const Vector2D&);
         void set_button_text(const std::pair<std::string, EntityProductionStats>&);
@@ -55,7 +60,7 @@ protected:
         virtual bool CheckButtonsClick(const Vector2D& pos, SceneInfo& scene,
                                        const PlayersEntitiesFactories& factories);
     public:
-
+        [[nodiscard]] virtual float get_bottom() const;
         static const Color kButtonBackgroundColor;
         static const Color kButtonTextColor;
         static float get_button_corner_radius(const Screen&);

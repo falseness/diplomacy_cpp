@@ -14,10 +14,12 @@ class TownProductionInterface : public ProductionInterface {
         BuildingProductionSlots(Vector2D pos, float background_width, float background_height, const Screen&);
         void update(Town* town);
         void ReClick(SceneInfo& scene);
+        [[nodiscard]] float get_bottom() const override;
     };
     BuildingProductionSlots building_slots_;
     SwitchButton unit_and_building_switch_;
     void update_slots_visibility();
+    void UpdateSize() override;
 public:
     void ReClick(SceneInfo& scene);
     explicit TownProductionInterface(const Screen& screen);

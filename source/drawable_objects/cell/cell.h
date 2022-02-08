@@ -11,7 +11,7 @@
 #pragma once
 
 class Players;
-
+#include <iostream>
 
 
 class Cell : public DrawableObject {
@@ -38,6 +38,14 @@ public:
 
         building_ = std::move(static_cast<std::unique_ptr<Building>>(
                 std::make_unique<BuildingType>(this, std::forward<Args>(args)...)));
+    }
+    template <typename BuildingType, typename ...Args>
+    void DestroyBuildingAndCreateOne(Args&&... args) {
+        assert(!building_->is_empty());
+
+        get_player().DeleteBuilding(building_.get());
+        building_ = std::move(static_cast<std::unique_ptr<Building>>(
+                          std::make_unique<BuildingType>(this, std::forward<Args>(args)...)));
     }
     Cell(std::pair<int, int>, size_t player_index_, Players&, bool is_suburb = false);
     void Draw(Screen& screen, const GameOptions&) override;

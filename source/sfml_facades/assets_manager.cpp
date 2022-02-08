@@ -7,6 +7,8 @@ void AssetsManager::load_all_images() {
     images_["town"].loadFromFile("entities/buildings/town.png");
     images_["barrack"] = sf::Texture();
     images_["barrack"].loadFromFile("entities/buildings/barrack.png");
+    images_["farm"] = sf::Texture();
+    images_["farm"].loadFromFile("entities/buildings/farm.png");
     images_["gold"] = sf::Texture();
     images_["gold"].loadFromFile("other_images/gold.png");
     images_["debug"] = sf::Texture();

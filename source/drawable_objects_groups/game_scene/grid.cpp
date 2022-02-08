@@ -1,10 +1,11 @@
-#include <source/drawable_objects_groups/game_scene/grid.h>
-#include <source/drawable_objects/cell/cell.h>
+#include "source/drawable_objects_groups/game_scene/grid.h"
+#include "source/drawable_objects/cell/cell.h"
 #include <tuple>
-#include <source/drawable_objects/cell/coord_converter.h>
-#include <source/drawable_objects_groups/game_scene/game_scene.h>
-#include <source/drawable_objects/building/town.h>
-#include <source/player/player.h>
+#include "source/drawable_objects/cell/coord_converter.h"
+#include "source/drawable_objects_groups/game_scene/game_scene.h"
+#include "source/drawable_objects/building/town.h"
+#include "source/player/player.h"
+#include "source/drawable_objects/building/under_construction/under_construction.h"
 #include <cassert>
 
 Grid::Grid(Players& players) : logic_helper_(kGridRowsCount, kGridColumnsCount) {
@@ -30,7 +31,8 @@ Grid::Grid(Players& players) : logic_helper_(kGridRowsCount, kGridColumnsCount) 
     empty_unit_ = std::make_unique<EmptyUnit>(cells_[0][0].get());
     selected_entity_= empty_unit_.get();
 
-    cells_[0][1]->CreateUnit<Unit>("peasant");
+    //cells_[0][1]->CreateUnit<Unit>("peasant");
+    //cells_[0][1]->CreateBuilding<BuildingUnderConstruction<Barrack>>("barrack", ProductionInfo{"barrack", 1});
     cells_[0][0]->CreateBuilding<Town>("town", std::vector<std::pair<int, int>>({{0, 0}, {0, 1}, {1, 1}}));
     cells_[1][1]->CreateBuilding<Barrack>("barrack");
     cells_[1][0]->CreateUnit<Unit>("peasant");

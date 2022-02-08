@@ -50,6 +50,7 @@ void ProductionInterface::update(Barrack* barrack) {
     barrack_ = barrack;
     production_slots_->update(barrack);
     background_.background_color = barrack_->get_color();
+    UpdateSize();
 }
 
 
@@ -132,6 +133,10 @@ float ProductionInterface::get_width() const {
     return background_.width - background_.corner_radius / 2;
 }
 
+void ProductionInterface::UpdateSize() {
+
+    background_.height = production_slots_->get_bottom() - background_.up_side_y;
+}
 
 
 bool ProductionInterface::ProductionSlots::HandleClick(SceneInfo& scene, const Vector2D& pos,
@@ -208,4 +213,10 @@ void ProductionInterface::ProductionSlots::DrawButtonsByStats(
         add_to_pos(interval_between_);
     }
     add_to_pos(interval_between_ * static_cast<float>(-i));
+}
+
+float ProductionInterface::ProductionSlots::get_bottom() const {
+    assert(barrack_ != nullptr);
+    size_t buttons_count = barrack_->get_player().get_factories_stats().units_production_stats.size();
+    return button_.get_bottom() + static_cast<float>(buttons_count) * interval_between_.y;
 }

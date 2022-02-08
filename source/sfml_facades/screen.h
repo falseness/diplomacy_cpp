@@ -23,6 +23,9 @@ class Screen {
     size_t height_;
     sf::Text get_sfml_text(const Text&) const;
     void set_hexagon_shape(const HexagonOptions&, const Vector2D&, float);
+    static void ChangeSprite(sf::Sprite& sprite, const ObjectSize &image_size, const Vector2D &position);
+    Vector2D get_real_position_on_grid(const Vector2D& position);
+    sf::Sprite get_sprite(const std::string &image_name, const ObjectSize &image_size, const Vector2D &position);
 public:
     explicit Screen(sf::RenderWindow& window);
     void Clear();
@@ -31,6 +34,8 @@ public:
     void DrawRoundedRectangle(const RoundedRectangle&);
     void DrawImage(const std::string &image_name, const ObjectSize &image_size, const Vector2D &position);
     void DrawGridImage(const std::string &image_name, const ObjectSize &image_size, const Vector2D &position);
+    void DrawGridImageWithOpactiy(const std::string &image_name, const ObjectSize &image_size,
+                                  const Vector2D &position, float opacity);
     void DrawVerticalLine(float x, float y_bottom, float y_up, float width, Color color);
     void DrawLine(Vector2D begin, Vector2D end, float width, Color color);
     void DrawText(const Text&);

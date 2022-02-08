@@ -1,13 +1,13 @@
 #include "building.h"
-#include <source/drawable_objects/cell/cell.h>
-#include <source/drawable_objects_groups/game_scene/game_scene.h>
-#include <source/drawable_objects/cell/coord_converter.h>
+#include "source/drawable_objects/cell/cell.h"
+#include "source/drawable_objects_groups/game_scene/game_scene.h"
+#include "source/drawable_objects/cell/coord_converter.h"
 
 const BuildingStats& Building::get_stats() const {
     return cell_->get_player().get_stats().buildings.find(image_name_)->second;
 }
 
-Building::Building(Cell *cell, std::string &&image_name) : Entity(cell, std::move(image_name)) {
+Building::Building(Cell *cell, std::string image_name) : Entity(cell, std::move(image_name)) {
     if (!is_empty())
         get_player().AddBuilding(this);
 }

@@ -59,6 +59,11 @@ void TownProductionInterface::ReClick(SceneInfo& scene) {
     building_slots_.ReClick(scene);
 }
 
+void TownProductionInterface::UpdateSize() {
+    background_.height = std::max(building_slots_.get_bottom(), production_slots_->get_bottom()) -
+            background_.up_side_y;
+}
+
 bool TownProductionInterface::BuildingProductionSlots::CheckButtonsClick(const Vector2D &pos, SceneInfo &scene,
                                                                          const PlayersEntitiesFactories &factories) {
     auto stat = get_corresponding_stat(pos, factories.buildings_production_stats);
@@ -89,4 +94,10 @@ void TownProductionInterface::BuildingProductionSlots::Draw(Screen &screen, cons
 void TownProductionInterface::BuildingProductionSlots::ReClick(SceneInfo& scene) {
     assert(!last_click_.empty());
     town_->get_player().get_factories_stats().buildings_factory.find(last_click_)->second->Select(scene, town_);
+}
+
+float TownProductionInterface::BuildingProductionSlots::get_bottom() const {
+    assert(town_ != nullptr);
+    size_t buttons_count = town_->get_player().get_factories_stats().buildings_production_stats.size();
+    return button_.get_bottom() + static_cast<float>(buttons_count) * interval_between_.y;
 }

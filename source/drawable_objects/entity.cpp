@@ -10,6 +10,12 @@ void Entity::Draw(Screen& screen, const GameOptions& game_options) {
     Vector2D offset = game_options.get_image_offset();
     pos.x += offset.x;
     pos.y += offset.y;
+
+    DrawImage(screen, game_options, pos);
+}
+
+void Entity::DrawImage(Screen &screen, const GameOptions &game_options,
+                       const Vector2D &pos) const {
     screen.DrawGridImage(image_name_, game_options.get_image_size(), pos);
 }
 

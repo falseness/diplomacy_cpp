@@ -13,6 +13,7 @@
 
 class Unit;
 class Building;
+class BuildingFactory;
 
 struct PlayersEntitiesStats {
     std::map<std::string, EntityStats> entities;
@@ -45,7 +46,7 @@ class Player {
     void CreateBuildingFactory(std::string name) {
         auto ptr = std::make_unique<Factory>(entities_factories_, name);
         entities_factories_.buildings_factory.template emplace(
-                std::move(name), std::move(static_cast<std::unique_ptr<BuildingFactory>>(std::move(ptr))));
+                std::move(name), std::move(std::unique_ptr<BuildingFactory>(std::move(ptr))));
     }
     int gold_ = 0;
 public:

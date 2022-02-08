@@ -1,6 +1,10 @@
 #include "player.h"
-#include <source/drawable_objects/unit/unit.h>
-#include <source/drawable_objects/building/building.h>
+#include "source/drawable_objects/unit/unit.h"
+#include "source/drawable_objects/building/building.h"
+#include "source/drawable_objects/building/under_construction/under_construction.h"
+#include "source/drawable_objects/building/barrack.h"
+#include "source/player/factories/building.h"
+#include "source/player/factories/suburb_building.h"
 
 
 Player::Player(const Color& color) : color_(color) {
@@ -15,7 +19,14 @@ Player::Player(const Color& color) : color_(color) {
     EntityProductionStats(entities_factories_.buildings_production_stats, "suburb", 1, 0);
     CreateBuildingFactory<SuburbFactory>("suburb");
 
+    EntityProductionStats(entities_factories_.buildings_production_stats, "barrack", 25, 3);
+    CreateBuildingFactory<SuburbBuildingFactory<BuildingUnderConstruction<Barrack>>>("barrack");
+
+    EntityProductionStats(entities_factories_.buildings_production_stats, "farm", 24, 2);
+    CreateBuildingFactory<SuburbBuildingFactory<BuildingUnderConstruction<SuburbBuilding>>>("farm");
+
     SuburbBuildingStats(entities_stats_, "barrack", -2);
+    SuburbBuildingStats(entities_stats_, "farm", 4);
     TownStats(entities_stats_, "town", 15, 11);
 }
 
@@ -29,10 +40,13 @@ void Player::AddUnit(Unit* new_unit) {
 }
 
 void Player::NextTurn() {
-    for (auto unit : units_) {
+    // some elements can be deleted in cycle
+    auto units_copy = units_;
+    for (auto unit : units_copy) {
         unit->NextTurn();
     }
-    for (auto building : buildings_) {
+    auto buildings_copy = buildings_;
+    for (auto building : buildings_copy) {
         building->NextTurn();
     }
 }

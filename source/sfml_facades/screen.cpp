@@ -23,20 +23,16 @@ void Screen::DrawHexagon(const HexagonOptions& hexagon_options, const Vector2D& 
 }
 
 void Screen::DrawImage(const std::string &image_name, const ObjectSize &image_size, const Vector2D &position) {
-    sf::Sprite sprite;
-    sprite.setTexture(assets_manager_.images_[image_name]);
-
-    sf::FloatRect this_rect = sprite.getGlobalBounds();
-    sprite.scale(image_size.width / this_rect.width, image_size.height / this_rect.height);
-    sprite.setPosition(position.x - image_size.width / 2,
-                       position.y - image_size.height / 2);
+    sf::Sprite sprite = std::move(get_sprite(image_name, image_size, position));
 
     window_.draw(sprite);
 }
 
 void Screen::DrawGridImage(const std::string& image_name, const ObjectSize& image_size, const Vector2D& position) {
-    DrawImage(image_name, image_size, position + draw_offset_);
+    DrawImage(image_name, image_size, get_real_position_on_grid(position));
 }
+
+
 
 void Screen::Display() {
     window_.display();
@@ -214,4 +210,31 @@ void Screen::set_hexagon_shape(const HexagonOptions& hexagon_options, const Vect
     hexagon_shape_.setRotation(hexagon_options.rotation);
     hexagon_shape_.setPosition(position.x + hexagon_options.radius + draw_offset_.x,
                                position.y - hexagon_options.radius + draw_offset_.y);
+}
+
+void Screen::ChangeSprite(sf::Sprite& sprite, const ObjectSize& image_size, const Vector2D& position) {
+    sf::FloatRect this_rect = sprite.getGlobalBounds();
+    sprite.scale(image_size.width / this_rect.width, image_size.height / this_rect.height);
+    sprite.setPosition(position.x - image_size.width / 2,
+                       position.y - image_size.height / 2);
+}
+
+void Screen::DrawGridImageWithOpactiy(const std::string &image_name, const ObjectSize &image_size,
+                                      const Vector2D &position, float opacity) {
+    sf::Sprite sprite = std::move(get_sprite(image_name, image_size, get_real_position_on_grid(position)));
+    sprite.setColor({255, 255, 255, static_cast<sf::Uint8>(opacity * 255)});
+
+    window_.draw(sprite);
+}
+
+Vector2D Screen::get_real_position_on_grid(const Vector2D& position) {
+    return position + draw_offset_;
+}
+
+sf::Sprite Screen::get_sprite(const std::string &image_name, const ObjectSize &image_size,
+                                const Vector2D &position) {
+    sf::Sprite sprite;
+    sprite.setTexture(assets_manager_.images_[image_name]);
+    ChangeSprite(sprite, image_size, position);
+    return std::move(sprite);
 }
