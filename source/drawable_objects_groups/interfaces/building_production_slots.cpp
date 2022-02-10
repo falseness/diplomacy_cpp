@@ -40,7 +40,7 @@ float BuildingProductionSlots::get_bottom() const {
 }
 
 void BuildingProductionSlots::UnSelect(SceneInfo& scene) {
-    last_click_ = "";
+    clear_chosen_button();
     town_->clear_building_production_plan();
     town_->Select(scene);
 }

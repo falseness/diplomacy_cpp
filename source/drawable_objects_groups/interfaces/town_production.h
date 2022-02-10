@@ -10,6 +10,7 @@ class TownProductionInterface : public ProductionInterface {
     void UpdateSlotsVisibility();
     void UpdateSize() override;
 public:
+    void set_visible(bool visibility) override;
     void ReClick(SceneInfo& scene);
     explicit TownProductionInterface(const Screen& screen);
     void update(Town*);
