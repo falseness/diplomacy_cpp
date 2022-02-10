@@ -1,32 +1,13 @@
-#include <source/drawable_objects_groups/interfaces/unit_production.h>
-#include <source/drawable_objects/interface_elements/switch_button.h>
+#include "source/drawable_objects_groups/interfaces/unit_production.h"
+#include "source/drawable_objects/interface_elements/switch_button.h"
+#include "source/drawable_objects_groups/interfaces/building_production_slots.h"
 
 class Town;
 
 class TownProductionInterface : public ProductionInterface {
-    class BuildingProductionSlots : public ProductionSlots {
-        std::string last_click_;
-        Town* town_ = nullptr;
-        bool CheckButtonsClick(const Vector2D& pos, SceneInfo& scene,
-                               const PlayersEntitiesFactories& factories) override;
-        void set_button_text(const std::pair<std::string, EntityProductionStats>& stat) override;
-        [[nodiscard]] bool is_should_display_button(
-                const std::pair<std::string, EntityProductionStats>& stat) const override;
-    public:
-        void Draw(Screen& screen, const GameOptions&) override;
-        BuildingProductionSlots(Vector2D pos, float background_width, float background_height, const Screen&);
-        void update(Town* town);
-        void ReClick(SceneInfo& scene);
-        void UnSelect(SceneInfo&);
-        [[nodiscard]] float get_bottom() const override;
-        bool HandleClick(SceneInfo&, const Vector2D& click_pos, const GameOptions& game_options) override;
-        [[nodiscard]] inline bool can_start_new_production() const override {
-            return true;
-        }
-    };
     BuildingProductionSlots building_slots_;
     SwitchButton unit_and_building_switch_;
-    void update_slots_visibility();
+    void UpdateSlotsVisibility();
     void UpdateSize() override;
 public:
     void ReClick(SceneInfo& scene);

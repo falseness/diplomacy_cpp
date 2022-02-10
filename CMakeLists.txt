@@ -33,6 +33,7 @@ set(    MAIN_SOURCE
         source/drawable_objects/entity.cpp
         source/sfml_facades/assets_manager.cpp
         source/utility/vector2d.cpp
+        source/utility/segment.cpp
         source/utility/object_size.cpp
         source/drawable_objects/unit/unit.cpp
         source/utility/geometry.cpp
@@ -47,6 +48,7 @@ set(    MAIN_SOURCE
         source/drawable_objects/building/town.cpp
         source/drawable_objects/building/suburb_building.cpp
         source/drawable_objects/building/barrack.cpp
+        source/drawable_objects_groups/interfaces/production_slots.cpp
         source/drawable_objects_groups/interfaces/unit_production.cpp
         source/player/players.cpp
         source/next_turn/next_turn_button.cpp
@@ -57,8 +59,7 @@ set(    MAIN_SOURCE
         source/drawable_objects_groups/interfaces/town_production.cpp
         source/drawable_objects/interface_elements/switch_button.cpp
         source/drawable_objects/hittable_entity.cpp
-        source/drawable_objects/selection_border.cpp
-        source/utility/segment.cpp source/player/factories/suburb_building.h)
+        source/drawable_objects/selection_border.cpp source/drawable_objects_groups/interfaces/building_production_slots.cpp source/drawable_objects_groups/interfaces/building_production_slots.h)
 
 add_executable(Diplomacy ${MAIN_SOURCE})
 #---
