@@ -73,6 +73,7 @@ protected:
         ProductionSlots(Vector2D pos, float background_width, float background_height, const Screen&);
         bool HandleClick(SceneInfo&, const Vector2D& click_pos, const GameOptions& game_options) override;
         void Draw(Screen& screen, const GameOptions&) override;
+        [[nodiscard]] virtual bool can_start_new_production() const;
     };
     static float get_margin_between_gold_image_and_slots(const Screen&);
     std::unique_ptr<ProductionInterface::ProductionSlots> production_slots_;

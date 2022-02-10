@@ -125,3 +125,12 @@ bool TownProductionInterface::BuildingProductionSlots::is_should_display_button(
         const std::pair<std::string, EntityProductionStats>& stat) const {
     return last_click_.empty() || stat.first == last_click_;
 }
+
+bool TownProductionInterface::BuildingProductionSlots::HandleClick(SceneInfo& scene, const Vector2D &click_pos,
+                                                                   const GameOptions &game_options) {
+    if (!last_click_.empty()) {
+        UnSelect(scene);
+        return true;
+    }
+    return ProductionSlots::HandleClick(scene, click_pos, game_options);
+}

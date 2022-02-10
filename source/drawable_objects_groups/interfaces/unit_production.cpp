@@ -145,7 +145,7 @@ bool ProductionInterface::ProductionSlots::HandleClick(SceneInfo& scene, const V
         return false;
     assert(barrack_ != nullptr);
 
-    if (barrack_->is_production_in_progress())
+    if (!can_start_new_production())
         return false;
 
     const auto& factories = barrack_->get_player().get_factories_stats();
@@ -219,4 +219,8 @@ float ProductionInterface::ProductionSlots::get_bottom() const {
     assert(barrack_ != nullptr);
     size_t buttons_count = barrack_->get_player().get_factories_stats().units_production_stats.size();
     return button_.get_bottom() + static_cast<float>(buttons_count) * interval_between_.y;
+}
+
+bool ProductionInterface::ProductionSlots::can_start_new_production() const {
+    return !barrack_->is_production_in_progress();
 }

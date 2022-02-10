@@ -19,6 +19,10 @@ class TownProductionInterface : public ProductionInterface {
         void ReClick(SceneInfo& scene);
         void UnSelect(SceneInfo&);
         [[nodiscard]] float get_bottom() const override;
+        bool HandleClick(SceneInfo&, const Vector2D& click_pos, const GameOptions& game_options) override;
+        [[nodiscard]] inline bool can_start_new_production() const override {
+            return true;
+        }
     };
     BuildingProductionSlots building_slots_;
     SwitchButton unit_and_building_switch_;
