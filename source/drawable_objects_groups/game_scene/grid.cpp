@@ -7,35 +7,57 @@
 #include "source/player/player.h"
 #include "source/drawable_objects/building/under_construction/under_construction.h"
 #include <cassert>
+#include <set>
 
 Grid::Grid(Players& players) : logic_helper_(kGridRowsCount, kGridColumnsCount) {
 
     size_t n = kGridRowsCount;
     size_t m = kGridColumnsCount;
     cells_.resize(n);
+
+    std::map<std::pair<int, int>, int> colors;
+    std::set<std::pair<int, int>> suburbs;
+
+    std::pair<int, int> town_poses[2] = {{1, 1}, {8, 3}};
+    for (int i = 1; i < players.size(); ++i) {
+        std::pair<int, int> town_pos = town_poses[i - 1];
+        auto this_player_suburb_cells = get_neighbours(town_pos);
+        this_player_suburb_cells.push_back(town_pos);
+
+        for (auto u: this_player_suburb_cells) {
+            colors.emplace(u, i);
+            suburbs.emplace(u);
+        }
+    }
+    colors.emplace(std::pair<int, int>{2, 3}, 1);
+    colors.emplace(std::pair<int, int>{9, 4}, 2);
+
+
     for (size_t i = 0; i < cells_.size(); ++i) {
         for (size_t j = 0; j < m; ++j) {
-            if (i == 0 && j == 0)
-                cells_[i].push_back(std::make_unique<Cell>(std::make_pair(i, j), 1, players, true));
-            else if (i == 1 && j == 1 || i == 0 && j == 1)
-                cells_[i].push_back(std::make_unique<Cell>(std::make_pair(i, j), 1, players, true));
-            else if (i == 1 && j == 0)
-                cells_[i].push_back(std::make_unique<Cell>(std::make_pair(i, j), 2, players));
-            else
-                cells_[i].push_back(std::make_unique<Cell>(std::make_pair(i, j), 0, players));
+            int color = 0;
+            auto it = colors.find({i, j});
+            if (it != colors.end()) {
+                color = it->second;
+            }
+            bool is_suburb = suburbs.find({i, j}) != suburbs.end();
+            cells_[i].push_back(std::make_unique<Cell>(std::make_pair(i, j), color, players, is_suburb));
 
             drawable_objects_.push_back(cells_[i][j].get());
         }
     }
+    cells_[town_poses[0].first + 1][town_poses[0].second]->CreateBuilding<Barrack>("barrack");
+    cells_[town_poses[1].first][town_poses[1].second + 1]->CreateBuilding<SuburbBuilding>("farm");
+    for (int i = 1; i < players.size(); ++i) {
+        std::pair<int, int> town_pos = town_poses[i - 1];
+        auto this_player_suburb_cells = get_neighbours(town_pos);
+        this_player_suburb_cells.push_back(town_pos);
+        cells_[town_pos.first][town_pos.second]->CreateBuilding<Town>("town", this_player_suburb_cells);
+        cells_[town_pos.first][town_pos.second]->CreateUnit<Unit>("peasant");
+    }
 
     empty_unit_ = std::make_unique<EmptyUnit>(cells_[0][0].get());
     selected_entity_= empty_unit_.get();
-
-    //cells_[0][1]->CreateUnit<Unit>("peasant");
-    //cells_[0][1]->CreateBuilding<BuildingUnderConstruction<Barrack>>("barrack", ProductionInfo{"barrack", 1});
-    cells_[0][0]->CreateBuilding<Town>("town", std::vector<std::pair<int, int>>({{0, 0}, {0, 1}, {1, 1}}));
-    cells_[1][1]->CreateBuilding<Barrack>("barrack");
-    cells_[1][0]->CreateUnit<Unit>("peasant");
 }
 
 bool Grid::HandleClick(SceneInfo& scene, const Vector2D& screen_click_pos, const GameOptions& game_options) {

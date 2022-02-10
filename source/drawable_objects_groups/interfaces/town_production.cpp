@@ -64,3 +64,9 @@ void TownProductionInterface::UpdateSize() {
     background_.height = std::max(building_slots_.get_bottom(), production_slots_->get_bottom()) -
             background_.up_side_y;
 }
+
+void TownProductionInterface::set_visible(bool visibility) {
+    if (!visibility)
+        building_slots_.clear_chosen_button();
+    DrawableObjectsGroup::set_visible(visibility);
+}

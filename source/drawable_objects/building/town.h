@@ -13,7 +13,7 @@ class Town : public Barrack, public BuildingWithHp {
 public:
     [[nodiscard]] std::vector<std::pair<int, int>> get_suburbs() const;
     [[nodiscard]] json get_info() const override;
-    Town(Cell*, std::string&&, std::vector<std::pair<int, int>>&&);
+    Town(Cell*, std::string&&, std::vector<std::pair<int, int>>);
     ~Town() override = default;
     [[nodiscard]] bool is_passable() const override;
     [[nodiscard]] bool is_hittable() const override;

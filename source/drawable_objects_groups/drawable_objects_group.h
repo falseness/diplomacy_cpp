@@ -10,7 +10,7 @@ protected:
     std::vector<DrawableObject*> drawable_objects_;
     bool visible_ = true;
 public:
-    void set_visible(bool);
+    virtual void set_visible(bool);
     virtual void Draw(Screen& screen, const GameOptions&);
     //void HandleEvent() {}
 };

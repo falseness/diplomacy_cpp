@@ -6,7 +6,7 @@
 #include "source/drawable_objects_groups/game_scene/game_scene.h"
 #include "source/player/factories/building.h"
 
-Town::Town(Cell* cell, std::string&& image_name, std::vector<std::pair<int, int>>&& suburbs) :
+Town::Town(Cell* cell, std::string&& image_name, std::vector<std::pair<int, int>> suburbs) :
     BuildingWithHp(cell, std::string(image_name)), Barrack(cell, std::string(image_name)),
     SuburbBuilding(cell, std::string(image_name)), Building(cell, std::string(image_name)),
     Entity(cell, std::string(image_name)), suburbs_(std::move(suburbs)) {}
