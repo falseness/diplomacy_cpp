@@ -11,7 +11,7 @@ public:
     ClickResponse HandleClick(SceneInfo&, const Vector2D& click_pos, const GameOptions& game_options) override;
     void NextTurn() override;
     void Select(SceneInfo&) override;
-    ~Building() override = default;
+    ~Building() override;
 };
 
 class EmptyBuilding : public Building {

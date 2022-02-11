@@ -24,7 +24,7 @@ void BuildingUnderConstruction<BuildingAfterConstruction>::NextTurn() {
         Building::NextTurn();
         return;
     }
-    cell_->template DestroyBuildingAndCreateOne<BuildingAfterConstruction>(production_info_.name);
+    cell_->template DestroyBuildingAndCreateOne<BuildingAfterConstruction>(std::string(production_info_.name));
 }
 
 template<typename BuildingAfterConstruction>

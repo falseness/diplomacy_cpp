@@ -2,6 +2,7 @@
 #include "source/drawable_objects/cell/hexagon.h"
 #include "source/drawable_objects/unit/unit.h"
 #include "source/drawable_objects/building/building.h"
+#include "source/drawable_objects/building/suburb_building.h"
 #include "source/options/game.h"
 #include <tuple>
 #include "source/utility/vector2d.h"
@@ -43,7 +44,8 @@ public:
     void DestroyBuildingAndCreateOne(Args&&... args) {
         assert(!building_->is_empty());
 
-        get_player().DeleteBuilding(building_.get());
+        DeleteBuilding();
+
         building_ = std::move(static_cast<std::unique_ptr<Building>>(
                           std::make_unique<BuildingType>(this, std::forward<Args>(args)...)));
     }

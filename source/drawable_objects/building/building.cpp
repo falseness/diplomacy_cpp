@@ -28,6 +28,12 @@ void Building::Select(SceneInfo& scene) {
     Entity::Select(scene);
 }
 
+Building::~Building() {
+    if (!is_empty()) {
+        get_player().DeleteBuilding(this);
+    }
+}
+
 bool EmptyBuilding::is_passable() const {
     return true;
 }

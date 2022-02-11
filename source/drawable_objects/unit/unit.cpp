@@ -63,6 +63,8 @@ void Unit::MoveTo(Grid& grid, std::pair<int, int> coord) {
     for (auto next_coord : path) {
         auto cell = grid.get_cell(next_coord);
         if (cell->is_passable()) {
+            if (!cell->is_my_turn())
+                cell->DeleteBuilding();
             grid.MoveUnit(get_coord(), next_coord);
             continue;
         }

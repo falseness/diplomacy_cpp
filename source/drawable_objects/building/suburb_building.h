@@ -1,5 +1,7 @@
 #include "source/drawable_objects/building/building.h"
 
+#pragma once
+
 class SuburbBuildingStats;
 
 class SuburbBuilding : virtual public Building {

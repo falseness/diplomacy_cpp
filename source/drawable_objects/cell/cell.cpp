@@ -90,7 +90,6 @@ void Cell::DeleteUnit() {
 }
 
 void Cell::DeleteBuilding() {
-    get_player().DeleteBuilding(building_.get());
     building_ = std::make_unique<EmptyBuilding>(this);
 }
 
