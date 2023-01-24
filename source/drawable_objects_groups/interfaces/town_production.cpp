@@ -23,7 +23,7 @@ TownProductionInterface::TownProductionInterface(const Screen &screen) : Product
     drawable_objects_.push_back(&building_slots_);
 }
 
-void TownProductionInterface::update(Town* town) {
+void TownProductionInterface::update(const Town* town) {
     UpdateSlotsVisibility();
     unit_and_building_switch_.get_selected_text().color = town->get_color();
     building_slots_.update(town);

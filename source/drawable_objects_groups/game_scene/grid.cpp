@@ -67,9 +67,9 @@ bool Grid::HandleClick(SceneInfo& scene, const Vector2D& screen_click_pos, const
         if (CoordConverter::IsCoordOutOfRange(coord, cells_.size(), cells_[0].size()))
             return true;
 
-        selected_entity_ = cells_[coord.first][coord.second]->get_unit();
+        selected_entity_ = cells_[coord.first][coord.second]->get_unit_ptr();
         if (selected_entity_->is_empty()) {
-            selected_entity_ = cells_[coord.first][coord.second]->get_building();
+            selected_entity_ = cells_[coord.first][coord.second]->get_building_ptr();
         }
 
         if (!selected_entity_->is_empty())
@@ -123,7 +123,7 @@ void Grid::MoveUnit(std::pair<int, int> from, std::pair<int, int> to) {
 void Grid::ChangeSelectedUnitToBuilding() {
     assert(selected_entity_ != nullptr);
     auto coord = selected_entity_->get_coord();
-    selected_entity_ = cells_[coord.first][coord.second]->get_building();
+    selected_entity_ = cells_[coord.first][coord.second]->get_building_ptr();
 }
 
 const size_t Grid::kGridRowsCount = 15;
@@ -144,6 +144,12 @@ Cell* Grid::get_cell(std::pair<int, int> coord) {
 
 bool Grid::is_coord_out_of_range(std::pair<int, int> coord) const {
     return CoordConverter::IsCoordOutOfRange(coord, cells_.size(), cells_[0].size());
+}
+
+void Grid::StartProduction(std::pair<int, int> building_position, ProductionInfo production_info) {
+    auto barrack = dynamic_cast<Barrack*>(cells_[building_position.first][building_position.second]->
+            get_building_ptr());
+    barrack->StartProduction(std::move(production_info));
 }
 
 

@@ -47,7 +47,7 @@ Vector2D ProductionInterface::get_slots_pos(const Screen& screen) const {
     return {gold_image_.position.x , background_.get_up() + gold_image_.size.height + margin};
 }
 
-void ProductionInterface::update(Barrack* barrack) {
+void ProductionInterface::update(const Barrack* barrack) {
     barrack_ = barrack;
     production_slots_->update(barrack);
     background_.background_color = barrack_->get_color();

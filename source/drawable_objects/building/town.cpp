@@ -29,7 +29,7 @@ void Town::set_production_interface_visible(SceneInfo& scene, bool visibility) c
     scene.town_production_interface.set_visible(visibility);
 }
 
-void Town::UpdateProductionInterface(SceneInfo &scene) {
+void Town::UpdateProductionInterface(SceneInfo &scene) const {
     scene.town_production_interface.update(this);
 }
 
@@ -37,12 +37,12 @@ std::vector<std::pair<int, int>> Town::get_suburbs() const {
     return suburbs_;
 }
 
-void Town::set_building_production_plan(std::string production_plan) {
+void Town::set_building_production_plan(std::string production_plan) const {
     assert(!production_plan.empty());
     building_production_plan_ = std::move(production_plan);
 }
 
-void Town::Select(SceneInfo& scene) {
+void Town::Select(SceneInfo& scene) const {
     if (building_production_plan_.empty()) {
         Barrack::Select(scene);
         return;

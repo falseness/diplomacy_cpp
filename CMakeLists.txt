@@ -1,6 +1,4 @@
 cmake_minimum_required(VERSION 3.13)
-add_compile_options(-fsanitize=address)
-add_link_options(-fsanitize=address)
 
 project(Diplomacy)
 

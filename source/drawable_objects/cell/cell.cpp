@@ -43,10 +43,6 @@ bool Cell::IsStore(const Unit* unit) const {
     return unit == unit_.get();
 }
 
-Unit* Cell::get_unit() {
-    return unit_.get();
-}
-
 void Cell::set_unit(std::unique_ptr<Unit>&& new_unit) {
     unit_ = std::move(new_unit);
     unit_->set_cell(this);
@@ -60,10 +56,6 @@ void Cell::MoveUnitTo(Cell& cell) {
     cell.set_player(player_index_);
 
     unit_ = std::make_unique<EmptyUnit>(this);
-}
-
-Building* Cell::get_building() {
-    return building_.get();
 }
 
 void Cell::set_player(size_t player_index) {
@@ -104,3 +96,17 @@ Segment Cell::get_side(uint8_t side_index, Screen& screen, const GameOptions& ga
 void Cell::set_suburb(bool suburb_state) {
     is_suburb_ = suburb_state;
 }
+
+void Cell::HitSomethingOnCell(int dmg) {
+    if (get_building_ptr()->is_hittable()) {
+        auto building = dynamic_cast<HittableEntity*>(get_building_ptr());
+        building->Hit(dmg);
+        return;
+    }
+    if (get_unit_ptr()->is_hittable()) {
+        get_unit_ptr()->Hit(dmg);
+        return;
+    }
+    assert(false);
+}
+

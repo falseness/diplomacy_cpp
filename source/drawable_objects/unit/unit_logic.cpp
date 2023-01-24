@@ -18,7 +18,7 @@ ClickResponse UnitLogic::ClickLogic(Unit& unit, Grid& grid, std::pair<int, int> 
     return {!unit.get_moves(), false, false};
 }
 
-void UnitLogic::Select(SceneInfo& scene, Unit& unit) {
+void UnitLogic::Select(SceneInfo& scene, const Unit& unit) {
 
     Grid& grid = scene.grid;
 

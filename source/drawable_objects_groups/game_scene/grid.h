@@ -30,6 +30,7 @@ public:
     explicit Grid(Players&);
     bool HandleClick(SceneInfo&, const Vector2D&, const GameOptions&) override;
     void MoveUnit(std::pair<int, int> from, std::pair<int, int> to);
+    void StartProduction(std::pair<int, int> building_position, ProductionInfo production_info);
     size_t get_rows_count();
     size_t get_columns_count();
     Grid& operator=(const Grid&) = delete;

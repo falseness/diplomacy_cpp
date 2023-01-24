@@ -15,7 +15,7 @@
 class Barrack;
 
 class ProductionInterface: public DrawableObjectsGroup, public ClickableObject {
-    Barrack* barrack_ = nullptr;
+    const Barrack* barrack_ = nullptr;
     RightAlignedText gold_text_;
 protected:
     float this_height;
@@ -34,7 +34,7 @@ protected:
 public:
     static const float kHeightWidthBestRatio;
     explicit ProductionInterface(const Screen& screen);
-    void update(Barrack*);
+    void update(const Barrack*);
     bool HandleClick(SceneInfo&, const Vector2D& click_pos, const GameOptions& game_options) override;
     void Draw(Screen& screen, const GameOptions&) override;
 };

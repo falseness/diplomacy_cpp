@@ -1,5 +1,6 @@
 #include "building_production_slots.h"
 #include "source/drawable_objects/building/town.h"
+#include "source/drawable_objects_groups/game_scene/game_scene.h"
 
 bool BuildingProductionSlots::CheckButtonsClick(const Vector2D &pos, SceneInfo &scene,
                                                                          const PlayersEntitiesFactories &factories) {
@@ -7,12 +8,13 @@ bool BuildingProductionSlots::CheckButtonsClick(const Vector2D &pos, SceneInfo &
     if (stat == factories.buildings_production_stats.end())
         return false;
     last_click_ = stat->first;
+
     town_->set_building_production_plan(last_click_);
     factories.buildings_factory.find(last_click_)->second->Select(scene, town_);
     return true;
 }
 
-void BuildingProductionSlots::update(Town *town) {
+void BuildingProductionSlots::update(const Town *town) {
     town_ = town;
     ProductionSlots::update(town_);
 }

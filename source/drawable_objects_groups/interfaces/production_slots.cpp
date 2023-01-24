@@ -1,6 +1,7 @@
 #include "production_slots.h"
 
 #include "unit_production.h"
+#include "source/drawable_objects_groups/game_scene/game_scene.h"
 #include "source/drawable_objects/building/barrack.h"
 #include "source/drawable_objects_groups/interfaces/unit_production.h"
 
@@ -58,7 +59,8 @@ bool ProductionSlots::CheckButtonsClick(const Vector2D &pos, SceneInfo& scene,
     auto stat = get_corresponding_stat(pos, factories.units_production_stats);
     if (stat == factories.units_production_stats.end())
         return false;
-    barrack_->StartProduction(ProductionInfo{stat->first, 0});
+    // we have only const reference, so we can't call barrack-StartProduction()
+    scene.grid.StartProduction(barrack_->get_coord(), std::move(ProductionInfo{stat->first, 0}));
     barrack_->Select(scene);
     return true;
 }
@@ -122,7 +124,7 @@ ProductionSlots::ProductionSlots(Vector2D pos, float background_width, float bac
 const Color ProductionSlots::kButtonBackgroundColor = {247, 247, 247};
 const Color ProductionSlots::kButtonTextColor = {116, 116, 116};
 
-void ProductionSlots::update(Barrack* barrack) {
+void ProductionSlots::update(const Barrack* barrack) {
     barrack_ = barrack;
 
 }

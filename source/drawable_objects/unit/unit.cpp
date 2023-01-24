@@ -44,7 +44,7 @@ unsigned int Unit::get_moves() const {
     return moves_;
 }
 
-void Unit::Select(SceneInfo& scene) {
+void Unit::Select(SceneInfo& scene) const {
     UnitLogic::Select(scene, *this);
     Entity::Select(scene);
 }
@@ -70,14 +70,10 @@ void Unit::MoveTo(Grid& grid, std::pair<int, int> coord) {
         }
         assert(next_coord == path.back());
 
-        if (cell->get_building()->is_hittable()) {
-            auto building = dynamic_cast<HittableEntity*>(cell->get_building());
-            assert(building != nullptr);
-            building->Hit(dmg_);
+        if (cell->is_hittable()) {
+            cell->HitSomethingOnCell(dmg_);
         }
-        else if (cell->get_unit()->is_hittable()) {
-            cell->get_unit()->Hit(dmg_);
-        }
+
         if (cell->is_passable()) {
             grid.MoveUnit(get_coord(), next_coord);
         }
@@ -130,7 +126,7 @@ EmptyUnit::EmptyUnit(Cell* cell) : Unit(cell, std::string(Entity::kEmptyEntityNa
 
 void EmptyUnit::Draw(Screen &, const GameOptions &) {}
 
-void EmptyUnit::Select(SceneInfo&) {}
+void EmptyUnit::Select(SceneInfo&) const {}
 
 bool EmptyUnit::is_hittable() const {
     return false;

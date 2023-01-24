@@ -16,6 +16,7 @@ class Players;
 
 
 class Cell : public DrawableObject {
+    friend Grid;
     size_t player_index_;
     Players& players_;
     Hexagon hexagon_;
@@ -57,8 +58,12 @@ public:
     [[nodiscard]] const Player& get_player() const;
     Player& get_player();
     bool IsStore(const Unit*) const;
-    Unit* get_unit();
-    Building* get_building();
+    [[nodiscard]] const Unit* get_unit() const {
+        return unit_.get();
+    }
+    [[nodiscard]] const Building* get_building() const {
+        return building_.get();
+    }
     void set_unit(std::unique_ptr<Unit>&&);
     [[nodiscard]] bool is_my_turn() const;
     [[nodiscard]] bool is_passable() const;
@@ -68,5 +73,13 @@ public:
     void DeleteUnit();
     void DeleteBuilding();
     void MoveUnitTo(Cell&);
+    void HitSomethingOnCell(int dmg);
     Segment get_side(uint8_t, Screen&, const GameOptions&) const;
+private:
+    [[nodiscard]] inline Unit* get_unit_ptr() {
+        return unit_.get();
+    }
+    [[nodiscard]] inline Building* get_building_ptr() {
+        return building_.get();
+    }
 };

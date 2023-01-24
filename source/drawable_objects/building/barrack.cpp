@@ -14,7 +14,7 @@ ClickResponse Barrack::HandleClick(SceneInfo& scene, const Vector2D& pos, const 
     return result;
 }
 
-void Barrack::Select(SceneInfo& scene) {
+void Barrack::Select(SceneInfo& scene) const {
     SelectionProductionInterface(scene);
     Building::Select(scene);
 }
@@ -67,11 +67,11 @@ void Barrack::set_production_interface_visible(SceneInfo &scene, bool visibility
     scene.production_interface.set_visible(visibility);
 }
 
-void Barrack::UpdateProductionInterface(SceneInfo &scene) {
+void Barrack::UpdateProductionInterface(SceneInfo &scene) const {
     scene.production_interface.update(this);
 }
 
-void Barrack::SelectionProductionInterface(SceneInfo &scene) {
+void Barrack::SelectionProductionInterface(SceneInfo &scene) const {
     if (is_my_turn()) {
         set_production_interface_visible(scene, true);
         UpdateProductionInterface(scene);

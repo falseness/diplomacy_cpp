@@ -23,7 +23,7 @@ private:
 protected:
     RoundedRectangleWithText button_;
 private:
-    Barrack* barrack_ = nullptr;
+    const Barrack* barrack_ = nullptr;
     void add_to_pos(const Vector2D&);
 
 protected:
@@ -56,7 +56,7 @@ public:
     static size_t get_button_text_size(const Screen&);
 
     static const std::string kCostTextStart;
-    void update(Barrack*);
+    void update(const Barrack*);
     ProductionSlots(Vector2D pos, float background_width, float background_height, const Screen&);
     bool HandleClick(SceneInfo&, const Vector2D& click_pos, const GameOptions& game_options) override;
     void Draw(Screen& screen, const GameOptions&) override;
