@@ -39,7 +39,7 @@ json Entity::get_info() const {
     return std::move(result);
 }
 
-void Entity::Select(SceneInfo& scene) const {
+void Entity::Select(const SceneInfo& scene) const {
     scene.entity_interface.update(get_info(), get_color());
     scene.entity_interface.set_visible(true);
 }

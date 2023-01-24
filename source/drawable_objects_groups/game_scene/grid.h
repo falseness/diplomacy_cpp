@@ -26,7 +26,7 @@ public:
     static const uint8_t kHexagonMaximumNeighbours = 6;
     void RemoveSelection();
     [[nodiscard]] std::vector<std::pair<int, int>> get_neighbours(std::pair<int, int> coord) const;
-    GridLogicHelper logic_helper_;
+    mutable GridLogicHelper logic_helper_;
     explicit Grid(Players&);
     bool HandleClick(SceneInfo&, const Vector2D&, const GameOptions&) override;
     void MoveUnit(std::pair<int, int> from, std::pair<int, int> to);

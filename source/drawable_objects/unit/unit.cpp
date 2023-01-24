@@ -44,7 +44,7 @@ unsigned int Unit::get_moves() const {
     return moves_;
 }
 
-void Unit::Select(SceneInfo& scene) const {
+void Unit::Select(const SceneInfo& scene) const {
     UnitLogic::Select(scene, *this);
     Entity::Select(scene);
 }
@@ -126,7 +126,7 @@ EmptyUnit::EmptyUnit(Cell* cell) : Unit(cell, std::string(Entity::kEmptyEntityNa
 
 void EmptyUnit::Draw(Screen &, const GameOptions &) {}
 
-void EmptyUnit::Select(SceneInfo&) const {}
+void EmptyUnit::Select(const SceneInfo&) const {}
 
 bool EmptyUnit::is_hittable() const {
     return false;

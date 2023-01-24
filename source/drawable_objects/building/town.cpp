@@ -25,11 +25,11 @@ bool Town::is_hittable() const {
     return BuildingWithHp::is_hittable();
 }
 
-void Town::set_production_interface_visible(SceneInfo& scene, bool visibility) const {
+void Town::set_production_interface_visible(const SceneInfo& scene, bool visibility) const {
     scene.town_production_interface.set_visible(visibility);
 }
 
-void Town::UpdateProductionInterface(SceneInfo &scene) const {
+void Town::UpdateProductionInterface(const SceneInfo &scene) const {
     scene.town_production_interface.update(this);
 }
 
@@ -42,7 +42,7 @@ void Town::set_building_production_plan(std::string production_plan) const {
     building_production_plan_ = std::move(production_plan);
 }
 
-void Town::Select(SceneInfo& scene) const {
+void Town::Select(const SceneInfo& scene) const {
     if (building_production_plan_.empty()) {
         Barrack::Select(scene);
         return;

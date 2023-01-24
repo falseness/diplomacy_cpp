@@ -29,7 +29,7 @@ public:
     [[nodiscard]] std::pair<int, int> get_coord() const;
     virtual json to_json();
     [[nodiscard]] virtual json get_info() const;
-    virtual void Select(SceneInfo&) const;
+    virtual void Select(const SceneInfo&) const;
     [[nodiscard]] Color get_color() const;
     virtual void NextTurn() = 0;
     Player& get_player();

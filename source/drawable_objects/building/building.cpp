@@ -23,7 +23,7 @@ ClickResponse Building::HandleClick(SceneInfo& scene, const Vector2D &click_pos,
 
 void Building::NextTurn() {}
 
-void Building::Select(SceneInfo& scene) const {
+void Building::Select(const SceneInfo& scene) const {
     scene.selection_border.SelectCell(get_coord());
     Entity::Select(scene);
 }

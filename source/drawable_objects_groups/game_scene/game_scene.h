@@ -10,13 +10,14 @@
 
 #pragma once
 
+// fields are mutable if they are not related to game information but to interfaces and etc.
 struct SceneInfo {
     Players players;
     Grid grid;
-    SelectionBorder selection_border;
-    EntityInfoInterface entity_interface;
-    ProductionInterface production_interface;
-    TownProductionInterface town_production_interface;
+    mutable SelectionBorder selection_border;
+    mutable EntityInfoInterface entity_interface;
+    mutable ProductionInterface production_interface;
+    mutable TownProductionInterface town_production_interface;
     explicit SceneInfo(Screen& screen);
 };
 

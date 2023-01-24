@@ -8,9 +8,9 @@ class Barrack : virtual public SuburbBuilding {
     ProductionInfo production_;
     bool production_in_progress_ = false;
 protected:
-    virtual void set_production_interface_visible(SceneInfo& scene, bool) const;
-    virtual void UpdateProductionInterface(SceneInfo& scene) const;
-    virtual void SelectionProductionInterface(SceneInfo& scene) const;
+    virtual void set_production_interface_visible(const SceneInfo& scene, bool) const;
+    virtual void UpdateProductionInterface(const SceneInfo& scene) const;
+    virtual void SelectionProductionInterface(const SceneInfo& scene) const;
 public:
     [[nodiscard]] unsigned int get_turns_left() const;
     [[nodiscard]] bool is_production_in_progress() const;
@@ -18,7 +18,7 @@ public:
     void StartProduction(ProductionInfo);
     Barrack(Cell* cell, std::string image_name);
     ClickResponse HandleClick(SceneInfo&, const Vector2D&, const GameOptions&) override;
-    void Select(SceneInfo&) const override;
+    void Select(const SceneInfo&) const override;
     void NextTurn() override;
     [[nodiscard]] json get_info() const override;
 };

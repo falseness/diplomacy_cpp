@@ -18,9 +18,8 @@ ClickResponse UnitLogic::ClickLogic(Unit& unit, Grid& grid, std::pair<int, int> 
     return {!unit.get_moves(), false, false};
 }
 
-void UnitLogic::Select(SceneInfo& scene, const Unit& unit) {
-
-    Grid& grid = scene.grid;
+void UnitLogic::Select(const SceneInfo& scene, const Unit& unit) {
+    const Grid& grid = scene.grid;
 
     std::vector<std::pair<int, int>> visited_coords;
 

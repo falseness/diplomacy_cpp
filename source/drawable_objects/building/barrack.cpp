@@ -14,7 +14,7 @@ ClickResponse Barrack::HandleClick(SceneInfo& scene, const Vector2D& pos, const 
     return result;
 }
 
-void Barrack::Select(SceneInfo& scene) const {
+void Barrack::Select(const SceneInfo& scene) const {
     SelectionProductionInterface(scene);
     Building::Select(scene);
 }
@@ -63,15 +63,15 @@ std::string Barrack::get_training_unit_name() const {
     return production_.name;
 }
 
-void Barrack::set_production_interface_visible(SceneInfo &scene, bool visibility) const {
+void Barrack::set_production_interface_visible(const SceneInfo &scene, bool visibility) const {
     scene.production_interface.set_visible(visibility);
 }
 
-void Barrack::UpdateProductionInterface(SceneInfo &scene) const {
+void Barrack::UpdateProductionInterface(const SceneInfo &scene) const {
     scene.production_interface.update(this);
 }
 
-void Barrack::SelectionProductionInterface(SceneInfo &scene) const {
+void Barrack::SelectionProductionInterface(const SceneInfo &scene) const {
     if (is_my_turn()) {
         set_production_interface_visible(scene, true);
         UpdateProductionInterface(scene);
