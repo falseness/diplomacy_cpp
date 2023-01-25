@@ -116,7 +116,7 @@ std::vector<std::pair<int, int>> Grid::get_neighbours(std::pair<int, int> coord)
 }
 
 void Grid::MoveUnit(std::pair<int, int> from, std::pair<int, int> to) {
-    grid_cells_.get_cell_ptr(from)->MoveUnitTo(*grid_cells_.get_cell_ptr(to));
+   MoveUnitAction(from, to).PerformAction(grid_cells_);
 }
 
 void Grid::ChangeSelectedUnitToBuilding() {
@@ -137,39 +137,35 @@ void Grid::StartProduction(std::pair<int, int> building_position, ProductionInfo
 }
 
 void Grid::DecreaseUnitMoves(std::pair<int, int> coord, int count) {
-    auto unit = grid_cells_.get_cell_ptr(coord)->get_unit_ptr();
-    assert(!unit->is_empty());
-    unit->DecreaseMoves(count);
+    DecreaseUnitMovesAction(coord, count).PerformAction(grid_cells_);
 }
 
 void Grid::AddSuburb(std::pair<int, int> town_coord, std::pair<int, int> new_suburb_coord) {
-    auto town = dynamic_cast<Town*>(get_cell_ptr(town_coord)->get_building_ptr());
-    assert(town);
-    town->AddSuburb(get_cell_ptr(new_suburb_coord).get());
+    AddSuburbAction(town_coord, new_suburb_coord).PerformAction(grid_cells_);
 }
 
 void Grid::DecreaseUnitHP(std::pair<int, int> coord, int dmg) {
-    get_cell_ptr(coord)->get_unit_ptr()->DecreaseHP(dmg);
+    DecreaseUnitHPAction(coord, dmg).PerformAction(grid_cells_);
 }
 
 void Grid::DecreaseBuildingHP(std::pair<int, int> coord, int dmg) {
-    dynamic_cast<HittableEntity*>(get_cell_ptr(coord)->get_building_ptr())->DecreaseHP(dmg);
+    DecreaseBuildingHPAction(coord, dmg).PerformAction(grid_cells_);
 }
 
 void Grid::DeleteUnit(std::pair<int, int> coord) {
-    get_cell_ptr(coord)->DeleteUnit();
+    DeleteUnitAction(coord).PerformAction(grid_cells_);
 }
 
 void Grid::DeleteBuilding(std::pair<int, int> coord) {
-    get_cell_ptr(coord)->DeleteBuilding();
+    DeleteBuildingAction(coord).PerformAction(grid_cells_);
 }
 
 void Grid::DeleteSuburb(std::pair<int, int> coord) {
-    get_cell_ptr(coord)->set_suburb(false);
+    DeleteSuburbAction(coord).PerformAction(grid_cells_);
 }
 
 void Grid::SetPlayer(std::pair<int, int> coord, size_t player_index) {
-    get_cell_ptr(coord)->set_player(player_index);
+    SetPlayerAction(coord, player_index).PerformAction(grid_cells_);
 }
 
 void Grid::PerformAction(GridAction &action) {

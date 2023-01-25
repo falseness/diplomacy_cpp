@@ -29,41 +29,87 @@ public:
     //std::unique_ptr<GridAction> CreateUndoAction()
 };
 
+class MoveUnitAction : public GridAction {
+    std::pair<int, int> from_;
+    std::pair<int, int> to_;
+public:
+    MoveUnitAction(std::pair<int, int> from, std::pair<int, int> to) : from_(from), to_(to) {}
+    void PerformAction(GridCells& cells) override;
+    //std::unique_ptr<GridAction> CreateUndoAction()
+};
+
+class DecreaseUnitMovesAction : public GridAction {
+    std::pair<int, int> coord_;
+    int count_;
+public:
+    DecreaseUnitMovesAction(std::pair<int, int> coord, int count) : coord_(coord), count_(count) {}
+    void PerformAction(GridCells& cells) override;
+    //std::unique_ptr<GridAction> CreateUndoAction()
+};
+
+
+class AddSuburbAction : public GridAction {
+    std::pair<int, int> town_coord_;
+    std::pair<int, int> new_suburb_coord_;
+public:
+    AddSuburbAction(std::pair<int, int> town_coord, std::pair<int, int> new_suburb_coord) : town_coord_(town_coord),
+        new_suburb_coord_(new_suburb_coord) {}
+    void PerformAction(GridCells& cells) override;
+    //std::unique_ptr<GridAction> CreateUndoAction()
+};
+
+class DecreaseUnitHPAction : public GridAction {
+    std::pair<int, int> coord_;
+    int dmg_;
+public:
+    DecreaseUnitHPAction(std::pair<int, int> coord, int dmg) : coord_(coord), dmg_(dmg) {}
+    void PerformAction(GridCells& cells) override;
+    //std::unique_ptr<GridAction> CreateUndoAction()
+};
+
+class DecreaseBuildingHPAction : public GridAction {
+    std::pair<int, int> coord_;
+    int dmg_;
+public:
+    DecreaseBuildingHPAction(std::pair<int, int> coord, int dmg) : coord_(coord), dmg_(dmg) {}
+    void PerformAction(GridCells& cells) override;
+    //std::unique_ptr<GridAction> CreateUndoAction()
+};
+
+class DeleteUnitAction : public GridAction {
+    std::pair<int, int> coord_;
+public:
+    DeleteUnitAction(std::pair<int, int> coord) : coord_(coord) {}
+    void PerformAction(GridCells& cells) override;
+    //std::unique_ptr<GridAction> CreateUndoAction()
+};
+
+
+class DeleteBuildingAction : public GridAction {
+    std::pair<int, int> coord_;
+public:
+    DeleteBuildingAction(std::pair<int, int> coord) : coord_(coord) {}
+    void PerformAction(GridCells& cells) override;
+    //std::unique_ptr<GridAction> CreateUndoAction()
+};
+
+class DeleteSuburbAction : public GridAction {
+    std::pair<int, int> coord_;
+public:
+    DeleteSuburbAction(std::pair<int, int> coord) : coord_(coord) {}
+    void PerformAction(GridCells& cells) override;
+    //std::unique_ptr<GridAction> CreateUndoAction()
+};
+
+class SetPlayerAction : public GridAction {
+    std::pair<int, int> coord_;
+    size_t player_index_;
+public:
+    SetPlayerAction(std::pair<int, int> coord, size_t player_index) : coord_(coord), player_index_(player_index) {}
+    void PerformAction(GridCells& cells) override;
+    //std::unique_ptr<GridAction> CreateUndoAction()
+};
 /*
-void Grid::MoveUnit(std::pair<int, int> from, std::pair<int, int> to) {
-    cells_[from.first][from.second]->MoveUnitTo(*cells_[to.first][to.second]);
-}
-void Grid::DecreaseUnitMoves(std::pair<int, int> coord, int count) {
-    auto unit = cells_[coord.first][coord.second]->get_unit_ptr();
-    assert(!unit->is_empty());
-    unit->DecreaseMoves(count);
-}
-
-void Grid::AddSuburb(std::pair<int, int> town_coord, std::pair<int, int> new_suburb_coord) {
-    auto town = dynamic_cast<Town*>(get_cell_ptr(town_coord)->get_building_ptr());
-    assert(town);
-    town->AddSuburb(get_cell_ptr(new_suburb_coord).get());
-}
-
-void Grid::DecreaseUnitHP(std::pair<int, int> coord, int dmg) {
-    get_cell_ptr(coord)->get_unit_ptr()->DecreaseHP(dmg);
-}
-
-void Grid::DecreaseBuildingHP(std::pair<int, int> coord, int dmg) {
-    dynamic_cast<HittableEntity*>(get_cell_ptr(coord)->get_building_ptr())->DecreaseHP(dmg);
-}
-
-void Grid::DeleteUnit(std::pair<int, int> coord) {
-    get_cell_ptr(coord)->DeleteUnit();
-}
-
-void Grid::DeleteBuilding(std::pair<int, int> coord) {
-    get_cell_ptr(coord)->DeleteBuilding();
-}
-
-void Grid::DeleteSuburb(std::pair<int, int> coord) {
-    get_cell_ptr(coord)->set_suburb(false);
-}
 
 void Grid::SetPlayer(std::pair<int, int> coord, size_t player_index) {
     get_cell_ptr(coord)->set_player(player_index);

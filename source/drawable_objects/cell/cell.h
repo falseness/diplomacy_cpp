@@ -18,8 +18,6 @@ class Players;
 
 
 class Cell : public DrawableObject {
-    friend GridAction;
-    friend StartProductionAction;
     // temprorary
     friend Grid;
     size_t player_index_;
@@ -80,7 +78,6 @@ public:
     void MoveUnitTo(Cell& destination);
     void HitSomethingOnCell(int dmg, Grid&) const;
     Segment get_side(uint8_t, Screen&, const GameOptions&) const;
-private:
     [[nodiscard]] inline Unit* get_unit_ptr() {
         return unit_.get();
     }
