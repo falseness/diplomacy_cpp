@@ -1,7 +1,9 @@
 #include "entity.h"
-#include <source/drawable_objects/cell/cell.h>
+
 #include <cassert>
 
+#include "source/drawable_objects/cell/cell.h"
+#include "source/drawable_objects/unit/range/archer.h"
 
 
 void EntityFactory::NextTurn(const Player& player, ProductionInfo& production) const {
@@ -27,3 +29,12 @@ EntityProductionStats::EntityProductionStats(std::map<std::string, EntityProduct
                                              int cost, unsigned int turns) : cost(cost), turns(turns) {
     stats.emplace(std::move(name), *this);
 }
+
+void RangeUnitFactory::Create(Cell* cell, const ProductionInfo& production) const {
+    cell->CreateUnit<RangeUnit>(std::string(production.name));
+}
+
+RangeUnitFactory::RangeUnitFactory(PlayersEntitiesFactories& all_factories, std::string unit_name) :
+    UnitFactory(all_factories, std::move(unit_name)) {}
+
+

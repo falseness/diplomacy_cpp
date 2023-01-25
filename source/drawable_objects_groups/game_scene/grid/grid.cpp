@@ -16,7 +16,8 @@
 
 
 
-Grid::Grid(Players& players) : logic_helper_(kGridRowsCount, kGridColumnsCount), grid_cells_() {
+Grid::Grid(Players& players) : logic_helper_(kGridRowsCount, kGridColumnsCount),
+        additional_logic_helper_(kGridRowsCount, kGridColumnsCount), grid_cells_() {
     size_t n = kGridRowsCount;
     size_t m = kGridColumnsCount;
     auto& cells = grid_cells_.get_cells();

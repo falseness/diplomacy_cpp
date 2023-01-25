@@ -1,12 +1,13 @@
-#include <source/drawable_objects/hittable_entity.h>
-#include <source/player/entity_stats.h>
+#include "source/drawable_objects/hittable_entity.h"
+#include "source/player/entity_stats.h"
+#include "source/drawable_objects/unit/unit_logic.h"
 
 #pragma once
 
 class Grid;
 class SceneInfo;
 
-class Unit : public HittableEntity {
+class Unit : virtual public HittableEntity {
     int dmg_;
     unsigned int moves_;
 protected:
@@ -19,7 +20,7 @@ public:
     [[nodiscard]] unsigned int get_maximum_hp() const override;
     void Select(const SceneInfo&) const override;
     ClickResponse HandleClick(SceneInfo&, const Vector2D& click_pos, const GameOptions& game_options) const override;
-    Unit(Cell*, std::string&&);
+    Unit(Cell*, std::string);
     void set_cell(Cell*);
     [[nodiscard]] unsigned int get_moves() const;
     void MoveTo(Grid& grid, std::pair<int, int> coord) const;

@@ -68,4 +68,8 @@ bool Entity::is_hittable() const {
     return false;
 }
 
+const PlayersEntitiesStats &Entity::get_player_stats() const {
+    return cell_->get_player().get_stats();
+}
+
 const std::string Entity::kEmptyEntityName;

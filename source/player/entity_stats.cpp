@@ -30,3 +30,8 @@ TownStats::TownStats(PlayersEntitiesStats& all_stats, std::string name, unsigned
     BuildingStats(all_stats, name) {
     all_stats.towns.emplace(std::move(name), *this);
 }
+
+RangeUnitStats::RangeUnitStats(PlayersEntitiesStats& all_stats, std::string name, unsigned int hp, int dmg,
+        unsigned int speed, unsigned int range) : UnitStats(all_stats, name, hp, dmg, speed), range(range) {
+    all_stats.range_units.emplace(std::move(name), *this);
+}

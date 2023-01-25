@@ -21,6 +21,7 @@ class BuildingFactory;
 struct PlayersEntitiesStats {
     std::map<std::string, EntityStats> entities;
     std::map<std::string, UnitStats> units;
+    std::map<std::string, RangeUnitStats> range_units;
     std::map<std::string, BuildingStats> buildings;
     std::map<std::string, BuildingWithHpStats> buildings_with_hp;
     std::map<std::string, SuburbBuildingStats> suburb_buildings;

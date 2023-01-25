@@ -34,3 +34,9 @@ public:
     virtual void Create(Cell*, const ProductionInfo& production) const;
     UnitFactory(PlayersEntitiesFactories& all_factories, std::string);
 };
+
+class RangeUnitFactory : public UnitFactory {
+public:
+    void Create(Cell*, const ProductionInfo& production) const override;
+    RangeUnitFactory(PlayersEntitiesFactories&, std::string);
+};

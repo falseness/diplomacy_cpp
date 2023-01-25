@@ -9,12 +9,16 @@
 
 Player::Player(const Color& color) : color_(color) {
     UnitStats(entities_stats_, "peasant", 2, 1, 2);
+    RangeUnitStats(entities_stats_, "archer", 1, 2, 2, 2);
 
     UnitStats(entities_stats_, "", 0, 0, 0);
     BuildingStats(entities_stats_, "");
 
     EntityProductionStats(entities_factories_.units_production_stats, "peasant", 10, 1);
     CreateUnitFactory<UnitFactory>("peasant");
+    EntityProductionStats(entities_factories_.units_production_stats, "archer", 25, 2);
+    CreateUnitFactory<RangeUnitFactory>("archer");
+    
 
     EntityProductionStats(entities_factories_.buildings_production_stats, "suburb", 1, 0);
     CreateBuildingFactory<SuburbFactory>("suburb");

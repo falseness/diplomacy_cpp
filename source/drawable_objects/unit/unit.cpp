@@ -7,10 +7,12 @@
 #include "source/drawable_objects/hittable_entity.h"
 
 const UnitStats& Unit::get_stats() const {
-    return cell_->get_player().get_stats().units.find(image_name_)->second;
+    auto it = get_player_stats().units.find(image_name_);
+    assert(it != get_player_stats().units.end());
+    return it->second;
 }
 
-Unit::Unit(Cell* cell, std::string&& image_name) : Entity(cell, std::move(image_name)) {
+Unit::Unit(Cell* cell, std::string image_name) : Entity(cell, std::move(image_name)) {
     const UnitStats& unit_type_stats = get_stats();
     hp_ = unit_type_stats.hp;
     dmg_ = unit_type_stats.dmg;
@@ -34,7 +36,7 @@ ClickResponse Unit::HandleClick(SceneInfo& scene, const Vector2D &click_pos, con
         return {true, coord != get_coord(), coord == get_coord()};
     }
 
-    ClickResponse click_response = UnitLogic::ClickLogic(*this, scene.grid, coord);
+    ClickResponse click_response = UnitLogic::kUnitLogic.ClickLogic(*this, scene.grid, scene.grid.logic_helper_, coord);
     if (click_response.should_remove_selection)
         scene.entity_interface.set_visible(false);
     return click_response;
@@ -45,7 +47,7 @@ unsigned int Unit::get_moves() const {
 }
 
 void Unit::Select(const SceneInfo& scene) const {
-    UnitLogic::Select(scene, *this);
+    UnitLogic::kUnitLogic.Select(scene, scene.grid.logic_helper_, get_coord(), is_my_turn() ? get_moves() : get_speed());
     Entity::Select(scene);
 }
 

@@ -36,6 +36,7 @@ public:
     void RemoveSelection();
     [[nodiscard]] std::vector<std::pair<int, int>> get_neighbours(std::pair<int, int> coord) const;
     mutable GridLogicHelper logic_helper_;
+    mutable GridLogicHelper additional_logic_helper_;
     explicit Grid(Players&);
     void PerformActionAndSaveUndo(GridAction& action);
     void PerformAction(GridAction& action);

@@ -9,6 +9,7 @@ using json = nlohmann::json;
 class Cell;
 class SceneInfo;
 class Player;
+class PlayersEntitiesStats;
 
 struct ClickResponse {
     bool should_remove_selection;
@@ -42,6 +43,6 @@ public:
     [[nodiscard]] virtual bool is_passable() const = 0;
     ~Entity() override = default;
     [[nodiscard]] virtual bool is_hittable() const;
-
+    [[nodiscard]] const PlayersEntitiesStats& get_player_stats() const;
 
 };

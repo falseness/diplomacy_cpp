@@ -15,6 +15,12 @@ struct UnitStats : public EntityStats {
     UnitStats(PlayersEntitiesStats&, std::string, unsigned int, int, unsigned int);
 };
 
+struct RangeUnitStats : public UnitStats {
+    unsigned int range;
+    RangeUnitStats(PlayersEntitiesStats&, std::string, unsigned int, int, unsigned int, unsigned int range);
+};
+
+
 struct BuildingStats : public EntityStats {
     BuildingStats(PlayersEntitiesStats&, std::string);
 };
