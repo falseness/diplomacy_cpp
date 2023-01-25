@@ -25,7 +25,7 @@ public:
     void MoveTo(Grid& grid, std::pair<int, int> coord) const;
     // count may be negative. it is ok.
     inline void DecreaseMoves(int count) {
-        assert(moves_ >= count);
+        assert(static_cast<int>(moves_) >= count);
         moves_ -= count;
     }
     [[nodiscard]] json to_json() override;

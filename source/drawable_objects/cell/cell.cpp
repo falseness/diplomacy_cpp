@@ -83,12 +83,17 @@ bool Cell::is_hittable() const {
 }
 
 void Cell::DeleteUnit() {
-    get_player().DeleteUnit(unit_.get());
-    unit_ = std::make_unique<EmptyUnit>(this);
+    if (!unit_->is_empty()) {
+        get_player().DeleteUnit(std::move(unit_));
+        unit_ = std::make_unique<EmptyUnit>(this);
+    }
 }
 
 void Cell::DeleteBuilding() {
-    building_ = std::make_unique<EmptyBuilding>(this);
+    if (!building_->is_empty()) {
+        get_player().DeleteBuilding(std::move(building_));
+        building_ = std::make_unique<EmptyBuilding>(this);
+    }
 }
 
 bool Cell::is_suburb() const {
@@ -114,4 +119,19 @@ void Cell::HitSomethingOnCell(int dmg, Grid& grid) const {
         return;
     }
     assert(false);
+}
+
+//unsafe function. refactoring is needed
+void Cell::SetUnit(std::unique_ptr<Unit>&& unit) {
+    assert(unit_->is_empty());
+    assert(unit->get_cell() == this);
+    get_player().AddUnit(unit.get());
+    unit_ = std::move(unit);
+}
+
+void Cell::SetBuilding(std::unique_ptr<Building> &&building) {
+    assert(building_->is_empty());
+    assert(building->get_cell() == this);
+    get_player().AddBuilding(building.get());
+    building_ = std::move(building);
 }

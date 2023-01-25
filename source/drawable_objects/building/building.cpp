@@ -29,9 +29,10 @@ void Building::Select(const SceneInfo& scene) const {
 }
 
 Building::~Building() {
+    /* refactoring is required
     if (!is_empty()) {
         get_player().DeleteBuilding(this);
-    }
+    }*/
 }
 
 bool EmptyBuilding::is_passable() const {

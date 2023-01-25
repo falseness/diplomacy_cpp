@@ -1,25 +1,24 @@
+#pragma once
+
+#include <tuple>
+
 #include "source/drawable_objects/drawable_object.h"
 #include "source/drawable_objects/cell/hexagon.h"
 #include "source/drawable_objects/unit/unit.h"
 #include "source/drawable_objects/building/building.h"
 #include "source/drawable_objects/building/suburb_building.h"
 #include "source/options/game.h"
-#include <tuple>
 #include "source/utility/vector2d.h"
 #include "source/utility/segment.h"
 #include "source/player/player.h"
-#include "source/drawable_objects_groups/game_scene/grid/action.h"
-
-
-#pragma once
+#include "source/drawable_objects/building/building.h"
+#include "source/player/factories/entity.h"
 
 class Players;
 #include <iostream>
 
 
 class Cell : public DrawableObject {
-    // temprorary
-    friend Grid;
     size_t player_index_;
     Players& players_;
     Hexagon hexagon_;
@@ -29,7 +28,13 @@ class Cell : public DrawableObject {
     std::pair<int, int> coord_;
 public:
     void set_player(size_t);
+    [[nodiscard]] inline size_t get_player_index() const {
+        return player_index_;
+    }
     static const float kColorAlphaRatio;
+    void SetUnit(std::unique_ptr<Unit>&& unit);
+    void SetBuilding(std::unique_ptr<Building>&& building);
+
     template <typename UnitType, typename ...Args>
     void CreateUnit(Args&&... args) {
         assert(unit_->is_empty());

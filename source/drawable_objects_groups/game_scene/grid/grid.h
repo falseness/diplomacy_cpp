@@ -10,6 +10,7 @@
 #include "source/drawable_objects/clickable_object.h"
 #include "source/drawable_objects_groups/game_scene/grid_logic_helper.h"
 #include "source/drawable_objects_groups/game_scene/grid/action.h"
+#include "source/drawable_objects_groups/game_scene/undo_button.h"
 #include "cells.h"
 
 #pragma once
@@ -20,6 +21,7 @@ class SceneInfo;
 class Entity;
 
 class Grid : public DrawableObjectsGroup, public ClickableObject {
+    UndoButton undo_button_;
     GridCells grid_cells_;
     std::unique_ptr<EmptyUnit> empty_unit_;
     Entity* selected_entity_;
@@ -35,6 +37,7 @@ public:
     [[nodiscard]] std::vector<std::pair<int, int>> get_neighbours(std::pair<int, int> coord) const;
     mutable GridLogicHelper logic_helper_;
     explicit Grid(Players&);
+    void PerformActionAndSaveUndo(GridAction& action);
     void PerformAction(GridAction& action);
     bool HandleClick(SceneInfo&, const Vector2D&, const GameOptions&) override;
     void MoveUnit(std::pair<int, int> from, std::pair<int, int> to);
@@ -60,11 +63,13 @@ public:
     [[nodiscard]] inline bool is_coord_out_of_range(std::pair<int, int> coord) const {
         return grid_cells_.is_coord_out_of_range(coord);
     }
-
-
     template <typename Building>
     void CreateBuilding(std::pair<int, int> coord, ProductionInfo production_info) {
-        get_cell_ptr(coord)->template CreateBuilding<Building>(production_info.name, production_info);
+        CreateBuildingAction<Building> action(coord, std::move(production_info));
+        PerformActionAndSaveUndo(action);
     }
+    void ClearUndoStack();
+    void StartUndoSequence();
+    void HandleKeyPress();
 };
 

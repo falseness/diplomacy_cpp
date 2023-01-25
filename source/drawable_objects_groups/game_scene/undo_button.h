@@ -1,3 +1,5 @@
+#pragma once
+
 #include <vector>
 #include <tuple>
 
@@ -9,11 +11,17 @@ class Entity;
 class Grid;
 
 class UndoButton {
-    vector<std::pair<GridAction*, optional<SelectedEntity>>> undo_actions_stack_;
+    vector<vector<std::pair<std::unique_ptr<GridAction>, optional<SelectedEntity>>>> undo_actions_stack_;
     static optional<SelectedEntity> InitializeSelectedEntity(const Entity* entity, const Grid& grid);
 public:
-    void AddAction(GridAction& action, const Entity* entity, const Grid& grid);
+    void AddAction(std::unique_ptr<GridAction>&& action, const Entity* entity, const Grid& grid);
     inline void Clear() {
         undo_actions_stack_.clear();
     }
+    inline void StartActionSequence() {
+        if (undo_actions_stack_.empty() || !undo_actions_stack_.back().empty()) {
+            undo_actions_stack_.emplace_back();
+        }
+    }
+    void UndoAction(Grid& grid);
 };

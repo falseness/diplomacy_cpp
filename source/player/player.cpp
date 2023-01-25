@@ -40,6 +40,7 @@ void Player::AddUnit(Unit* new_unit) {
 }
 
 void Player::NextTurn(SceneInfo& scene) {
+
     // some elements can be deleted in cycle
     auto units_copy = units_;
     for (auto unit : units_copy) {
@@ -49,6 +50,9 @@ void Player::NextTurn(SceneInfo& scene) {
     for (auto building : buildings_copy) {
         building->NextTurn(scene);
     }
+
+    deleted_units_.clear();
+    deleted_buildings_.clear();
 }
 
 const PlayersEntitiesFactories& Player::get_factories_stats() const {
@@ -60,7 +64,6 @@ int Player::get_gold() const {
 }
 
 void Player::AddBuilding(Building* building) {
-
     buildings_.push_back(building);
 }
 
@@ -68,15 +71,32 @@ Color Player::get_color() const {
     return color_;
 }
 
-void Player::DeleteBuilding(Building* building) {
-    auto it = std::find(buildings_.begin(), buildings_.end(), building);
+void Player::DeleteBuilding(std::unique_ptr<Building>&& building) {
+    auto it = std::find(buildings_.begin(), buildings_.end(), building.get());
     assert(it != buildings_.end());
     buildings_.erase(it);
+
+    deleted_buildings_.push_back(std::move(building));
 }
 
-void Player::DeleteUnit(Unit* unit) {
-    auto it = std::find(units_.begin(), units_.end(), unit);
+void Player::DeleteUnit(std::unique_ptr<Unit>&& unit) {
+    auto it = std::find(units_.begin(), units_.end(), unit.get());
     assert(it != units_.end());
     units_.erase(it);
+
+    deleted_units_.push_back(std::move(unit));
 }
 
+std::unique_ptr<Unit> Player::get_last_deleted_unit() {
+    assert(!deleted_units_.empty());
+    auto result = std::move(deleted_units_.front());
+    deleted_units_.pop_front();
+    return result;
+}
+
+std::unique_ptr<Building> Player::get_last_deleted_building() {
+    assert(!deleted_buildings_.empty());
+    auto result = std::move(deleted_buildings_.front());
+    deleted_buildings_.pop_front();
+    return result;
+}

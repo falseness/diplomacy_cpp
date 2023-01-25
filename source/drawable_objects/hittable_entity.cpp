@@ -28,6 +28,6 @@ bool HittableEntity::is_passable() const {
 }
 
 void HittableEntity::DecreaseHP(int dmg) {
-    assert(hp_ >= dmg);
+    assert(static_cast<int>(hp_) >= dmg);
     hp_ -= dmg;
 }

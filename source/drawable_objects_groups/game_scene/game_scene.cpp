@@ -18,10 +18,15 @@ GameScene::GameScene(Screen& screen, const GameOptions& game_options) : info_(sc
 }
 
 void GameScene::HandleClick(const Vector2D& click_pos, const GameOptions& game_options) {
+    info_.grid.StartUndoSequence();
     for (auto it = clickable_objects_.rbegin(); it != clickable_objects_.rend(); ++it) {
         if ((*it)->HandleClick(info_, click_pos, game_options))
             break;
     }
+}
+
+void GameScene::HandleKeyPress() {
+    info_.grid.HandleKeyPress();
 }
 
 SceneInfo::SceneInfo(Screen& screen) :

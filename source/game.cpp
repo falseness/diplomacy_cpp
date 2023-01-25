@@ -17,6 +17,10 @@ void Game::EventsIteration() {
         library_facade_.screen.Close();
         return;
     }
+    if (library_facade_.event_manager.HasKeyPressEvent()) {
+        game_scene_->HandleKeyPress();
+    }
+
     const std::pair<Vector2D, bool>& click_event = library_facade_.event_manager.get_click_event();
     if (click_event.second) {
         game_options_.draw_offset = library_facade_.screen.get_draw_offset();

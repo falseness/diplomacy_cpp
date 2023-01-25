@@ -115,10 +115,6 @@ std::vector<std::pair<int, int>> Grid::get_neighbours(std::pair<int, int> coord)
     return std::move(result);
 }
 
-void Grid::MoveUnit(std::pair<int, int> from, std::pair<int, int> to) {
-   MoveUnitAction(from, to).PerformAction(grid_cells_);
-}
-
 void Grid::ChangeSelectedUnitToBuilding() {
     assert(selected_entity_ != nullptr);
     auto coord = selected_entity_->get_coord();
@@ -132,43 +128,73 @@ void Grid::RemoveSelection() {
     selected_entity_ = empty_unit_.get();
 }
 
+void Grid::MoveUnit(std::pair<int, int> from, std::pair<int, int> to) {
+    MoveUnitAction action(from, to);
+    PerformActionAndSaveUndo(action);
+}
+
 void Grid::StartProduction(std::pair<int, int> building_position, ProductionInfo production_info) {
-    StartProductionAction(building_position, std::move(production_info)).PerformAction(grid_cells_);
+    StartProductionAction action(building_position, std::move(production_info));
+    PerformActionAndSaveUndo(action);
 }
 
 void Grid::DecreaseUnitMoves(std::pair<int, int> coord, int count) {
-    DecreaseUnitMovesAction(coord, count).PerformAction(grid_cells_);
+    DecreaseUnitMovesAction action(coord, count);
+    PerformActionAndSaveUndo(action);
 }
 
 void Grid::AddSuburb(std::pair<int, int> town_coord, std::pair<int, int> new_suburb_coord) {
-    AddSuburbAction(town_coord, new_suburb_coord).PerformAction(grid_cells_);
+    AddSuburbAction action(town_coord, new_suburb_coord);
+    PerformActionAndSaveUndo(action);
 }
 
 void Grid::DecreaseUnitHP(std::pair<int, int> coord, int dmg) {
-    DecreaseUnitHPAction(coord, dmg).PerformAction(grid_cells_);
+    DecreaseUnitHPAction action(coord, dmg);
+    PerformActionAndSaveUndo(action);
 }
 
 void Grid::DecreaseBuildingHP(std::pair<int, int> coord, int dmg) {
-    DecreaseBuildingHPAction(coord, dmg).PerformAction(grid_cells_);
+    DecreaseBuildingHPAction action(coord, dmg);
+    PerformActionAndSaveUndo(action);
 }
 
 void Grid::DeleteUnit(std::pair<int, int> coord) {
-    DeleteUnitAction(coord).PerformAction(grid_cells_);
+    DeleteUnitAction action(coord);
+    PerformActionAndSaveUndo(action);
 }
 
 void Grid::DeleteBuilding(std::pair<int, int> coord) {
-    DeleteBuildingAction(coord).PerformAction(grid_cells_);
+    DeleteBuildingAction action(coord);
+    PerformActionAndSaveUndo(action);
 }
 
 void Grid::DeleteSuburb(std::pair<int, int> coord) {
-    DeleteSuburbAction(coord).PerformAction(grid_cells_);
+    DeleteSuburbAction action(coord);
+    PerformActionAndSaveUndo(action);
 }
 
 void Grid::SetPlayer(std::pair<int, int> coord, size_t player_index) {
-    SetPlayerAction(coord, player_index).PerformAction(grid_cells_);
+    SetPlayerAction action(coord, player_index);
+    PerformActionAndSaveUndo(action);
 }
 
 void Grid::PerformAction(GridAction &action) {
     action.PerformAction(grid_cells_);
 }
 
+void Grid::HandleKeyPress() {
+    undo_button_.UndoAction(*this);
+}
+
+void Grid::ClearUndoStack() {
+    undo_button_.Clear();
+}
+
+void Grid::PerformActionAndSaveUndo(GridAction &action) {
+    undo_button_.AddAction(std::move(action.CreateUndoAction(grid_cells_)), selected_entity_, *this);
+    PerformAction(action);
+}
+
+void Grid::StartUndoSequence() {
+    undo_button_.StartActionSequence();
+}

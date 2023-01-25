@@ -77,3 +77,9 @@ void Barrack::SelectionProductionInterface(const SceneInfo &scene) const {
         UpdateProductionInterface(scene);
     }
 }
+
+void Barrack::UndoStartedProduction() {
+    assert(production_in_progress_);
+    production_in_progress_ = false;
+    production_ = ProductionInfo();
+}

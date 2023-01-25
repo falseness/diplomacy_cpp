@@ -33,6 +33,9 @@ public:
     [[nodiscard]] Color get_color() const;
     virtual void NextTurn(SceneInfo& scene) = 0;
     Player& get_player();
+    [[nodiscard]] inline const Cell* get_cell() const {
+        return cell_;
+    }
     [[nodiscard]] bool is_empty() const;
     [[nodiscard]] bool is_my_turn() const;
     [[nodiscard]] const Player& get_player() const;

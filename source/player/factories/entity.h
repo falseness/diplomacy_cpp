@@ -1,7 +1,7 @@
+#pragma once
+
 #include <memory>
 #include <map>
-
-#pragma once
 
 class Unit;
 class Player;

@@ -1,9 +1,12 @@
 #include <vector>
 #include <map>
+#include <deque>
 #include "source/utility/color.h"
 #include "source/player/entity_stats.h"
 #include "source/player/factories/entity.h"
 #include "source/player/factories/building.h"
+#include "source/drawable_objects/unit/unit.h"
+#include "source/drawable_objects/building/building.h"
 
 #include <list>
 #include <memory>
@@ -36,6 +39,9 @@ class Player {
     PlayersEntitiesFactories entities_factories_;
     std::list<Unit*> units_;
     std::list<Building*> buildings_;
+    std::unique_ptr<Unit> tmp_;
+    std::deque<std::unique_ptr<Unit>> deleted_units_;
+    std::deque<std::unique_ptr<Building>> deleted_buildings_;
     template <typename Factory>
     void CreateUnitFactory(std::string name) {
         auto ptr = std::make_unique<Factory>(entities_factories_, name);
@@ -52,9 +58,11 @@ class Player {
 public:
     void NextTurn(SceneInfo& scene);
     void AddUnit(Unit*);
-    void DeleteUnit(Unit*);
+    void DeleteUnit(std::unique_ptr<Unit>&& unit);
     void AddBuilding(Building*);
-    void DeleteBuilding(Building*);
+    void DeleteBuilding(std::unique_ptr<Building>&& building);
+    std::unique_ptr<Unit> get_last_deleted_unit();
+    std::unique_ptr<Building> get_last_deleted_building();
     const Color color_;
     explicit Player(const Color&);
     [[nodiscard]] int get_gold() const;
