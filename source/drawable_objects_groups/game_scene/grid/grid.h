@@ -70,6 +70,8 @@ public:
     }
     void ClearUndoStack();
     void StartUndoSequence();
-    void HandleKeyPress();
+    void HandleKeyPress(SceneInfo& scene);
+    void SelectUnit(std::pair<int, int> coord, SceneInfo& scene);
+    void SelectBuilding(std::pair<int, int> coord, SceneInfo& scene);
 };
 

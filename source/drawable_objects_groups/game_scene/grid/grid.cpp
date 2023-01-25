@@ -182,8 +182,8 @@ void Grid::PerformAction(GridAction &action) {
     action.PerformAction(grid_cells_);
 }
 
-void Grid::HandleKeyPress() {
-    undo_button_.UndoAction(*this);
+void Grid::HandleKeyPress(SceneInfo& scene) {
+    undo_button_.UndoAction(scene);
 }
 
 void Grid::ClearUndoStack() {
@@ -197,4 +197,18 @@ void Grid::PerformActionAndSaveUndo(GridAction &action) {
 
 void Grid::StartUndoSequence() {
     undo_button_.StartActionSequence();
+}
+
+void Grid::SelectUnit(std::pair<int, int> coord, SceneInfo& scene) {
+    auto unit = get_cell_ptr(coord)->get_unit_ptr();
+    assert(!unit->is_empty());
+    selected_entity_ = unit;
+    unit->Select(scene);
+}
+
+void Grid::SelectBuilding(std::pair<int, int> coord, SceneInfo& scene) {
+    auto building = get_cell_ptr(coord)->get_building_ptr();
+    assert(!building->is_empty());
+    selected_entity_ = building;
+    building->Select(scene);
 }

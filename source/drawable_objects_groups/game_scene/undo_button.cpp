@@ -4,6 +4,7 @@
 
 #include "source/drawable_objects/entity.h"
 #include "source/drawable_objects_groups/game_scene/grid/grid.h"
+#include "source/drawable_objects_groups/game_scene/game_scene.h"
 
 
 
@@ -21,7 +22,7 @@ optional<SelectedEntity> UndoButton::InitializeSelectedEntity(const Entity* enti
     return SelectedEntity({coord, is_unit});
 }
 
-void UndoButton::UndoAction(Grid& grid) {
+void UndoButton::UndoAction(SceneInfo& scene) {
     if (undo_actions_stack_.empty()) {
         return;
     }
@@ -34,7 +35,22 @@ void UndoButton::UndoAction(Grid& grid) {
     assert(!undo_actions_stack_.back().empty());
     reverse(undo_actions_stack_.back().begin(), undo_actions_stack_.back().end());
     for (auto& action : undo_actions_stack_.back()) {
-        grid.PerformAction(*action.first);
+        scene.grid.PerformAction(*action.first);
+    }
+    auto& selected_entity = undo_actions_stack_.back().back().second;
+    if (!selected_entity) {
+        scene.grid.RemoveSelection();
+        scene.ClearInterfaces();
+    }
+    else {
+        if (selected_entity.value().is_unit) {
+            scene.production_interface.set_visible(false);
+            scene.town_production_interface.set_visible(false);
+            scene.grid.SelectUnit(selected_entity.value().coord, scene);
+        }
+        else {
+            scene.grid.SelectBuilding(selected_entity.value().coord, scene);
+        }
     }
     undo_actions_stack_.pop_back();
 }

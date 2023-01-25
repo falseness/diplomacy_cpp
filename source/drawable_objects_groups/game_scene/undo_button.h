@@ -8,7 +8,8 @@
 
 using std::vector;
 class Entity;
-class Grid;
+class Scen;
+class SceneInfo;
 
 class UndoButton {
     vector<vector<std::pair<std::unique_ptr<GridAction>, optional<SelectedEntity>>>> undo_actions_stack_;
@@ -23,5 +24,5 @@ public:
             undo_actions_stack_.emplace_back();
         }
     }
-    void UndoAction(Grid& grid);
+    void UndoAction(SceneInfo& scene);
 };

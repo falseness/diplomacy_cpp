@@ -26,9 +26,16 @@ void GameScene::HandleClick(const Vector2D& click_pos, const GameOptions& game_o
 }
 
 void GameScene::HandleKeyPress() {
-    info_.grid.HandleKeyPress();
+    info_.grid.HandleKeyPress(info_);
 }
 
 SceneInfo::SceneInfo(Screen& screen) :
         players({Color(80, 80, 80), Color(255, 0, 0), Color(0, 255, 0)}, 1), grid(players), selection_border(grid),
         entity_interface(screen), production_interface(screen), town_production_interface(screen) {}
+
+void SceneInfo::ClearInterfaces() {
+    selection_border.Clear();
+    entity_interface.set_visible(false);
+    town_production_interface.set_visible(false);
+    production_interface.set_visible(false);
+}

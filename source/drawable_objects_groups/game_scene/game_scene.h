@@ -19,6 +19,7 @@ struct SceneInfo {
     mutable ProductionInterface production_interface;
     mutable TownProductionInterface town_production_interface;
     explicit SceneInfo(Screen& screen);
+    void ClearInterfaces();
 };
 
 class GameScene : public Scene {

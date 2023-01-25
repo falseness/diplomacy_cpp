@@ -17,10 +17,7 @@ void NextTurnButton::NextTurn(SceneInfo& scene) {
     scene.players.NextTurn(scene);
     scene.grid.RemoveSelection();
     scene.grid.ClearUndoStack();
-    scene.selection_border.Clear();
-    scene.entity_interface.set_visible(false);
-    scene.town_production_interface.set_visible(false);
-    scene.production_interface.set_visible(false);
+    scene.ClearInterfaces();
 
     background_color = scene.players[scene.players.get_whoose_turn()].get_color();
 }
