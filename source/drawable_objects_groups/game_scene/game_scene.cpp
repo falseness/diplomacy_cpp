@@ -1,5 +1,5 @@
 #include <source/drawable_objects_groups/game_scene/game_scene.h>
-#include <source/drawable_objects_groups/game_scene/grid.h>
+#include "source/drawable_objects_groups/game_scene/grid/grid.h"
 
 
 GameScene::GameScene(Screen& screen, const GameOptions& game_options) : info_(screen), next_turn_button_(screen) {

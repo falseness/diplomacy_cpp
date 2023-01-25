@@ -12,6 +12,7 @@ protected:
     virtual void AskGridToDecreaseHP(int dmg, Grid& grid) const = 0;
 public:
     virtual void Hit(int, Grid& grid) const;
+    // dmg may be negative. it is ok.
     void DecreaseHP(int);
     [[nodiscard]] virtual unsigned int get_maximum_hp() const = 0;
     [[nodiscard]] bool is_hittable() const override;

@@ -4,7 +4,7 @@
 
 #include "hittable_entity.h"
 
-#include "source/drawable_objects_groups/game_scene/grid.h"
+#include "source/drawable_objects_groups/game_scene/grid/grid.h"
 
 bool HittableEntity::is_hittable() const {
     return !is_my_turn();

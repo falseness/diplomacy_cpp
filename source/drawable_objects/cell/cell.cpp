@@ -2,7 +2,7 @@
 #include "source/drawable_objects/cell/coord_converter.h"
 #include "source/utility/vector2d.h"
 #include "source/player/players.h"
-#include "source/drawable_objects_groups/game_scene/grid.h"
+#include "source/drawable_objects_groups/game_scene/grid/grid.h"
 
 
 Cell::Cell(std::pair<int, int> coord, size_t player_index_, Players& players, bool is_suburb) :

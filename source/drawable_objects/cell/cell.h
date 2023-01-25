@@ -8,6 +8,8 @@
 #include "source/utility/vector2d.h"
 #include "source/utility/segment.h"
 #include "source/player/player.h"
+#include "source/drawable_objects_groups/game_scene/grid/action.h"
+
 
 #pragma once
 
@@ -16,6 +18,9 @@ class Players;
 
 
 class Cell : public DrawableObject {
+    friend GridAction;
+    friend StartProductionAction;
+    // temprorary
     friend Grid;
     size_t player_index_;
     Players& players_;

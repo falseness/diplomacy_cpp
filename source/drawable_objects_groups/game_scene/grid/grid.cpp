@@ -1,4 +1,4 @@
-#include "source/drawable_objects_groups/game_scene/grid.h"
+#include "grid.h"
 #include "source/drawable_objects/cell/cell.h"
 #include <tuple>
 #include "source/drawable_objects/cell/coord_converter.h"
@@ -6,21 +6,21 @@
 #include "source/drawable_objects/building/town.h"
 #include "source/player/player.h"
 #include "source/drawable_objects/building/under_construction/under_construction.h"
+#include "source/drawable_objects_groups/game_scene/grid/action.h"
+#include "cells.h"
+#include "action.h"
+
+
 #include <cassert>
 #include <set>
 
 
-class GridAction {
-    uint8_t action_index;
-    std::pair<int, int> coord1;
-    std::pair<int, int> coord2;
-};
 
-
-Grid::Grid(Players& players) : logic_helper_(kGridRowsCount, kGridColumnsCount) {
+Grid::Grid(Players& players) : logic_helper_(kGridRowsCount, kGridColumnsCount), grid_cells_() {
     size_t n = kGridRowsCount;
     size_t m = kGridColumnsCount;
-    cells_.resize(n);
+    auto& cells = grid_cells_.get_cells();
+    cells.resize(n);
 
     std::map<std::pair<int, int>, int> colors;
     std::set<std::pair<int, int>> suburbs;
@@ -40,7 +40,7 @@ Grid::Grid(Players& players) : logic_helper_(kGridRowsCount, kGridColumnsCount) 
     colors.emplace(std::pair<int, int>{9, 4}, 2);
 
 
-    for (size_t i = 0; i < cells_.size(); ++i) {
+    for (size_t i = 0; i < cells.size(); ++i) {
         for (size_t j = 0; j < m; ++j) {
             int color = 0;
             auto it = colors.find({i, j});
@@ -48,22 +48,22 @@ Grid::Grid(Players& players) : logic_helper_(kGridRowsCount, kGridColumnsCount) 
                 color = it->second;
             }
             bool is_suburb = suburbs.find({i, j}) != suburbs.end();
-            cells_[i].push_back(std::make_unique<Cell>(std::make_pair(i, j), color, players, is_suburb));
+            cells[i].push_back(std::make_unique<Cell>(std::make_pair(i, j), color, players, is_suburb));
 
-            drawable_objects_.push_back(cells_[i][j].get());
+            drawable_objects_.push_back(cells[i][j].get());
         }
     }
-    cells_[town_poses[0].first + 1][town_poses[0].second]->CreateBuilding<Barrack>("barrack");
-    cells_[town_poses[1].first][town_poses[1].second + 1]->CreateBuilding<SuburbBuilding>("farm");
+    cells[town_poses[0].first + 1][town_poses[0].second]->CreateBuilding<Barrack>("barrack");
+    cells[town_poses[1].first][town_poses[1].second + 1]->CreateBuilding<SuburbBuilding>("farm");
     for (int i = 1; i < players.size(); ++i) {
         std::pair<int, int> town_pos = town_poses[i - 1];
         auto this_player_suburb_cells = get_neighbours(town_pos);
         this_player_suburb_cells.push_back(town_pos);
-        cells_[town_pos.first][town_pos.second]->CreateBuilding<Town>("town", this_player_suburb_cells);
-        cells_[town_pos.first][town_pos.second]->CreateUnit<Unit>("peasant");
+        cells[town_pos.first][town_pos.second]->CreateBuilding<Town>("town", this_player_suburb_cells);
+        cells[town_pos.first][town_pos.second]->CreateUnit<Unit>("peasant");
     }
 
-    empty_unit_ = std::make_unique<EmptyUnit>(cells_[0][0].get());
+    empty_unit_ = std::make_unique<EmptyUnit>(cells[0][0].get());
     selected_entity_= empty_unit_.get();
 }
 
@@ -71,12 +71,12 @@ bool Grid::HandleClick(SceneInfo& scene, const Vector2D& screen_click_pos, const
     Vector2D click_pos = screen_click_pos - game_options.draw_offset;
     if (selected_entity_->is_empty()) {
         std::pair<int, int> coord = CoordConverter::CalculateCoord(click_pos, game_options);
-        if (CoordConverter::IsCoordOutOfRange(coord, cells_.size(), cells_[0].size()))
+        if (is_coord_out_of_range(coord))
             return true;
 
-        selected_entity_ = cells_[coord.first][coord.second]->get_unit_ptr();
+        selected_entity_ = get_cell_ptr(coord)->get_unit_ptr();
         if (selected_entity_->is_empty()) {
-            selected_entity_ = cells_[coord.first][coord.second]->get_building_ptr();
+            selected_entity_ = get_cell_ptr(coord)->get_building_ptr();
         }
 
         if (!selected_entity_->is_empty())
@@ -99,15 +99,7 @@ bool Grid::HandleClick(SceneInfo& scene, const Vector2D& screen_click_pos, const
     return true;
 }
 
-size_t Grid::get_rows_count() {
-    return cells_.size();
-}
-
-size_t Grid::get_columns_count() {
-    return cells_[0].size();
-}
-
-// order of cells is fixed and it is used in SelectionBorder class
+// order of cells is fixed and is used in SelectionBorder class
 std::vector<std::pair<int, int>> Grid::get_neighbours(std::pair<int, int> coord) const {
     static const std::pair<int, int> neighborhood[2][Grid::kHexagonMaximumNeighbours] = {
             {{0, -1}, {1, -1}, {1, 0}, {0, 1}, {-1, 0}, {-1, -1}},
@@ -124,13 +116,13 @@ std::vector<std::pair<int, int>> Grid::get_neighbours(std::pair<int, int> coord)
 }
 
 void Grid::MoveUnit(std::pair<int, int> from, std::pair<int, int> to) {
-    cells_[from.first][from.second]->MoveUnitTo(*cells_[to.first][to.second]);
+    grid_cells_.get_cell_ptr(from)->MoveUnitTo(*grid_cells_.get_cell_ptr(to));
 }
 
 void Grid::ChangeSelectedUnitToBuilding() {
     assert(selected_entity_ != nullptr);
     auto coord = selected_entity_->get_coord();
-    selected_entity_ = cells_[coord.first][coord.second]->get_building_ptr();
+    selected_entity_ = grid_cells_.get_cell_ptr(coord)->get_building_ptr();
 }
 
 const size_t Grid::kGridRowsCount = 15;
@@ -140,19 +132,12 @@ void Grid::RemoveSelection() {
     selected_entity_ = empty_unit_.get();
 }
 
-bool Grid::is_coord_out_of_range(std::pair<int, int> coord) const {
-    return CoordConverter::IsCoordOutOfRange(coord, cells_.size(), cells_[0].size());
-}
-
 void Grid::StartProduction(std::pair<int, int> building_position, ProductionInfo production_info) {
-    auto barrack = dynamic_cast<Barrack*>(cells_[building_position.first][building_position.second]->
-            get_building_ptr());
-    assert(barrack);
-    barrack->StartProduction(std::move(production_info));
+    StartProductionAction(building_position, std::move(production_info)).PerformAction(grid_cells_);
 }
 
 void Grid::DecreaseUnitMoves(std::pair<int, int> coord, int count) {
-    auto unit = cells_[coord.first][coord.second]->get_unit_ptr();
+    auto unit = grid_cells_.get_cell_ptr(coord)->get_unit_ptr();
     assert(!unit->is_empty());
     unit->DecreaseMoves(count);
 }
@@ -186,3 +171,8 @@ void Grid::DeleteSuburb(std::pair<int, int> coord) {
 void Grid::SetPlayer(std::pair<int, int> coord, size_t player_index) {
     get_cell_ptr(coord)->set_player(player_index);
 }
+
+void Grid::PerformAction(GridAction &action) {
+    action.PerformAction(grid_cells_);
+}
+

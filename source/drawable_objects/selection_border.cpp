@@ -1,5 +1,5 @@
 #include "selection_border.h"
-#include <source/drawable_objects_groups/game_scene/grid.h>
+#include "source/drawable_objects_groups/game_scene/grid/grid.h"
 #include <cmath>
 #include <cassert>
 

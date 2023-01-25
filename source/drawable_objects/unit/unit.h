@@ -23,7 +23,9 @@ public:
     void set_cell(Cell*);
     [[nodiscard]] unsigned int get_moves() const;
     void MoveTo(Grid& grid, std::pair<int, int> coord) const;
+    // count may be negative. it is ok.
     inline void DecreaseMoves(int count) {
+        assert(moves_ >= count);
         moves_ -= count;
     }
     [[nodiscard]] json to_json() override;

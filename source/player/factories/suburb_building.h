@@ -1,6 +1,6 @@
 #include "source/player/factories/building.h"
 #include "source/drawable_objects_groups/game_scene/game_scene.h"
-#include "source/drawable_objects_groups/game_scene/grid.h"
+#include "source/drawable_objects_groups/game_scene/grid/grid.h"
 #include "source/drawable_objects/building/town.h"
 
 #pragma once

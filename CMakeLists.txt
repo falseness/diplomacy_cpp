@@ -18,7 +18,7 @@ set(    MAIN_SOURCE
         source/drawable_objects_groups/drawable_objects_group.cpp
         source/drawable_objects_groups/scene.cpp
         source/drawable_objects_groups/game_scene/game_scene.cpp
-        source/drawable_objects_groups/game_scene/grid.cpp
+        source/drawable_objects_groups/game_scene/grid/grid.cpp
         source/drawable_objects/cell/hexagon.cpp
         source/options/game.cpp source/drawable_objects/cell/cell.cpp
         source/drawable_objects/cell/coord_converter.cpp
@@ -57,7 +57,7 @@ set(    MAIN_SOURCE
         source/drawable_objects_groups/interfaces/town_production.cpp
         source/drawable_objects/interface_elements/switch_button.cpp
         source/drawable_objects/hittable_entity.cpp
-        source/drawable_objects/selection_border.cpp source/drawable_objects_groups/interfaces/building_production_slots.cpp source/drawable_objects_groups/interfaces/building_production_slots.h)
+        source/drawable_objects/selection_border.cpp source/drawable_objects_groups/interfaces/building_production_slots.cpp source/drawable_objects_groups/interfaces/building_production_slots.h source/drawable_objects_groups/game_scene/undo_button.cpp source/drawable_objects_groups/game_scene/undo_button.h source/drawable_objects_groups/game_scene/grid/cells.cpp source/drawable_objects_groups/game_scene/grid/cells.h source/drawable_objects_groups/game_scene/grid/action.cpp source/drawable_objects_groups/game_scene/grid/action.h)
 
 add_executable(Diplomacy ${MAIN_SOURCE})
 #---

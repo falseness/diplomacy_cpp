@@ -1,7 +1,7 @@
 #include "source/drawable_objects/cell/hexagon.h"
 #include "source/options/game.h"
 #include "source/drawable_objects/cell/cell.h"
-#include "source/drawable_objects_groups/game_scene/grid.h"
+#include "source/drawable_objects_groups/game_scene/grid/grid.h"
 
 Hexagon::Hexagon(const Cell& cell) : cell_(cell) {}
 

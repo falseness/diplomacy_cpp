@@ -1,7 +1,7 @@
 #include "unit.h"
 #include "source/drawable_objects/cell/coord_converter.h"
 #include "source/drawable_objects/cell/cell.h"
-#include "source/drawable_objects_groups/game_scene/grid.h"
+#include "source/drawable_objects_groups/game_scene/grid/grid.h"
 #include "source/drawable_objects/unit/unit_logic.h"
 #include "source/drawable_objects_groups/game_scene/game_scene.h"
 #include "source/drawable_objects/hittable_entity.h"

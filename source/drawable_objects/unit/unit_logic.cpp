@@ -2,7 +2,7 @@
 #include "unit_logic.h"
 #include <source/drawable_objects/cell/coord_converter.h>
 #include <source/drawable_objects/unit/unit.h>
-#include <source/drawable_objects_groups/game_scene/grid.h>
+#include "source/drawable_objects_groups/game_scene/grid/grid.h"
 #include <source/drawable_objects_groups/game_scene/game_scene.h>
 
 

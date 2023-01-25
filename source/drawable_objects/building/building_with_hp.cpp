@@ -1,7 +1,7 @@
 #include "building_with_hp.h"
 #include "source/drawable_objects/cell/cell.h"
 #include "source/player/player.h"
-#include "source/drawable_objects_groups/game_scene/grid.h"
+#include "source/drawable_objects_groups/game_scene/grid/grid.h"
 
 
 BuildingWithHp::BuildingWithHp(Cell *cell, std::string&& image_name) :
