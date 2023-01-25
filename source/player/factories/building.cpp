@@ -14,7 +14,7 @@ unsigned int BuildingFactory::get_turns_left(const Player& player, const Product
 }
 
 void BuildingFactory::Select(SceneInfo& scene, const Town* town) {
-    auto suburbs = town->get_suburbs();
+    auto suburbs = town->get_suburbs(scene.grid);
 
     std::vector<std::pair<int, int>> visited_cells;
 

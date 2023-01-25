@@ -7,9 +7,9 @@
 #include "source/player/factories/building.h"
 
 Town::Town(Cell* cell, std::string&& image_name, std::vector<std::pair<int, int>> suburbs) :
-    BuildingWithHp(cell, std::string(image_name)), Barrack(cell, std::string(image_name)),
-    SuburbBuilding(cell, std::string(image_name)), Building(cell, std::string(image_name)),
-    Entity(cell, std::string(image_name)), suburbs_(std::move(suburbs)) {}
+        BuildingWithHp(cell, std::string(image_name)), Barrack(cell, std::string(image_name)),
+        SuburbBuilding(cell, std::string(image_name)), Building(cell, std::string(image_name)),
+        Entity(cell, std::string(image_name)), potential_suburbs_(std::move(suburbs)) {}
 
 json Town::get_info() const {
     auto result = Barrack::get_info();
@@ -33,8 +33,16 @@ void Town::UpdateProductionInterface(const SceneInfo &scene) const {
     scene.town_production_interface.update(this);
 }
 
-std::vector<std::pair<int, int>> Town::get_suburbs() const {
-    return suburbs_;
+std::vector<std::pair<int, int>> Town::get_suburbs(const Grid& grid) const {
+    std::vector<std::pair<int, int>> result;
+    for (auto coord : potential_suburbs_) {
+        if (grid.get_cell(coord)->is_suburb()) {
+            result.push_back(coord);
+        }
+    }
+    sort(result.begin(), result.end());
+    result.erase(std::unique(result.begin(), result.end()), result.end());
+    return result;
 }
 
 void Town::set_building_production_plan(std::string production_plan) const {
@@ -67,6 +75,7 @@ ClickResponse Town::HandleClick(SceneInfo& scene, const Vector2D& pos, const Gam
 }
 
 void Town::NextTurn() {
+    potential_suburbs_ = get_suburbs();
     clear_building_production_plan();
     Barrack::NextTurn();
 }
@@ -74,5 +83,5 @@ void Town::NextTurn() {
 void Town::AddSuburb(Cell* cell) {
     assert(!cell->is_suburb());
     cell->set_suburb(true);
-    suburbs_.push_back(cell->get_coord());
+    potential_suburbs_.push_back(cell->get_coord());
 }

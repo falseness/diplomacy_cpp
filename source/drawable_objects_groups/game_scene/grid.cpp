@@ -179,3 +179,10 @@ void Grid::DeleteBuilding(std::pair<int, int> coord) {
     get_cell_ptr(coord)->DeleteBuilding();
 }
 
+void Grid::DeleteSuburb(std::pair<int, int> coord) {
+    get_cell_ptr(coord)->set_suburb(false);
+}
+
+void Grid::SetPlayer(std::pair<int, int> coord, size_t player_index) {
+    get_cell_ptr(coord)->set_player(player_index);
+}

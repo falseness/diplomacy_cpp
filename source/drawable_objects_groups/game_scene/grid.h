@@ -41,6 +41,8 @@ public:
     void DecreaseBuildingHP(std::pair<int, int> coord, int dmg);
     void DeleteUnit(std::pair<int, int> coord);
     void DeleteBuilding(std::pair<int, int> coord);
+    void DeleteSuburb(std::pair<int, int> coord);
+    void SetPlayer(std::pair<int, int> coord, size_t player_index);
     size_t get_rows_count();
     size_t get_columns_count();
     Grid& operator=(const Grid&) = delete;

@@ -1,7 +1,8 @@
 #include "cell.h"
-#include <source/drawable_objects/cell/coord_converter.h>
-#include <source/utility/vector2d.h>
-#include <source/player/players.h>
+#include "source/drawable_objects/cell/coord_converter.h"
+#include "source/utility/vector2d.h"
+#include "source/player/players.h"
+#include "source/drawable_objects_groups/game_scene/grid.h"
 
 
 Cell::Cell(std::pair<int, int> coord, size_t player_index_, Players& players, bool is_suburb) :
@@ -48,13 +49,18 @@ void Cell::set_unit(std::unique_ptr<Unit>&& new_unit) {
     unit_->set_cell(this);
 }
 
-void Cell::MoveUnitTo(Cell& cell) {
-    assert(cell.unit_->is_empty());
-    if (!cell.is_my_turn() && cell.is_suburb())
-        cell.is_suburb_ = false;
-    cell.set_unit(std::move(unit_));
-    cell.set_player(player_index_);
+void Cell::MoveUnitTo(const Cell& destination, Grid &grid) const {
+    assert(destination.get_unit()->is_empty());
+    if (!destination.is_my_turn() && destination.is_suburb()) {
+        grid.DeleteSuburb(destination.get_coord());
+    }
 
+    grid.MoveUnit(get_coord(), destination.get_coord());
+    grid.SetPlayer(destination.get_coord(), player_index_);
+}
+
+void Cell::MoveUnitTo(Cell &destination) {
+    destination.set_unit(std::move(unit_));
     unit_ = std::make_unique<EmptyUnit>(this);
 }
 
@@ -109,4 +115,3 @@ void Cell::HitSomethingOnCell(int dmg, Grid& grid) const {
     }
     assert(false);
 }
-

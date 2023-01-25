@@ -7,11 +7,12 @@ class Grid;
 
 class Town : public Barrack, public BuildingWithHp {
     mutable std::string building_production_plan_;
-    std::vector<std::pair<int, int>> suburbs_;
+    // some of this cells may not be suburbs. so we filter them in get_suburbs(). fields is updated in NextTurn method
+    std::vector<std::pair<int, int>> potential_suburbs_;
     void set_production_interface_visible(const SceneInfo& scene, bool) const override;
     void UpdateProductionInterface(const SceneInfo& scene) const override;
 public:
-    [[nodiscard]] std::vector<std::pair<int, int>> get_suburbs() const;
+    [[nodiscard]] std::vector<std::pair<int, int>> get_suburbs(const Grid& grid) const;
     [[nodiscard]] json get_info() const override;
     Town(Cell*, std::string&&, std::vector<std::pair<int, int>>);
     ~Town() override = default;

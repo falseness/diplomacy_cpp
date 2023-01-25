@@ -23,10 +23,9 @@ class Cell : public DrawableObject {
     std::unique_ptr<Unit> unit_;
     std::unique_ptr<Building> building_;
     bool is_suburb_;
-    void set_player(size_t);
-
     std::pair<int, int> coord_;
 public:
+    void set_player(size_t);
     static const float kColorAlphaRatio;
     template <typename UnitType, typename ...Args>
     void CreateUnit(Args&&... args) {
@@ -72,7 +71,8 @@ public:
     void set_suburb(bool suburb_state);
     void DeleteUnit();
     void DeleteBuilding();
-    void MoveUnitTo(Cell&);
+    void MoveUnitTo(const Cell &destination, Grid &grid) const;
+    void MoveUnitTo(Cell& destination);
     void HitSomethingOnCell(int dmg, Grid&) const;
     Segment get_side(uint8_t, Screen&, const GameOptions&) const;
 private:

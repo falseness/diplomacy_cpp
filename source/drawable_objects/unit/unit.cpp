@@ -19,7 +19,7 @@ Unit::Unit(Cell* cell, std::string&& image_name) : Entity(cell, std::move(image_
 
 void Unit::set_cell(Cell* cell) {
     if (!cell->IsStore(this))
-        throw std::invalid_argument("cell doesn't store this unit");
+        assert(false);
     cell_ = cell;
 }
 
@@ -61,11 +61,12 @@ void Unit::MoveTo(Grid& grid, std::pair<int, int> coord) const {
     }
     reverse(path.begin(), path.end());
     for (auto next_coord : path) {
+        auto current_cell = grid.get_cell(get_coord());
         auto cell = grid.get_cell(next_coord);
         if (cell->is_passable()) {
             if (!cell->is_my_turn())
                 grid.DeleteBuilding(cell->get_coord());
-            grid.MoveUnit(get_coord(), next_coord);
+            current_cell->MoveUnitTo(*cell, grid);
             continue;
         }
         assert(next_coord == path.back());
@@ -75,7 +76,7 @@ void Unit::MoveTo(Grid& grid, std::pair<int, int> coord) const {
         }
 
         if (cell->is_passable()) {
-            grid.MoveUnit(get_coord(), next_coord);
+            current_cell->MoveUnitTo(*cell, grid);
         }
     }
 }
