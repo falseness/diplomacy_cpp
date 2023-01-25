@@ -73,7 +73,7 @@ public:
     void DeleteUnit();
     void DeleteBuilding();
     void MoveUnitTo(Cell&);
-    void HitSomethingOnCell(int dmg);
+    void HitSomethingOnCell(int dmg, Grid&) const;
     Segment get_side(uint8_t, Screen&, const GameOptions&) const;
 private:
     [[nodiscard]] inline Unit* get_unit_ptr() {

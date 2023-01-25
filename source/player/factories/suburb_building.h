@@ -15,7 +15,7 @@ class SuburbBuildingFactory : public BuildingFactory {
 public:
     SuburbBuildingFactory(PlayersEntitiesFactories& all_factories, std::string);
     ClickResponse HandleClick(SceneInfo& scene, const Vector2D& click_pos, const GameOptions& game_option,
-                              Town* town) override;
+                              const Town* town) const override;
 };
 
 template <typename Building>
@@ -31,13 +31,14 @@ void SuburbBuildingFactory<Building>::BFSBody(std::vector<std::pair<int, int>>& 
 
 template <typename Building>
 ClickResponse SuburbBuildingFactory<Building>::HandleClick(
-        SceneInfo& scene, const Vector2D& click_pos, const GameOptions& game_options, Town *town) {
+        SceneInfo& scene, const Vector2D& click_pos, const GameOptions& game_options, const Town *town) const {
     std::pair<int, int> coord = CoordConverter::CalculateCoord(click_pos, game_options);
     auto cell = scene.grid.get_cell(coord);
     if (!is_correct_click(scene, coord) || !cell->get_building()->is_empty())
         return {true, false, false};
     unsigned int turns = town->get_player().get_factories_stats().buildings_production_stats.find(name_)->second.turns;
-    cell->template CreateBuilding<Building>(name_, ProductionInfo{name_, turns});
+
+    scene.grid.CreateBuilding<Building>(coord, std::move(ProductionInfo{name_, turns}));
     scene.town_production_interface.ReClick(scene);
     return {false, false, false};
 }

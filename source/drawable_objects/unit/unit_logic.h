@@ -11,5 +11,5 @@ class UnitLogic {
 public:
     static void Select(const SceneInfo&, const Unit&);
     // true if should unselect unit
-    static ClickResponse ClickLogic(Unit& unit, Grid&, std::pair<int, int> coord);
+    static ClickResponse ClickLogic(const Unit& unit, Grid&, std::pair<int, int> coord);
 };

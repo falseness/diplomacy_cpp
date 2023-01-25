@@ -6,7 +6,7 @@
 #include <source/drawable_objects_groups/game_scene/game_scene.h>
 
 
-ClickResponse UnitLogic::ClickLogic(Unit& unit, Grid& grid, std::pair<int, int> coord) {
+ClickResponse UnitLogic::ClickLogic(const Unit& unit, Grid& grid, std::pair<int, int> coord) {
     if (coord == unit.get_coord()) {
         return {true, false, true};
     }

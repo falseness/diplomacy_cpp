@@ -12,7 +12,7 @@ Building::Building(Cell *cell, std::string image_name) : Entity(cell, std::move(
         get_player().AddBuilding(this);
 }
 
-ClickResponse Building::HandleClick(SceneInfo& scene, const Vector2D &click_pos, const GameOptions &game_options) {
+ClickResponse Building::HandleClick(SceneInfo& scene, const Vector2D &click_pos, const GameOptions &game_options) const {
     scene.selection_border.Clear();
     scene.entity_interface.set_visible(false);
 

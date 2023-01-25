@@ -17,7 +17,7 @@ public:
     [[nodiscard]] std::string get_training_unit_name() const;
     void StartProduction(ProductionInfo);
     Barrack(Cell* cell, std::string image_name);
-    ClickResponse HandleClick(SceneInfo&, const Vector2D&, const GameOptions&) override;
+    ClickResponse HandleClick(SceneInfo&, const Vector2D&, const GameOptions&) const override;
     void Select(const SceneInfo&) const override;
     void NextTurn() override;
     [[nodiscard]] json get_info() const override;

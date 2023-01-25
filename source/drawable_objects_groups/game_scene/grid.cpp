@@ -9,8 +9,15 @@
 #include <cassert>
 #include <set>
 
-Grid::Grid(Players& players) : logic_helper_(kGridRowsCount, kGridColumnsCount) {
 
+class GridAction {
+    uint8_t action_index;
+    std::pair<int, int> coord1;
+    std::pair<int, int> coord2;
+};
+
+
+Grid::Grid(Players& players) : logic_helper_(kGridRowsCount, kGridColumnsCount) {
     size_t n = kGridRowsCount;
     size_t m = kGridColumnsCount;
     cells_.resize(n);
@@ -133,15 +140,6 @@ void Grid::RemoveSelection() {
     selected_entity_ = empty_unit_.get();
 }
 
-const Cell* Grid::get_cell(std::pair<int, int> coord) const {
-    return cells_[coord.first][coord.second].get();
-}
-
-Cell* Grid::get_cell(std::pair<int, int> coord) {
-    assert(!is_coord_out_of_range(coord));
-    return cells_[coord.first][coord.second].get();
-}
-
 bool Grid::is_coord_out_of_range(std::pair<int, int> coord) const {
     return CoordConverter::IsCoordOutOfRange(coord, cells_.size(), cells_[0].size());
 }
@@ -149,7 +147,35 @@ bool Grid::is_coord_out_of_range(std::pair<int, int> coord) const {
 void Grid::StartProduction(std::pair<int, int> building_position, ProductionInfo production_info) {
     auto barrack = dynamic_cast<Barrack*>(cells_[building_position.first][building_position.second]->
             get_building_ptr());
+    assert(barrack);
     barrack->StartProduction(std::move(production_info));
 }
 
+void Grid::DecreaseUnitMoves(std::pair<int, int> coord, int count) {
+    auto unit = cells_[coord.first][coord.second]->get_unit_ptr();
+    assert(!unit->is_empty());
+    unit->DecreaseMoves(count);
+}
+
+void Grid::AddSuburb(std::pair<int, int> town_coord, std::pair<int, int> new_suburb_coord) {
+    auto town = dynamic_cast<Town*>(get_cell_ptr(town_coord)->get_building_ptr());
+    assert(town);
+    town->AddSuburb(get_cell_ptr(new_suburb_coord).get());
+}
+
+void Grid::DecreaseUnitHP(std::pair<int, int> coord, int dmg) {
+    get_cell_ptr(coord)->get_unit_ptr()->DecreaseHP(dmg);
+}
+
+void Grid::DecreaseBuildingHP(std::pair<int, int> coord, int dmg) {
+    dynamic_cast<HittableEntity*>(get_cell_ptr(coord)->get_building_ptr())->DecreaseHP(dmg);
+}
+
+void Grid::DeleteUnit(std::pair<int, int> coord) {
+    get_cell_ptr(coord)->DeleteUnit();
+}
+
+void Grid::DeleteBuilding(std::pair<int, int> coord) {
+    get_cell_ptr(coord)->DeleteBuilding();
+}
 

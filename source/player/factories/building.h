@@ -20,7 +20,7 @@ public:
     [[nodiscard]] unsigned int get_turns_left(const Player&, const ProductionInfo&) const override;
     BuildingFactory(PlayersEntitiesFactories& all_factories, std::string);
     virtual void Select(SceneInfo&, const Town*);
-    virtual ClickResponse HandleClick(SceneInfo&, const Vector2D&, const GameOptions&, Town* town) = 0;
+    virtual ClickResponse HandleClick(SceneInfo&, const Vector2D&, const GameOptions&, const Town* town) const = 0;
 };
 
 class SuburbFactory : public BuildingFactory {
@@ -33,5 +33,5 @@ class SuburbFactory : public BuildingFactory {
 public:
     SuburbFactory(PlayersEntitiesFactories& all_factories, std::string);
     ClickResponse HandleClick(SceneInfo& scene, const Vector2D& click_pos, const GameOptions& game_option,
-                              Town* town) override;
+                              const Town* town) const override;
 };

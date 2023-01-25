@@ -22,7 +22,7 @@ public:
     inline void clear_building_production_plan() const {
         building_production_plan_ = "";
     }
-    void AddSuburb(std::pair<int, int>, Grid& grid);
-    ClickResponse HandleClick(SceneInfo&, const Vector2D&, const GameOptions&) override;
+    void AddSuburb(Cell* cell);
+    ClickResponse HandleClick(SceneInfo&, const Vector2D&, const GameOptions&) const override;
     void NextTurn() override;
 };

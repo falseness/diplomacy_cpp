@@ -97,14 +97,14 @@ void Cell::set_suburb(bool suburb_state) {
     is_suburb_ = suburb_state;
 }
 
-void Cell::HitSomethingOnCell(int dmg) {
-    if (get_building_ptr()->is_hittable()) {
-        auto building = dynamic_cast<HittableEntity*>(get_building_ptr());
-        building->Hit(dmg);
+void Cell::HitSomethingOnCell(int dmg, Grid& grid) const {
+    if (get_building()->is_hittable()) {
+        auto building = dynamic_cast<const HittableEntity*>(get_building());
+        building->Hit(dmg, grid);
         return;
     }
-    if (get_unit_ptr()->is_hittable()) {
-        get_unit_ptr()->Hit(dmg);
+    if (get_unit()->is_hittable()) {
+        get_unit()->Hit(dmg, grid);
         return;
     }
     assert(false);

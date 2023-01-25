@@ -7,7 +7,7 @@ Barrack::Barrack(Cell *cell, std::string image_name) :
     SuburbBuilding(cell, image_name), Building(cell, image_name),
     Entity(cell, std::move(image_name)) {}
 
-ClickResponse Barrack::HandleClick(SceneInfo& scene, const Vector2D& pos, const GameOptions& game_options) {
+ClickResponse Barrack::HandleClick(SceneInfo& scene, const Vector2D& pos, const GameOptions& game_options) const {
     auto result = Building::HandleClick(scene, pos, game_options);
     if (result.should_remove_selection)
         set_production_interface_visible(scene, false);

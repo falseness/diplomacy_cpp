@@ -24,7 +24,7 @@ public:
     static const std::string kEmptyEntityName;
     const std::string image_name_;
     void Draw(Screen&, const GameOptions&) override;
-    virtual ClickResponse HandleClick(SceneInfo&, const Vector2D& click_pos, const GameOptions& game_options) = 0;
+    virtual ClickResponse HandleClick(SceneInfo&, const Vector2D& click_pos, const GameOptions& game_options) const = 0;
     Entity(Cell*, std::string&&);
     [[nodiscard]] std::pair<int, int> get_coord() const;
     virtual json to_json();

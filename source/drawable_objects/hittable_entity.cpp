@@ -4,15 +4,17 @@
 
 #include "hittable_entity.h"
 
+#include "source/drawable_objects_groups/game_scene/grid.h"
+
 bool HittableEntity::is_hittable() const {
     return !is_my_turn();
 }
 
-void HittableEntity::Hit(int dmg) {
+void HittableEntity::Hit(int dmg, Grid& grid) const {
     dmg = std::min(dmg, static_cast<int>(hp_));
-    hp_ -= dmg;
+    AskGridToDecreaseHP(dmg, grid);
     if (!hp_)
-        Kill();
+        Kill(grid);
 }
 
 json HittableEntity::get_info() const {
@@ -23,4 +25,9 @@ json HittableEntity::get_info() const {
 
 bool HittableEntity::is_passable() const {
     return is_my_turn();
+}
+
+void HittableEntity::DecreaseHP(int dmg) {
+    assert(hp_ >= dmg);
+    hp_ -= dmg;
 }

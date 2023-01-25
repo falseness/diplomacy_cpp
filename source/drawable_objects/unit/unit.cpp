@@ -1,10 +1,10 @@
 #include "unit.h"
-#include <source/drawable_objects/cell/coord_converter.h>
-#include <source/drawable_objects/cell/cell.h>
-#include <source/drawable_objects_groups/game_scene/grid.h>
-#include <source/drawable_objects/unit/unit_logic.h>
-#include <source/drawable_objects_groups/game_scene/game_scene.h>
-#include <source/drawable_objects/hittable_entity.h>
+#include "source/drawable_objects/cell/coord_converter.h"
+#include "source/drawable_objects/cell/cell.h"
+#include "source/drawable_objects_groups/game_scene/grid.h"
+#include "source/drawable_objects/unit/unit_logic.h"
+#include "source/drawable_objects_groups/game_scene/game_scene.h"
+#include "source/drawable_objects/hittable_entity.h"
 
 const UnitStats& Unit::get_stats() const {
     return cell_->get_player().get_stats().units.find(image_name_)->second;
@@ -23,7 +23,7 @@ void Unit::set_cell(Cell* cell) {
     cell_ = cell;
 }
 
-ClickResponse Unit::HandleClick(SceneInfo& scene, const Vector2D &click_pos, const GameOptions &game_options) {
+ClickResponse Unit::HandleClick(SceneInfo& scene, const Vector2D &click_pos, const GameOptions &game_options) const {
     scene.selection_border.Clear();
     std::pair<int, int> coord = CoordConverter::CalculateCoord(click_pos, game_options);
     if (scene.grid.is_coord_out_of_range(coord))
@@ -50,8 +50,8 @@ void Unit::Select(const SceneInfo& scene) const {
 }
 
 
-void Unit::MoveTo(Grid& grid, std::pair<int, int> coord) {
-    moves_ -= grid.logic_helper_.get_info(coord);
+void Unit::MoveTo(Grid& grid, std::pair<int, int> coord) const {
+    grid.DecreaseUnitMoves(get_coord(), grid.logic_helper_.get_info(coord));
 
     std::vector<std::pair<int, int>> path;
     auto this_coord = coord;
@@ -64,14 +64,14 @@ void Unit::MoveTo(Grid& grid, std::pair<int, int> coord) {
         auto cell = grid.get_cell(next_coord);
         if (cell->is_passable()) {
             if (!cell->is_my_turn())
-                cell->DeleteBuilding();
+                grid.DeleteBuilding(cell->get_coord());
             grid.MoveUnit(get_coord(), next_coord);
             continue;
         }
         assert(next_coord == path.back());
 
         if (cell->is_hittable()) {
-            cell->HitSomethingOnCell(dmg_);
+            cell->HitSomethingOnCell(dmg_, grid);
         }
 
         if (cell->is_passable()) {
@@ -113,8 +113,12 @@ bool Unit::is_passable() const {
     return false;
 }
 
-void Unit::Kill() {
-    cell_->DeleteUnit();
+void Unit::Kill(Grid& grid) const {
+    grid.DeleteUnit(get_coord());
+}
+
+void Unit::AskGridToDecreaseHP(int dmg, Grid &grid) const {
+    grid.DecreaseUnitHP(get_coord(), dmg);
 }
 
 bool EmptyUnit::is_passable() const {

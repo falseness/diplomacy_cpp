@@ -7,7 +7,8 @@ class BuildingWithHpStats;
 
 class BuildingWithHp : virtual public Building, public HittableEntity {
 protected:
-    void Kill() override;
+    void Kill(Grid& grid) const override;
+    void AskGridToDecreaseHP(int dmg, Grid& grid) const override;
 public:
     [[nodiscard]] const BuildingWithHpStats& get_stats() const;
     BuildingWithHp(Cell* cell, std::string&& image_name);

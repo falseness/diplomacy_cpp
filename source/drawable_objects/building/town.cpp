@@ -51,7 +51,7 @@ void Town::Select(const SceneInfo& scene) const {
     scene.entity_interface.set_visible(true);
 }
 
-ClickResponse Town::HandleClick(SceneInfo& scene, const Vector2D& pos, const GameOptions& game_options) {
+ClickResponse Town::HandleClick(SceneInfo& scene, const Vector2D& pos, const GameOptions& game_options) const {
     if (building_production_plan_.empty()) {
         return Barrack::HandleClick(scene, pos, game_options);
     }
@@ -71,9 +71,8 @@ void Town::NextTurn() {
     Barrack::NextTurn();
 }
 
-void Town::AddSuburb(std::pair<int, int> coord, Grid& grid) {
-    auto cell = grid.get_cell(coord);
+void Town::AddSuburb(Cell* cell) {
     assert(!cell->is_suburb());
     cell->set_suburb(true);
-    suburbs_.push_back(coord);
+    suburbs_.push_back(cell->get_coord());
 }
