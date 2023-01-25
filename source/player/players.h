@@ -6,7 +6,7 @@ class Players {
     size_t whoose_turn_;
 public:
     [[nodiscard]] size_t get_whoose_turn() const;
-    void NextTurn();
+    void NextTurn(SceneInfo &scene);
     Players(std::vector<Color>&& players_colors, size_t whoose_turn);
     Player& operator[](size_t);
     [[nodiscard]] inline size_t size() const {

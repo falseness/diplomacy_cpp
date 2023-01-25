@@ -21,7 +21,7 @@ ClickResponse Building::HandleClick(SceneInfo& scene, const Vector2D &click_pos,
     return {true, !same_coord, false};
 }
 
-void Building::NextTurn() {}
+void Building::NextTurn(SceneInfo& scene) {}
 
 void Building::Select(const SceneInfo& scene) const {
     scene.selection_border.SelectCell(get_coord());

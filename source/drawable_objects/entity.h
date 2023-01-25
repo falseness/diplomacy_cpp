@@ -31,7 +31,7 @@ public:
     [[nodiscard]] virtual json get_info() const;
     virtual void Select(const SceneInfo&) const;
     [[nodiscard]] Color get_color() const;
-    virtual void NextTurn() = 0;
+    virtual void NextTurn(SceneInfo& scene) = 0;
     Player& get_player();
     [[nodiscard]] bool is_empty() const;
     [[nodiscard]] bool is_my_turn() const;

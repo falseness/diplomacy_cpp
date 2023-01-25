@@ -9,7 +9,7 @@ class Building : public virtual Entity {
 public:
     Building(Cell* cell, std::string image_name);
     ClickResponse HandleClick(SceneInfo&, const Vector2D& click_pos, const GameOptions& game_options) const override;
-    void NextTurn() override;
+    void NextTurn(SceneInfo& scene) override;
     void Select(const SceneInfo&) const override;
     ~Building() override;
 };

@@ -13,7 +13,7 @@ protected:
     void Kill(Grid& grid) const override;
     void AskGridToDecreaseHP(int dmg, Grid& grid) const override;
 public:
-    void NextTurn() override;
+    void NextTurn(SceneInfo& scene) override;
     [[nodiscard]] const UnitStats& get_stats() const;
     [[nodiscard]] unsigned int get_speed() const;
     [[nodiscard]] unsigned int get_maximum_hp() const override;

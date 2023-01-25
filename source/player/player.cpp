@@ -39,15 +39,15 @@ void Player::AddUnit(Unit* new_unit) {
         units_.push_back(new_unit);
 }
 
-void Player::NextTurn() {
+void Player::NextTurn(SceneInfo& scene) {
     // some elements can be deleted in cycle
     auto units_copy = units_;
     for (auto unit : units_copy) {
-        unit->NextTurn();
+        unit->NextTurn(scene);
     }
     auto buildings_copy = buildings_;
     for (auto building : buildings_copy) {
-        building->NextTurn();
+        building->NextTurn(scene);
     }
 }
 

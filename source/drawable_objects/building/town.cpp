@@ -74,10 +74,10 @@ ClickResponse Town::HandleClick(SceneInfo& scene, const Vector2D& pos, const Gam
     return response;
 }
 
-void Town::NextTurn() {
-    potential_suburbs_ = get_suburbs();
+void Town::NextTurn(SceneInfo& scene) {
+    potential_suburbs_ = get_suburbs(scene.grid);
     clear_building_production_plan();
-    Barrack::NextTurn();
+    Barrack::NextTurn(scene);
 }
 
 void Town::AddSuburb(Cell* cell) {

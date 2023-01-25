@@ -10,7 +10,7 @@ class BuildingUnderConstruction : public Building {
     static constexpr float kOpacity = 0.5f;
 public:
     BuildingUnderConstruction(Cell* cell, std::string image_name, ProductionInfo production_info);
-    void NextTurn() override;
+    void NextTurn(SceneInfo& scene) override;
     [[nodiscard]] inline bool is_passable() const override;
     void Draw(Screen& screen, const GameOptions& game_options) override;
     [[nodiscard]] json get_info() const override;
@@ -18,10 +18,10 @@ public:
 
 
 template<typename BuildingAfterConstruction>
-void BuildingUnderConstruction<BuildingAfterConstruction>::NextTurn() {
+void BuildingUnderConstruction<BuildingAfterConstruction>::NextTurn(SceneInfo& scene) {
     assert(production_info_.turns);
     if (--production_info_.turns) {
-        Building::NextTurn();
+        Building::NextTurn(scene);
         return;
     }
     cell_->template DestroyBuildingAndCreateOne<BuildingAfterConstruction>(std::string(production_info_.name));

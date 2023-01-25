@@ -19,6 +19,6 @@ public:
     Barrack(Cell* cell, std::string image_name);
     ClickResponse HandleClick(SceneInfo&, const Vector2D&, const GameOptions&) const override;
     void Select(const SceneInfo&) const override;
-    void NextTurn() override;
+    void NextTurn(SceneInfo& scene) override;
     [[nodiscard]] json get_info() const override;
 };

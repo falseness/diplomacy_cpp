@@ -50,7 +50,7 @@ class Player {
     }
     int gold_ = 0;
 public:
-    void NextTurn();
+    void NextTurn(SceneInfo& scene);
     void AddUnit(Unit*);
     void DeleteUnit(Unit*);
     void AddBuilding(Building*);

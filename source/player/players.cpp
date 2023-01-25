@@ -12,12 +12,12 @@ Player& Players::operator[](size_t index) {
     return players_[index];
 }
 
-void Players::NextTurn() {
+void Players::NextTurn(SceneInfo &scene) {
     assert(players_.size() > 1);
     whoose_turn_ = (whoose_turn_ + 1) % players_.size();
-    players_[whoose_turn_].NextTurn();
+    players_[whoose_turn_].NextTurn(scene);
     if (!whoose_turn_)
-        NextTurn();
+        NextTurn(scene);
 }
 
 size_t Players::get_whoose_turn() const {
