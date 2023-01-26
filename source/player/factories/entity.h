@@ -4,9 +4,8 @@
 #include <map>
 
 class Unit;
-class Player;
-
 class Cell;
+class Player;
 
 class PlayersEntitiesFactories;
 
@@ -33,10 +32,4 @@ public:
     [[nodiscard]] unsigned int get_turns_left(const Player&, const ProductionInfo&) const override;
     virtual void Create(Cell*, const ProductionInfo& production) const;
     UnitFactory(PlayersEntitiesFactories& all_factories, std::string);
-};
-
-class RangeUnitFactory : public UnitFactory {
-public:
-    void Create(Cell*, const ProductionInfo& production) const override;
-    RangeUnitFactory(PlayersEntitiesFactories&, std::string);
 };

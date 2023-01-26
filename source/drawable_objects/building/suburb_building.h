@@ -12,5 +12,5 @@ public:
     [[nodiscard]] int get_income() const;
     [[nodiscard]] json get_info() const override;
     [[nodiscard]] bool is_passable() const override;
-    [[nodiscard]] bool is_hittable() const override;
+    [[nodiscard]] bool is_hittable(size_t asking_player_index) const override;
 };

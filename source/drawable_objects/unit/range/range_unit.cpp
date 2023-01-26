@@ -23,7 +23,11 @@ void RangeUnit::AttackSomething(Grid &grid, std::pair<int, int> cell_coord) cons
     assert(is_attackable(cell));
     grid.DecreaseUnitMoves(get_coord(), static_cast<int>(get_moves()));
 
-    if (cell.is_hittable()) {
+    AttackAfterPreparations(grid, cell_coord, cell);
+}
+
+void RangeUnit::AttackAfterPreparations(Grid &grid, std::pair<int, int> &cell_coord, const Cell &cell) const {
+    if (cell.is_hittable(get_player_index())) {
         cell.HitSomethingOnCell(dmg_, grid);
     }
     else {
@@ -35,8 +39,13 @@ void RangeUnit::Select(const SceneInfo & scene) const {
     scene.range_unit_attack_border.set_inner_line_color(get_color());
 
     unsigned int bfs_moves = (is_my_turn() && !get_moves()) ? 0 : get_range();
-    RangeUnitLogic::kRangeUnitLogic.Select(scene, *this, bfs_moves);
+    CallUnitLogicSelect(scene, bfs_moves);
     Unit::Select(scene);
+}
+
+void RangeUnit::CallUnitLogicSelect(const SceneInfo &scene,
+                                    unsigned int bfs_moves) const {
+    RangeUnitLogic::kRangeUnitLogic.Select(scene, *this, bfs_moves);
 }
 
 ClickResponse RangeUnit::ClickLogic(SceneInfo &scene, std::pair<int, int> &coord) const {
@@ -49,3 +58,4 @@ ClickResponse RangeUnit::HandleClick(SceneInfo &scene, const Vector2D &click_pos
     scene.range_unit_attack_border.Clear();
     return Unit::HandleClick(scene, click_pos, game_options);
 }
+

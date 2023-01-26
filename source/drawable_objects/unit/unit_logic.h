@@ -14,7 +14,7 @@ class UnitLogic {
     void InitializeLogicHelper(GridLogicHelper& logic_helper, std::pair<int, int> coord) const;
 protected:
     [[nodiscard]] inline virtual GridLogicHelper& get_logic_helper(const Grid &grid) const;
-    virtual bool CellSkipCondition(const Cell& cell) const;
+    virtual bool CellSkipCondition(const Cell& cell, const Unit& unit) const;
     virtual void BFSBodyHandler(const unsigned int max_moves, const Unit &unit, const Grid &grid,
              std::deque<std::pair<int, int>> &coords, int moves_count, std::pair<int, int> new_coord) const;
     virtual void UpdateBorder(const SceneInfo& scene, std::vector<std::pair<int, int>>& visited_coords) const;

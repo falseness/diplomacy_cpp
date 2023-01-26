@@ -7,11 +7,15 @@
 #include "source/player/factories/building_and_suburb.h"
 #include "source/player/factories/suburb_building.h"
 #include "source/player/factories/outside_building.h"
+#include "source/player/factories/range_unit.h"
+#include "source/drawable_objects/unit/range/range_unit.h"
+#include "source/drawable_objects/unit/range/catapult.h"
 
 
 Player::Player(const Color& color) : color_(color) {
     UnitStats(entities_stats_, "peasant", 2, 1, 2);
     RangeUnitStats(entities_stats_, "archer", 1, 2, 2, 2);
+    RangeUnitStats(entities_stats_, "catapult", 1, 1, 4, 5);
 
 
     UnitStats(entities_stats_, "", 0, 0, 0);
@@ -21,8 +25,12 @@ Player::Player(const Color& color) : color_(color) {
 
     EntityProductionStats(entities_factories_.units_production_stats, "peasant", 10, 1);
     CreateUnitFactory<UnitFactory>("peasant");
+
     EntityProductionStats(entities_factories_.units_production_stats, "archer", 25, 2);
-    CreateUnitFactory<RangeUnitFactory>("archer");
+    CreateUnitFactory<RangeUnitFactory<RangeUnit>>("archer");
+
+    EntityProductionStats(entities_factories_.units_production_stats, "catapult", 30, 3);
+    CreateUnitFactory<RangeUnitFactory<Catapult>>("catapult");
     
 
     EntityProductionStats(entities_factories_.buildings_production_stats, "suburb", 1, 0);

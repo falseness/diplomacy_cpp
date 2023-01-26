@@ -31,6 +31,7 @@ public:
         assert(static_cast<int>(moves_) >= count);
         moves_ -= count;
     }
+    [[nodiscard]] virtual inline bool can_melee_interact(const Cell& cell) const;
     [[nodiscard]] json to_json() override;
     [[nodiscard]] json get_info() const override;
     [[nodiscard]] bool is_passable() const override;
@@ -45,7 +46,7 @@ protected:
     }
 public:
     [[nodiscard]] bool is_passable() const override;
-    [[nodiscard]] bool is_hittable() const override;
+    [[nodiscard]] bool is_hittable(size_t asking_player_index) const override;
     explicit EmptyUnit(Cell*);
     void Draw(Screen&, const GameOptions&) override;
     void Select(const SceneInfo&) const override;

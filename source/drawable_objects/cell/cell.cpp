@@ -71,15 +71,15 @@ void Cell::set_player(size_t player_index) {
 const float Cell::kColorAlphaRatio = 0.4f;
 
 bool Cell::is_my_turn() const {
-    return player_index_ == players_.get_whoose_turn();
+    return is_my_player(players_.get_whoose_turn());
 }
 
 bool Cell::is_passable() const {
     return building_->is_passable() && unit_->is_passable();
 }
 
-bool Cell::is_hittable() const {
-    return building_->is_hittable() || unit_->is_hittable();
+bool Cell::is_hittable(size_t another_player_index) const {
+    return building_->is_hittable(another_player_index) || unit_->is_hittable(another_player_index);
 }
 
 void Cell::DeleteUnit() {
@@ -109,12 +109,12 @@ void Cell::set_suburb(bool suburb_state) {
 }
 
 void Cell::HitSomethingOnCell(int dmg, Grid& grid) const {
-    if (get_building()->is_hittable()) {
+    if (get_building()->is_hittable(players_.get_whoose_turn())) {
         auto building = dynamic_cast<const HittableEntity*>(get_building());
         building->Hit(dmg, grid);
         return;
     }
-    if (get_unit()->is_hittable()) {
+    if (get_unit()->is_hittable(players_.get_whoose_turn())) {
         get_unit()->Hit(dmg, grid);
         return;
     }
@@ -134,4 +134,8 @@ void Cell::SetBuilding(std::unique_ptr<Building> &&building) {
     assert(building->get_cell() == this);
     get_player().AddBuilding(building.get());
     building_ = std::move(building);
+}
+
+bool Cell::is_my_player(size_t another_player_index) const {
+    return another_player_index == player_index_;
 }

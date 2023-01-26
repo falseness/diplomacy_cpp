@@ -5,6 +5,9 @@ void AssetsManager::load_all_images() {
     images_["peasant"].loadFromFile("entities/units/peasant.png");
     images_["archer"] = sf::Texture();
     images_["archer"].loadFromFile("entities/units/archer.png");
+
+    load_image("catapult", "entities/units/catapult.png");
+
     images_["town"] = sf::Texture();
     images_["town"].loadFromFile("entities/buildings/town.png");
     images_["barrack"] = sf::Texture();

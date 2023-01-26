@@ -30,11 +30,5 @@ EntityProductionStats::EntityProductionStats(std::map<std::string, EntityProduct
     stats.emplace(std::move(name), *this);
 }
 
-void RangeUnitFactory::Create(Cell* cell, const ProductionInfo& production) const {
-    cell->CreateUnit<RangeUnit>(std::string(production.name));
-}
-
-RangeUnitFactory::RangeUnitFactory(PlayersEntitiesFactories& all_factories, std::string unit_name) :
-    UnitFactory(all_factories, std::move(unit_name)) {}
 
 

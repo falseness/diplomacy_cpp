@@ -56,7 +56,7 @@ void UnitLogic::Select(const SceneInfo &scene, const Unit &unit, const unsigned 
             if (grid.is_coord_out_of_range(new_coord) || logic_helper.is_visited(new_coord))
                 continue;
 
-            if (CellSkipCondition(*grid.get_cell(new_coord))) {
+            if (CellSkipCondition(*grid.get_cell(new_coord), unit)) {
                 continue;
             }
             logic_helper.visit(new_coord);
@@ -70,9 +70,9 @@ void UnitLogic::Select(const SceneInfo &scene, const Unit &unit, const unsigned 
     UpdateBorder(scene, visited_coords);
 }
 
-void UnitLogic::BFSBodyHandler(const unsigned int max_moves, const Unit &, const Grid &grid,
+void UnitLogic::BFSBodyHandler(const unsigned int max_moves, const Unit& unit, const Grid &grid,
                     std::deque<std::pair<int, int>> &coords, int moves_count, std::pair<int, int> new_coord) const {
-    if (grid.get_cell(new_coord)->is_hittable())
+    if (unit.is_attackable(*grid.get_cell(new_coord)))
         get_logic_helper(grid).set_info(new_coord, static_cast<int>(max_moves));
     else {
         get_logic_helper(grid).set_info(new_coord, moves_count + 1);
@@ -87,8 +87,8 @@ void UnitLogic::InitializeLogicHelper(GridLogicHelper &logic_helper, std::pair<i
     logic_helper.set_parent(coord, coord);
 }
 
-bool UnitLogic::CellSkipCondition(const Cell &cell) const {
-    return !cell.is_passable() && !cell.is_hittable();
+bool UnitLogic::CellSkipCondition(const Cell &cell, const Unit& unit) const {
+    return !unit.can_melee_interact(cell);
 }
 
 void UnitLogic::UpdateBorder(const SceneInfo &scene, vector<std::pair<int, int>> &visited_coords) const {

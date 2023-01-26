@@ -7,7 +7,7 @@
 
 const RangeUnitLogic RangeUnitLogic::kRangeUnitLogic = RangeUnitLogic();
 
-bool RangeUnitLogic::CellSkipCondition(const Cell &cell) const {
+bool RangeUnitLogic::CellSkipCondition(const Cell &cell, const Unit &unit) const {
     return false;
 }
 

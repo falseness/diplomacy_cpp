@@ -6,8 +6,8 @@
 
 #include "source/drawable_objects_groups/game_scene/grid/grid.h"
 
-bool HittableEntity::is_hittable() const {
-    return !is_my_turn();
+bool HittableEntity::is_hittable(size_t asking_player_index) const {
+    return !is_my_player(asking_player_index);
 }
 
 void HittableEntity::Hit(int dmg, Grid& grid) const {

@@ -1,10 +1,10 @@
+#pragma once
+
 #include <string>
 #include <source/drawable_objects/drawable_object.h>
 #include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
-
-#pragma once
 
 class Cell;
 class SceneInfo;
@@ -34,6 +34,7 @@ public:
     [[nodiscard]] Color get_color() const;
     virtual void NextTurn(SceneInfo& scene) = 0;
     Player& get_player();
+    [[nodiscard]] size_t get_player_index() const;
     [[nodiscard]] inline const Cell* get_cell() const {
         return cell_;
     }
@@ -42,7 +43,8 @@ public:
     [[nodiscard]] const Player& get_player() const;
     [[nodiscard]] virtual bool is_passable() const = 0;
     ~Entity() override = default;
-    [[nodiscard]] virtual bool is_hittable() const;
+    [[nodiscard]] bool is_my_player(size_t another_player_index) const;
+    [[nodiscard]] virtual bool is_hittable(size_t asking_player_index) const;
     [[nodiscard]] const PlayersEntitiesStats& get_player_stats() const;
 
 };

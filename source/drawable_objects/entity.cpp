@@ -64,12 +64,20 @@ bool Entity::is_empty() const {
     return image_name_ == Entity::kEmptyEntityName;
 }
 
-bool Entity::is_hittable() const {
+bool Entity::is_hittable(size_t asking_player_index) const {
     return false;
 }
 
 const PlayersEntitiesStats &Entity::get_player_stats() const {
     return cell_->get_player().get_stats();
+}
+
+size_t Entity::get_player_index() const {
+    return cell_->get_player_index();
+}
+
+bool Entity::is_my_player(size_t another_player_index) const {
+    return cell_->is_my_player(another_player_index);
 }
 
 const std::string Entity::kEmptyEntityName;

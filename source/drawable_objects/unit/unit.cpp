@@ -78,7 +78,7 @@ void Unit::MoveTo(Grid& grid, std::pair<int, int> coord) const {
         }
         assert(next_coord == path.back());
 
-        if (cell->is_hittable()) {
+        if (cell->is_hittable(get_player_index())) {
             cell->HitSomethingOnCell(dmg_, grid);
         }
 
@@ -130,7 +130,11 @@ void Unit::AskGridToDecreaseHP(int dmg, Grid &grid) const {
 }
 
 bool Unit::is_attackable(const Cell &cell) const {
-    return cell.is_hittable();
+    return cell.is_hittable(get_player_index());
+}
+
+bool Unit::can_melee_interact(const Cell &cell) const {
+    return cell.is_passable() || cell.is_hittable(get_player_index());
 }
 
 bool EmptyUnit::is_passable() const {
@@ -144,6 +148,6 @@ void EmptyUnit::Draw(Screen &, const GameOptions &) {}
 
 void EmptyUnit::Select(const SceneInfo&) const {}
 
-bool EmptyUnit::is_hittable() const {
+bool EmptyUnit::is_hittable(size_t asking_player_index) const {
     return false;
 }

@@ -58,7 +58,7 @@ public:
         return grid_cells_.get_columns_count();
     }
     Grid& operator=(const Grid&) = delete;
-    [[nodiscard]] inline const Cell* get_cell(const std::pair<int, int> coord) const {
+    [[nodiscard]] inline const Cell *get_cell(const std::pair<int, int> coord) const {
         return grid_cells_.get_cell(coord);
     }
     [[nodiscard]] inline bool is_coord_out_of_range(std::pair<int, int> coord) const {

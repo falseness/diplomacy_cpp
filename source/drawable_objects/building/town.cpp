@@ -21,8 +21,8 @@ bool Town::is_passable() const {
     return BuildingWithHp::is_passable();
 }
 
-bool Town::is_hittable() const {
-    return BuildingWithHp::is_hittable();
+bool Town::is_hittable(size_t asking_player_index) const {
+    return BuildingWithHp::is_hittable(asking_player_index);
 }
 
 void Town::set_production_interface_visible(const SceneInfo& scene, bool visibility) const {
