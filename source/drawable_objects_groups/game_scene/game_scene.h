@@ -15,6 +15,7 @@ struct SceneInfo {
     Players players;
     Grid grid;
     mutable SelectionBorder selection_border;
+    mutable TwoLayersSelectionBorder range_unit_attack_border;
     mutable EntityInfoInterface entity_interface;
     mutable ProductionInterface production_interface;
     mutable TownProductionInterface town_production_interface;

@@ -7,8 +7,11 @@ struct Vector2D {
     Vector2D& operator+=(const Vector2D&);
     Vector2D& operator-=(const Vector2D&);
     Vector2D& operator*=(float);
-    float get_squared_length() const;
-    float get_length() const;
+    Vector2D& operator/=(float);
+    [[nodiscard]] float get_squared_length() const;
+    [[nodiscard]] float get_length() const;
+    void Normalize();
+    void ReplaceForPerpendicular();
 };
 
 Vector2D operator+(const Vector2D&, const Vector2D&);

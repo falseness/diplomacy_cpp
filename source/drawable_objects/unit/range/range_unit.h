@@ -9,6 +9,8 @@ protected:
     ClickResponse ClickLogic(SceneInfo &scene, std::pair<int, int> &coord) const override;
 public:
     RangeUnit(Cell*, std::string);
+    ClickResponse HandleClick(SceneInfo& scene, const Vector2D &click_pos,
+                              const GameOptions &game_options) const override;
     [[nodiscard]] unsigned int get_range() const;
     void AttackSomething(Grid& grid, std::pair<int, int> cell_coord) const;
     [[nodiscard]] inline bool is_attackable(const Cell& cell) const override {

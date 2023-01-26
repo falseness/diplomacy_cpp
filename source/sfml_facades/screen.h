@@ -38,6 +38,7 @@ public:
                                   const Vector2D &position, float opacity);
     void DrawVerticalLine(float x, float y_bottom, float y_up, float width, Color color);
     void DrawLine(Vector2D begin, Vector2D end, float width, Color color);
+    void DrawCenteredLine(Vector2D begin, Vector2D end, float width, Color color);
     void DrawText(const Text&);
     void Display();
     bool IsOpen() const;

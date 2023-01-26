@@ -26,8 +26,7 @@ void RangeUnitLogic::BFSBodyHandler(const unsigned int max_moves, const Unit &un
 
 
 void RangeUnitLogic::UpdateBorder(const SceneInfo &scene, vector<std::pair<int, int>> &visited_coords) const {
-    // todo: make attack border for range units
-    //UnitLogic::UpdateBorder(scene, visited_coords);
+    scene.range_unit_attack_border.UpdateBorder(visited_coords, get_logic_helper(scene.grid));
 }
 
 GridLogicHelper &RangeUnitLogic::get_logic_helper(const Grid &grid) const {

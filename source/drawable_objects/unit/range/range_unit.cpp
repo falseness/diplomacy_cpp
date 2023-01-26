@@ -32,11 +32,20 @@ void RangeUnit::AttackSomething(Grid &grid, std::pair<int, int> cell_coord) cons
 }
 
 void RangeUnit::Select(const SceneInfo & scene) const {
-    RangeUnitLogic::kRangeUnitLogic.Select(scene, *this, get_moves() ? get_range() : 0);
+    scene.range_unit_attack_border.set_inner_line_color(get_color());
+
+    unsigned int bfs_moves = (is_my_turn() && !get_moves()) ? 0 : get_range();
+    RangeUnitLogic::kRangeUnitLogic.Select(scene, *this, bfs_moves);
     Unit::Select(scene);
 }
 
 ClickResponse RangeUnit::ClickLogic(SceneInfo &scene, std::pair<int, int> &coord) const {
     ClickResponse click_response = RangeUnitLogic::kRangeUnitLogic.ClickLogic(*this, scene.grid, coord);
     return click_response;
+}
+
+ClickResponse RangeUnit::HandleClick(SceneInfo &scene, const Vector2D &click_pos,
+                                     const GameOptions &game_options) const {
+    scene.range_unit_attack_border.Clear();
+    return Unit::HandleClick(scene, click_pos, game_options);
 }

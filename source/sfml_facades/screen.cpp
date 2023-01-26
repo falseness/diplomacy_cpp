@@ -238,3 +238,12 @@ sf::Sprite Screen::get_sprite(const std::string &image_name, const ObjectSize &i
     ChangeSprite(sprite, image_size, position);
     return std::move(sprite);
 }
+
+void Screen::DrawCenteredLine(Vector2D begin, Vector2D end, float width, Color color) {
+    // todo: refactor it
+    Vector2D dt = end - begin;
+    dt.Normalize();
+    dt.ReplaceForPerpendicular();
+    dt *= width / 2;
+    DrawLine(begin + dt, end + dt, width, color);
+}

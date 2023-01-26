@@ -1,7 +1,11 @@
-#include <cstdint>
 #include "vector2d.h"
-#include <source/utility/geometry.h>
+
+#include <cstdint>
 #include <cmath>
+#include <cassert>
+
+#include "source/utility/geometry.h"
+
 
 Vector2D::Vector2D(float init_x, float init_y) : x(init_x), y(init_y) {}
 
@@ -29,6 +33,21 @@ float Vector2D::get_squared_length() const {
 
 float Vector2D::get_length() const {
     return sqrtf(get_squared_length());
+}
+
+Vector2D& Vector2D::operator/=(float value) {
+    assert(value);
+    *this *= 1 / value;
+    return *this;
+}
+
+void Vector2D::Normalize() {
+    *this /= get_length();
+}
+
+void Vector2D::ReplaceForPerpendicular() {
+    std::swap(x, y);
+    y = -y;
 }
 
 Vector2D operator+(const Vector2D& vector1, const Vector2D& vector2) {

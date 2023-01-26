@@ -4,6 +4,7 @@
 
 GameScene::GameScene(Screen& screen, const GameOptions& game_options) : info_(screen), next_turn_button_(screen) {
     drawable_objects_.push_back(&info_.grid);
+    drawable_objects_.push_back(&info_.range_unit_attack_border);
     drawable_objects_.push_back(&info_.selection_border);
     drawable_objects_.push_back(&next_turn_button_);
     drawable_objects_.push_back(&info_.entity_interface);
@@ -35,11 +36,14 @@ void GameScene::HandleKeyEnterPress() {
 
 SceneInfo::SceneInfo(Screen& screen) :
         players({Color(80, 80, 80), Color(255, 0, 0), Color(0, 255, 0)}, 1), grid(players),
-        selection_border(grid, Color::kWhite), entity_interface(screen), production_interface(screen),
+        selection_border(grid, Color::kWhite),
+        range_unit_attack_border(grid, Color(255, 255, 255), Color(0, 0, 255)),
+        entity_interface(screen), production_interface(screen),
         town_production_interface(screen) {}
 
 void SceneInfo::ClearInterfaces() {
     selection_border.Clear();
+    range_unit_attack_border.Clear();
     entity_interface.set_visible(false);
     town_production_interface.set_visible(false);
     production_interface.set_visible(false);

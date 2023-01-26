@@ -10,7 +10,12 @@ void SelectionBorder::Draw(Screen& screen, const GameOptions& game_options) {
 
     for (auto encoded_segment : segments_) {
         auto segment = CalculateSegment(encoded_segment.first, encoded_segment.second, screen, game_options);
-        screen.DrawLine(segment.pos1, segment.pos2, border_width, line_color_);
+        if (draw_centered_) {
+            screen.DrawCenteredLine(segment.pos1, segment.pos2, border_width, line_color_);
+        }
+        else {
+            screen.DrawLine(segment.pos1, segment.pos2, border_width, line_color_);
+        }
     }
 }
 
@@ -27,8 +32,10 @@ void SelectionBorder::Clear() {
     segments_.clear();
 }
 
-SelectionBorder::SelectionBorder(const Grid& grid, Color line_color, float border_width_multiply_ratio) : grid_(grid),
-    line_color_(line_color), border_width_multiply_ratio_(border_width_multiply_ratio) {}
+SelectionBorder::SelectionBorder(const Grid& grid, Color line_color, float border_width_multiply_ratio,
+                                 bool draw_centered) : grid_(grid), line_color_(line_color),
+                                 border_width_multiply_ratio_(border_width_multiply_ratio),
+                                 draw_centered_(draw_centered) {}
 
 void SelectionBorder::UpdateBorder(const std::vector<std::pair<int, int>> &visited_cells,
                                    const GridLogicHelper &logic_helper) {
@@ -48,4 +55,11 @@ void SelectionBorder::SelectCell(std::pair<int, int> coord) {
     for (size_t i = 0; i < Grid::kHexagonMaximumNeighbours; ++i) {
         AddLine(coord, i);
     }
+}
+
+TwoLayersSelectionBorder::TwoLayersSelectionBorder(const Grid &grid, Color outer_line_color, Color inner_line_color,
+   float outer_border_width_multiply_ratio, float inner_border_width_multiply_ratio) :
+   outer_border_(grid, outer_line_color, outer_border_width_multiply_ratio, true),
+   inner_border_(grid, inner_line_color, inner_border_width_multiply_ratio, true){
+
 }
