@@ -29,5 +29,6 @@ class GameScene : public Scene {
 public:
     GameScene(Screen& screen, const GameOptions&);
     void HandleClick(const Vector2D&, const GameOptions&) override;
-    void HandleKeyPress();
+    void HandleKeyBackspacePress();
+    void HandleKeyEnterPress();
 };

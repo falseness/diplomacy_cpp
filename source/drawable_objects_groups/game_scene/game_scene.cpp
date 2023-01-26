@@ -25,8 +25,12 @@ void GameScene::HandleClick(const Vector2D& click_pos, const GameOptions& game_o
     }
 }
 
-void GameScene::HandleKeyPress() {
+void GameScene::HandleKeyBackspacePress() {
     info_.grid.HandleKeyPress(info_);
+}
+
+void GameScene::HandleKeyEnterPress() {
+    next_turn_button_.NextTurn(info_);
 }
 
 SceneInfo::SceneInfo(Screen& screen) :

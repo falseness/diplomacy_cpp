@@ -12,9 +12,12 @@ void EventManager::HandleEvents() {
         else if (event.type == sf::Event::MouseButtonPressed)
             click_event_ = std::make_pair(Vector2D(static_cast<float>(event.mouseButton.x),
                                                    static_cast<float>(event.mouseButton.y)), true);
-        else if (event.type == sf::Event::KeyPressed && event.key.code == kKeyboardPressButton) {
-            has_key_press_event_ = true;
+        else if (event.type != sf::Event::KeyPressed) {
+            continue;
+
         }
+        has_key_press_backspace_event_ = event.key.code == kKeyboardPressBackspaceButton;
+        has_key_press_enter_event_ = event.key.code == kKeyboardPressEnterButton;
     }
 }
 
@@ -24,7 +27,7 @@ EventManager::EventManager(sf::RenderWindow& window) : window_(window),
 void EventManager::NextIteration() {
     click_event_ = no_click_event_;
     has_close_event_ = false;
-    has_key_press_event_ = false;
+    has_key_press_backspace_event_ = has_key_press_enter_event_ = false;
     HandleEvents();
 }
 
@@ -36,6 +39,10 @@ const std::pair<Vector2D, bool>& EventManager::get_click_event() {
     return click_event_;
 }
 
-bool EventManager::HasKeyPressEvent() {
-    return has_key_press_event_;
+bool EventManager::HasKeyPressBackspaceEvent() const {
+    return has_key_press_backspace_event_;
+}
+
+bool EventManager::HasKeyPressEnterEvent() const {
+    return has_key_press_enter_event_;
 }

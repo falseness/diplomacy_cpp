@@ -17,14 +17,18 @@ void Game::EventsIteration() {
         library_facade_.screen.Close();
         return;
     }
-    if (library_facade_.event_manager.HasKeyPressEvent()) {
-        game_scene_->HandleKeyPress();
+    if (library_facade_.event_manager.HasKeyPressBackspaceEvent()) {
+        game_scene_->HandleKeyBackspacePress();
     }
 
     const std::pair<Vector2D, bool>& click_event = library_facade_.event_manager.get_click_event();
     if (click_event.second) {
         game_options_.draw_offset = library_facade_.screen.get_draw_offset();
         game_scene_->HandleClick(click_event.first, game_options_);
+    }
+
+    if (library_facade_.event_manager.HasKeyPressEnterEvent()) {
+        game_scene_->HandleKeyEnterPress();
     }
 }
 
