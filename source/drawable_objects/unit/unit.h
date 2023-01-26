@@ -36,6 +36,7 @@ public:
     [[nodiscard]] json get_info() const override;
     [[nodiscard]] bool is_passable() const override;
     [[nodiscard]] inline virtual bool is_attackable(const Cell& cell) const;
+    [[nodiscard]] bool is_on_high_ground() const;
     ~Unit() override = default;
 };
 

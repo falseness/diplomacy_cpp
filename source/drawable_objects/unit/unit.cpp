@@ -137,6 +137,10 @@ bool Unit::can_melee_interact(const Cell &cell) const {
     return cell.is_passable() || cell.is_hittable(get_player_index());
 }
 
+bool Unit::is_on_high_ground() const {
+    return get_cell()->get_building()->is_high_ground();
+}
+
 bool EmptyUnit::is_passable() const {
     return true;
 }

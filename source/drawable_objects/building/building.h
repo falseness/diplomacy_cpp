@@ -20,6 +20,9 @@ public:
     [[nodiscard]] virtual inline bool can_be_shot() const {
         return !is_my_turn();
     }
+    [[nodiscard]] virtual inline bool is_high_ground() const {
+        return false;
+    }
     ~Building() override;
 };
 

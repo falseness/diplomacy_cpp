@@ -31,6 +31,9 @@ public:
     [[nodiscard]] inline bool can_be_shot_through() const override {
         return false;
     }
+    [[nodiscard]] inline bool is_high_ground() const override {
+        return true;
+    }
     [[nodiscard]] inline int get_range_addition() const override {
         return kTownRangeAddition;
     }

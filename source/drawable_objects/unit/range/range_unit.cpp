@@ -4,6 +4,7 @@
 #include "source/drawable_objects_groups/game_scene/game_scene.h"
 #include "source/drawable_objects_groups/game_scene/grid/grid.h"
 #include "source/drawable_objects/unit/range/range_unit_logic.h"
+#include "source/drawable_objects/unit/range/catapult_logic.h"
 
 
 RangeUnit::RangeUnit(Cell* cell, std::string name) : Unit(cell, name), Entity(cell, std::move(name)) {
@@ -45,12 +46,20 @@ void RangeUnit::Select(const SceneInfo & scene) const {
 
 void RangeUnit::CallUnitLogicSelect(const SceneInfo &scene,
                                     unsigned int bfs_moves) const {
-    RangeUnitLogic::kRangeUnitLogic.Select(scene, *this, bfs_moves);
+    // todo: refactor it
+    if (is_on_high_ground()) {
+        CatapultUnitLogic::kCatapultUnitLogic.Select(scene, *this, bfs_moves);
+    }
+    else {
+        RangeUnitLogic::kRangeUnitLogic.Select(scene, *this, bfs_moves);
+    }
 }
 
 ClickResponse RangeUnit::ClickLogic(SceneInfo &scene, std::pair<int, int> &coord) const {
-    ClickResponse click_response = RangeUnitLogic::kRangeUnitLogic.ClickLogic(*this, scene.grid, coord);
-    return click_response;
+    if (is_on_high_ground()) {
+        return CatapultUnitLogic::kCatapultUnitLogic.ClickLogic(*this, scene.grid, coord);
+    }
+    return RangeUnitLogic::kRangeUnitLogic.ClickLogic(*this, scene.grid, coord);
 }
 
 ClickResponse RangeUnit::HandleClick(SceneInfo &scene, const Vector2D &click_pos,

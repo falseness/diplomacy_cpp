@@ -25,4 +25,7 @@ public:
     [[nodiscard]] inline int get_range_addition() const override {
         return kTowerRangeAddition;
     }
+    [[nodiscard]] inline bool is_high_ground() const override {
+        return true;
+    }
 };
