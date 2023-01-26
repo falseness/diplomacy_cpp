@@ -14,6 +14,9 @@ public:
     [[nodiscard]] virtual inline bool can_be_shot_through() const {
         return true;
     }
+    [[nodiscard]] virtual inline int get_range_addition() const {
+        return 0;
+    }
     [[nodiscard]] virtual inline bool can_be_shot() const {
         return !is_my_turn();
     }

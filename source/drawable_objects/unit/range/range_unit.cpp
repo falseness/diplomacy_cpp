@@ -13,7 +13,9 @@ RangeUnit::RangeUnit(Cell* cell, std::string name) : Unit(cell, name), Entity(ce
 unsigned int RangeUnit::get_range() const {
     auto it = get_player_stats().range_units.find(image_name_);
     assert(it != get_player_stats().range_units.end());
-    return it->second.range;
+    int result = static_cast<int>(it->second.range) + get_cell()->get_building()->get_range_addition();
+    result = std::max(0, result);
+    return static_cast<unsigned int>(result);
 }
 
 void RangeUnit::AttackSomething(Grid &grid, std::pair<int, int> cell_coord) const {

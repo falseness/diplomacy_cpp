@@ -6,6 +6,8 @@
 class Grid;
 
 class Town : public Barrack, public BuildingWithHp {
+    static const int kTownRangeAddition = 1;
+
     mutable std::string building_production_plan_;
     // some of this cells may not be suburbs. so we filter them in get_suburbs(). fields is updated in NextTurn method
     std::vector<std::pair<int, int>> potential_suburbs_;
@@ -28,5 +30,8 @@ public:
     void NextTurn(SceneInfo& scene) override;
     [[nodiscard]] inline bool can_be_shot_through() const override {
         return false;
+    }
+    [[nodiscard]] inline int get_range_addition() const override {
+        return kTownRangeAddition;
     }
 };

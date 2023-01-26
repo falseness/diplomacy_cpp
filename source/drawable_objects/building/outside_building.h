@@ -9,3 +9,23 @@ public:
         return false;
     }
 };
+
+class Wall : public OutsideBuilding {
+public:
+    Wall(Cell* cell, std::string image_name);
+    [[nodiscard]] inline bool is_passable() const override {
+        return false;
+    }
+};
+
+class Tower : public OutsideBuilding {
+    static const int kTowerRangeAddition = 1;
+public:
+    Tower(Cell* cell, std::string image_name);
+    [[nodiscard]] inline bool is_passable() const override {
+        return false;
+    }
+    [[nodiscard]] inline int get_range_addition() const override {
+        return kTowerRangeAddition;
+    }
+};

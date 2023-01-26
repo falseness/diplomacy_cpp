@@ -39,9 +39,13 @@ Player::Player(const Color& color) : color_(color) {
     SuburbBuildingStats(entities_stats_, "farm", 4);
 
     EntityProductionStats(entities_factories_.buildings_production_stats, "wall", 4, 4);
-    CreateBuildingFactory<OutsideBuildingFactory<BuildingUnderConstruction<OutsideBuilding>>>("wall");
+    CreateBuildingFactory<OutsideBuildingFactory<BuildingUnderConstruction<Wall>>>("wall");
+
+    EntityProductionStats(entities_factories_.buildings_production_stats, "tower", 28, 3);
+    CreateBuildingFactory<OutsideBuildingFactory<BuildingUnderConstruction<Tower>>>("tower");
 
     BuildingWithHpStats(entities_stats_, "wall", 6);
+    BuildingWithHpStats(entities_stats_, "tower", 7);
 
     TownStats(entities_stats_, "town", 15, 11);
 }
