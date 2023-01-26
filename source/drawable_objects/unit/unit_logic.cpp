@@ -92,7 +92,7 @@ bool UnitLogic::CellSkipCondition(const Cell &cell) const {
 }
 
 void UnitLogic::UpdateBorder(const SceneInfo &scene, vector<std::pair<int, int>> &visited_coords) const {
-    scene.selection_border.UpdateBorder(visited_coords);
+    scene.selection_border.UpdateBorder(visited_coords, get_logic_helper(scene.grid));
 }
 
 GridLogicHelper &UnitLogic::get_logic_helper(const Grid &grid) const {

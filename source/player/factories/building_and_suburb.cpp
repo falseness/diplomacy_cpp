@@ -56,7 +56,7 @@ void BuildingAndSuburbFactory::Select(SceneInfo& scene, const Town* town) {
     for (auto suburb : visited_cells) {
         grid.logic_helper_.visit(suburb);
     }
-    scene.selection_border.UpdateBorder(visited_cells);
+    scene.selection_border.UpdateBorder(visited_cells, scene.grid.logic_helper_);
 }
 
 void SuburbFactory::BFSBody(std::vector<std::pair<int, int>>& visited_cells, Grid& grid,

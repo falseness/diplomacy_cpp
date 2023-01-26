@@ -34,8 +34,9 @@ void GameScene::HandleKeyEnterPress() {
 }
 
 SceneInfo::SceneInfo(Screen& screen) :
-        players({Color(80, 80, 80), Color(255, 0, 0), Color(0, 255, 0)}, 1), grid(players), selection_border(grid),
-        entity_interface(screen), production_interface(screen), town_production_interface(screen) {}
+        players({Color(80, 80, 80), Color(255, 0, 0), Color(0, 255, 0)}, 1), grid(players),
+        selection_border(grid, Color::kWhite), entity_interface(screen), production_interface(screen),
+        town_production_interface(screen) {}
 
 void SceneInfo::ClearInterfaces() {
     selection_border.Clear();
