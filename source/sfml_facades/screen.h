@@ -44,6 +44,9 @@ public:
     bool IsOpen() const;
     void Close();
     void set_draw_offset(const Vector2D&);
+    inline void add_to_draw_offset(const Vector2D& dt) {
+        draw_offset_ += dt;
+    }
     const Vector2D& get_draw_offset() const;
     float get_height_of(const Text&) const;
     float get_width_of(const Text&) const;

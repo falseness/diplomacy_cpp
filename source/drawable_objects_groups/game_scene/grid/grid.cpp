@@ -214,3 +214,9 @@ void Grid::SelectBuilding(std::pair<int, int> coord, SceneInfo& scene) {
     selected_entity_ = building;
     building->Select(scene);
 }
+
+Vector2D Grid::get_right_bottom_corner(const GameOptions& game_options) const {
+    return grid_cells_.get_cell(std::make_pair(grid_cells_.get_rows_count() - 1,
+        grid_cells_.get_columns_count() - 1))->get_pos(game_options) + Vector2D(game_options.hexagon_options.radius * 2,
+                                                                              game_options.hexagon_options.radius * 2);
+}

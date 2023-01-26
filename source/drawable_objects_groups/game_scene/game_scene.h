@@ -7,6 +7,7 @@
 #include "source/next_turn/next_turn_button.h"
 #include "source/drawable_objects/clickable_object.h"
 #include "source/drawable_objects/selection_border.h"
+#include "source/utility/arrow_key_press_info.h"
 
 #pragma once
 
@@ -32,4 +33,5 @@ public:
     void HandleClick(const Vector2D&, const GameOptions&) override;
     void HandleKeyBackspacePress();
     void HandleKeyEnterPress();
+    void HandleArrowKeyPress(ArrowsKeyPressInfo arrows_info, Screen& screen, const GameOptions& game_options);
 };

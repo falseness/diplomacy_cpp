@@ -30,6 +30,8 @@ void Game::EventsIteration() {
     if (library_facade_.event_manager.HasKeyPressEnterEvent()) {
         game_scene_->HandleKeyEnterPress();
     }
+    game_scene_->HandleArrowKeyPress(library_facade_.event_manager.GetArrowKeyPressEvent(), library_facade_.screen,
+                                     game_options_);
 }
 
 void Game::DrawingIteration() {

@@ -74,5 +74,6 @@ public:
     void HandleKeyPress(SceneInfo& scene);
     void SelectUnit(std::pair<int, int> coord, SceneInfo& scene);
     void SelectBuilding(std::pair<int, int> coord, SceneInfo& scene);
+    [[nodiscard]] Vector2D get_right_bottom_corner(const GameOptions& game_options) const;
 };
 

@@ -34,6 +34,23 @@ void GameScene::HandleKeyEnterPress() {
     next_turn_button_.NextTurn(info_);
 }
 
+void GameScene::HandleArrowKeyPress(ArrowsKeyPressInfo arrows_info, Screen& screen, const GameOptions& game_options) {
+    static const float kCameraSpeed = 0.43;
+    static const float kMaximumMargin = kCameraSpeed * 1500.0f;
+    auto offset = screen.get_draw_offset();
+    offset += {-static_cast<float>(arrows_info.hotizontal_sum) * kCameraSpeed,
+               -static_cast<float>(arrows_info.vertical_sum) * kCameraSpeed};
+
+    Vector2D right_bottom_corner = info_.grid.get_right_bottom_corner(game_options);
+    offset.x = std::max(offset.x, -kMaximumMargin - right_bottom_corner.x + static_cast<float>(screen.get_width()));
+    offset.y = std::max(offset.y, -kMaximumMargin - right_bottom_corner.y + static_cast<float>(screen.get_height()));
+
+    Vector2D left_top_corner(-game_options.hexagon_options.radius, -game_options.hexagon_options.radius);
+    offset.x = std::min(offset.x, kMaximumMargin - left_top_corner.x);
+    offset.y = std::min(offset.y, kMaximumMargin - left_top_corner.y);
+    screen.set_draw_offset(offset);
+}
+
 SceneInfo::SceneInfo(Screen& screen) :
         players({Color(80, 80, 80), Color(255, 0, 0), Color(0, 255, 0)}, 1), grid(players),
         selection_border(grid, Color::kWhite),
