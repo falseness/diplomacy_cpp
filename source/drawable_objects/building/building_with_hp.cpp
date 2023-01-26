@@ -4,8 +4,8 @@
 #include "source/drawable_objects_groups/game_scene/grid/grid.h"
 
 
-BuildingWithHp::BuildingWithHp(Cell *cell, std::string&& image_name) :
-    Building(cell, std::string(image_name)), Entity(cell, std::string(image_name)) {
+BuildingWithHp::BuildingWithHp(Cell *cell, std::string image_name) :
+    Building(cell, std::string(image_name)), Entity(cell, std::move(image_name)) {
     hp_ = get_stats().hp;
 }
 

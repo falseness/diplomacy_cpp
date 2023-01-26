@@ -3,7 +3,7 @@
 #include <source/drawable_objects_groups/game_scene/game_scene.h>
 #include <source/player/player.h>
 
-Entity::Entity(Cell* cell_, std::string&& image_name) : cell_(cell_), image_name_(std::move(image_name)) {}
+Entity::Entity(Cell* cell_, std::string image_name) : cell_(cell_), image_name_(std::move(image_name)) {}
 
 void Entity::Draw(Screen& screen, const GameOptions& game_options) {
     Vector2D pos = cell_->get_pos(game_options);

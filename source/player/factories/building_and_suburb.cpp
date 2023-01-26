@@ -40,7 +40,7 @@ void BuildingAndSuburbFactory::Select(SceneInfo& scene, const Town* town) {
         coords.pop_front();
 
         int distance = grid.logic_helper_.get_info(coord);
-        assert(grid.get_cell(coord)->is_suburb());
+        //assert(grid.get_cell(coord)->is_suburb());
         auto neighbours = grid.get_neighbours(coord);
         for (auto neighbour : neighbours) {
             if (grid.is_coord_out_of_range(neighbour) || !grid.get_cell(neighbour)->is_my_turn())

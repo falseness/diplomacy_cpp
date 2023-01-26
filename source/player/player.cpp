@@ -3,8 +3,10 @@
 #include "source/drawable_objects/building/building.h"
 #include "source/drawable_objects/building/under_construction/under_construction.h"
 #include "source/drawable_objects/building/barrack.h"
+#include "source/drawable_objects/building/outside_building.h"
 #include "source/player/factories/building_and_suburb.h"
 #include "source/player/factories/suburb_building.h"
+#include "source/player/factories/outside_building.h"
 
 
 Player::Player(const Color& color) : color_(color) {
@@ -36,8 +38,8 @@ Player::Player(const Color& color) : color_(color) {
     SuburbBuildingStats(entities_stats_, "barrack", -2);
     SuburbBuildingStats(entities_stats_, "farm", 4);
 
-    //EntityProductionStats(entities_factories_.buildings_production_stats, "wall", 4, 4);
-    //CreateBuildingFactory<OutsideBuildingFactory<BuildingUnderConstruction<SuburbBuilding>>>("wall");
+    EntityProductionStats(entities_factories_.buildings_production_stats, "wall", 4, 4);
+    CreateBuildingFactory<OutsideBuildingFactory<BuildingUnderConstruction<OutsideBuilding>>>("wall");
 
     BuildingWithHpStats(entities_stats_, "wall", 6);
 
