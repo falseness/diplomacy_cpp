@@ -11,11 +11,20 @@ public:
     ClickResponse HandleClick(SceneInfo&, const Vector2D& click_pos, const GameOptions& game_options) const override;
     void NextTurn(SceneInfo& scene) override;
     void Select(const SceneInfo&) const override;
+    [[nodiscard]] virtual inline bool can_be_shot_through() const {
+        return true;
+    }
+    [[nodiscard]] virtual inline bool can_be_shot() const {
+        return !is_my_turn();
+    }
     ~Building() override;
 };
 
 class EmptyBuilding : public Building {
 public:
+    [[nodiscard]] inline bool can_be_shot() const override {
+        return false;
+    }
     [[nodiscard]] bool is_passable() const override;
     explicit EmptyBuilding(Cell*);
     void Draw(Screen&, const GameOptions&) override;

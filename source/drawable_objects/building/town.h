@@ -26,4 +26,7 @@ public:
     void AddSuburb(Cell* cell);
     ClickResponse HandleClick(SceneInfo&, const Vector2D&, const GameOptions&) const override;
     void NextTurn(SceneInfo& scene) override;
+    [[nodiscard]] inline bool can_be_shot_through() const override {
+        return false;
+    }
 };

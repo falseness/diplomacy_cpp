@@ -89,4 +89,7 @@ public:
     [[nodiscard]] inline Building* get_building_ptr() {
         return building_.get();
     }
+    [[nodiscard]] inline bool can_be_shot_through() const {
+        return get_building()->can_be_shot_through();
+    }
 };

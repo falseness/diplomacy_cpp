@@ -1,18 +1,20 @@
+#pragma once
+
 #include "source/drawable_objects/hittable_entity.h"
 #include "source/player/entity_stats.h"
 #include "source/drawable_objects/unit/unit_logic.h"
 
-#pragma once
-
 class Grid;
 class SceneInfo;
 
+// Todo : refactor using multiple inheritance with UnitLogic
 class Unit : virtual public HittableEntity {
+protected:
     int dmg_;
     unsigned int moves_;
-protected:
     void Kill(Grid& grid) const override;
     void AskGridToDecreaseHP(int dmg, Grid& grid) const override;
+    virtual ClickResponse ClickLogic(SceneInfo &scene, std::pair<int, int> &coord) const;
 public:
     void NextTurn(SceneInfo& scene) override;
     [[nodiscard]] const UnitStats& get_stats() const;
@@ -32,6 +34,7 @@ public:
     [[nodiscard]] json to_json() override;
     [[nodiscard]] json get_info() const override;
     [[nodiscard]] bool is_passable() const override;
+    [[nodiscard]] inline virtual bool is_attackable(const Cell& cell) const;
     ~Unit() override = default;
 };
 

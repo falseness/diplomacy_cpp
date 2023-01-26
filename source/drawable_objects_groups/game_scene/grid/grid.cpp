@@ -7,6 +7,7 @@
 #include "source/player/player.h"
 #include "source/drawable_objects/building/under_construction/under_construction.h"
 #include "source/drawable_objects_groups/game_scene/grid/action.h"
+#include "source/drawable_objects/unit/range/archer.h"
 #include "cells.h"
 #include "action.h"
 
@@ -61,7 +62,7 @@ Grid::Grid(Players& players) : logic_helper_(kGridRowsCount, kGridColumnsCount),
         auto this_player_suburb_cells = get_neighbours(town_pos);
         this_player_suburb_cells.push_back(town_pos);
         cells[town_pos.first][town_pos.second]->CreateBuilding<Town>("town", this_player_suburb_cells);
-        cells[town_pos.first][town_pos.second]->CreateUnit<Unit>("peasant");
+        cells[town_pos.first][town_pos.second]->CreateUnit<RangeUnit>("archer");
     }
 
     empty_unit_ = std::make_unique<EmptyUnit>(cells[0][0].get());

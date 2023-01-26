@@ -36,9 +36,14 @@ ClickResponse Unit::HandleClick(SceneInfo& scene, const Vector2D &click_pos, con
         return {true, coord != get_coord(), coord == get_coord()};
     }
 
-    ClickResponse click_response = UnitLogic::kUnitLogic.ClickLogic(*this, scene.grid, scene.grid.logic_helper_, coord);
+    ClickResponse click_response = ClickLogic(scene, coord);
     if (click_response.should_remove_selection)
         scene.entity_interface.set_visible(false);
+    return click_response;
+}
+
+ClickResponse Unit::ClickLogic(SceneInfo &scene, std::pair<int, int> &coord) const {
+    ClickResponse click_response = UnitLogic::kUnitLogic.ClickLogic(*this, scene.grid, coord);
     return click_response;
 }
 
@@ -47,7 +52,7 @@ unsigned int Unit::get_moves() const {
 }
 
 void Unit::Select(const SceneInfo& scene) const {
-    UnitLogic::kUnitLogic.Select(scene, scene.grid.logic_helper_, get_coord(), is_my_turn() ? get_moves() : get_speed());
+    UnitLogic::kUnitLogic.Select(scene, *this, is_my_turn() ? get_moves() : get_speed());
     Entity::Select(scene);
 }
 
@@ -122,6 +127,10 @@ void Unit::Kill(Grid& grid) const {
 
 void Unit::AskGridToDecreaseHP(int dmg, Grid &grid) const {
     grid.DecreaseUnitHP(get_coord(), dmg);
+}
+
+bool Unit::is_attackable(const Cell &cell) const {
+    return cell.is_hittable();
 }
 
 bool EmptyUnit::is_passable() const {

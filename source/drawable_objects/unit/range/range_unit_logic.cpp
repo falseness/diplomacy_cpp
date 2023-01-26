@@ -4,64 +4,44 @@
 #include <source/drawable_objects/unit/unit.h>
 #include "source/drawable_objects_groups/game_scene/grid/grid.h"
 #include <source/drawable_objects_groups/game_scene/game_scene.h>
-/*
 
-ClickResponse RangeUnitLogic::ClickLogic(const Unit& unit, Grid& grid, std::pair<int, int> coord) {
-    if (coord == unit.get_coord()) {
-        return {true, false, true};
-    }
-    if (!grid.additional_logic_helper_.is_visited(coord)) {
-        return {true, true, false};
-    }
-    unit.MoveTo(grid, coord);
+const RangeUnitLogic RangeUnitLogic::kRangeUnitLogic = RangeUnitLogic();
 
-    return {!unit.get_moves(), false, false};
+bool RangeUnitLogic::CellSkipCondition(const Cell &cell) const {
+    return !cell.can_be_shot_through();
 }
 
-void RangeUnitLogic::Select(const SceneInfo& scene, const RangeUnit& unit) {
-    const Grid& grid = scene.grid;
-
-    std::vector<std::pair<int, int>> visited_coords;
-
-    std::deque<std::pair<int, int>> coords;
-
-    visited_coords.push_back(unit.get_coord());
-
-    coords.push_back(unit.get_coord());
-
-    grid.additional_logic_helper_.increment_counter();
-    grid.additional_logic_helper_.visit(coords.front());
-    grid.additional_logic_helper_.set_info(coords.front(), 0);
-    grid.additional_logic_helper_.set_parent(coords.front(), coords.front());
-
-    const unsigned int max_moves = unit.get_range();
-
-    while (!coords.empty()) {
-        std::pair<int, int> coord = coords.front();
-        coords.pop_front();
-        int moves_count = grid.logic_helper_.get_info(coord);
-        if (moves_count + 1 > max_moves)
-            continue;
-        auto neighbours = grid.get_neighbours(coord);
-        for (auto new_coord : neighbours) {
-            if (grid.is_coord_out_of_range(new_coord) || grid.logic_helper_.is_visited(new_coord))
-                continue;
-
-            if (!grid.get_cell(new_coord)->is_passable() && !grid.get_cell(new_coord)->is_hittable()) {
-                continue;
-            }
-            grid.logic_helper_.visit(new_coord);
-            visited_coords.push_back(new_coord);
-            grid.logic_helper_.set_parent(new_coord, coord);
-
-            if (grid.get_cell(new_coord)->is_hittable())
-                grid.logic_helper_.set_info(new_coord, static_cast<int>(max_moves));
-            else {
-                grid.logic_helper_.set_info(new_coord, moves_count + 1);
-                coords.push_back(new_coord);
-            }
-        }
+void RangeUnitLogic::BFSBodyHandler(const unsigned int max_moves, const Unit &unit, const Grid &grid,
+                                    std::deque<std::pair<int, int>> &coords, int moves_count,
+                                    std::pair<int, int> new_coord) const {
+    const Cell& cell = *grid.get_cell(new_coord);
+    if (cell.can_be_shot_through()) {
+        get_logic_helper(grid).set_info(new_coord, moves_count + 1);
+        coords.push_back(new_coord);
     }
-    scene.selection_border.UpdateBorder(visited_coords);
+    else if (unit.is_attackable(cell)) {
+        get_logic_helper(grid).set_info(new_coord, max_moves);
+    }
 }
-*/
+
+
+void RangeUnitLogic::UpdateBorder(const SceneInfo &scene, vector<std::pair<int, int>> &visited_coords) const {
+    // todo: make attack border for range units
+    //UnitLogic::UpdateBorder(scene, visited_coords);
+}
+
+GridLogicHelper &RangeUnitLogic::get_logic_helper(const Grid &grid) const {
+    return grid.additional_logic_helper_;
+}
+
+ClickResponse RangeUnitLogic::MainClickLogic(const Unit &unit, Grid &grid, std::pair<int, int> &coord) const {
+    if (!get_logic_helper(grid).is_visited(coord) || !unit.is_attackable(*grid.get_cell(coord))) {
+        // we use another logic helper for melee logic
+        return UnitLogic::kUnitLogic.MainClickLogic(unit, grid, coord);
+    }
+
+    auto range_unit = dynamic_cast<const RangeUnit&>(unit);
+    range_unit.AttackSomething(grid, coord);
+
+    return calculate_response_after_action(range_unit);
+}
