@@ -11,12 +11,21 @@ void AssetsManager::load_all_images() {
     images_["barrack"].loadFromFile("entities/buildings/barrack.png");
     images_["farm"] = sf::Texture();
     images_["farm"].loadFromFile("entities/buildings/farm.png");
+
+    load_image("wall", "entities/buildings/wall.png");
+    load_image("tower", "entities/buildings/tower.png");
+
     images_["gold"] = sf::Texture();
     images_["gold"].loadFromFile("other_images/gold.png");
     images_["debug"] = sf::Texture();
     images_["debug"].loadFromFile("entities/debug_image.png");
     images_["suburb"] = sf::Texture();
     images_["suburb"].loadFromFile("other_images/suburb.png");
+}
+
+void AssetsManager::load_image(const std::string& name, const std::string& path) {
+    images_[name] = sf::Texture();
+    images_[name].loadFromFile(path);
 }
 
 void AssetsManager::load_all_fonts() {
@@ -29,5 +38,7 @@ AssetsManager::AssetsManager() {
     load_all_images();
 
 }
+
+
 
 

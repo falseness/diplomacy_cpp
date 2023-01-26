@@ -3,7 +3,7 @@
 #include "source/drawable_objects/building/building.h"
 #include "source/drawable_objects/building/under_construction/under_construction.h"
 #include "source/drawable_objects/building/barrack.h"
-#include "source/player/factories/building.h"
+#include "source/player/factories/building_and_suburb.h"
 #include "source/player/factories/suburb_building.h"
 
 
@@ -11,8 +11,11 @@ Player::Player(const Color& color) : color_(color) {
     UnitStats(entities_stats_, "peasant", 2, 1, 2);
     RangeUnitStats(entities_stats_, "archer", 1, 2, 2, 2);
 
+
     UnitStats(entities_stats_, "", 0, 0, 0);
     BuildingStats(entities_stats_, "");
+
+
 
     EntityProductionStats(entities_factories_.units_production_stats, "peasant", 10, 1);
     CreateUnitFactory<UnitFactory>("peasant");
@@ -29,8 +32,15 @@ Player::Player(const Color& color) : color_(color) {
     EntityProductionStats(entities_factories_.buildings_production_stats, "farm", 24, 2);
     CreateBuildingFactory<SuburbBuildingFactory<BuildingUnderConstruction<SuburbBuilding>>>("farm");
 
+
     SuburbBuildingStats(entities_stats_, "barrack", -2);
     SuburbBuildingStats(entities_stats_, "farm", 4);
+
+    //EntityProductionStats(entities_factories_.buildings_production_stats, "wall", 4, 4);
+    //CreateBuildingFactory<OutsideBuildingFactory<BuildingUnderConstruction<SuburbBuilding>>>("wall");
+
+    BuildingWithHpStats(entities_stats_, "wall", 6);
+
     TownStats(entities_stats_, "town", 15, 11);
 }
 

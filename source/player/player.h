@@ -4,7 +4,7 @@
 #include "source/utility/color.h"
 #include "source/player/entity_stats.h"
 #include "source/player/factories/entity.h"
-#include "source/player/factories/building.h"
+#include "source/player/factories/building_and_suburb.h"
 #include "source/drawable_objects/unit/unit.h"
 #include "source/drawable_objects/building/building.h"
 
@@ -16,7 +16,7 @@
 
 class Unit;
 class Building;
-class BuildingFactory;
+class BuildingAndSuburbFactory;
 
 struct PlayersEntitiesStats {
     std::map<std::string, EntityStats> entities;
@@ -30,7 +30,7 @@ struct PlayersEntitiesStats {
 
 struct PlayersEntitiesFactories {
     std::map<std::string, std::unique_ptr<UnitFactory>> units_factory;
-    std::map<std::string, std::unique_ptr<BuildingFactory>> buildings_factory;
+    std::map<std::string, std::unique_ptr<BuildingAndSuburbFactory>> buildings_factory;
     std::map<std::string, EntityProductionStats> units_production_stats;
     std::map<std::string, EntityProductionStats> buildings_production_stats;
 };
@@ -53,7 +53,7 @@ class Player {
     void CreateBuildingFactory(std::string name) {
         auto ptr = std::make_unique<Factory>(entities_factories_, name);
         entities_factories_.buildings_factory.template emplace(
-                std::move(name), std::move(std::unique_ptr<BuildingFactory>(std::move(ptr))));
+                std::move(name), std::move(std::unique_ptr<BuildingAndSuburbFactory>(std::move(ptr))));
     }
     int gold_ = 0;
 public:

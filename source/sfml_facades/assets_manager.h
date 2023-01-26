@@ -9,6 +9,7 @@ public:
     std::unordered_map<std::string, sf::Texture> images_;
     std::unordered_map<std::string, sf::Font> fonts_;
 private:
+    void load_image(const std::string& name, const std::string& path);
     void load_all_images();
     void load_all_fonts();
 public:

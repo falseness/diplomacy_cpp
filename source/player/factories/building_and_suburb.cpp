@@ -1,19 +1,20 @@
-#include "building.h"
+#include "building_and_suburb.h"
 #include "source/drawable_objects/building/town.h"
 #include "source/drawable_objects_groups/game_scene/game_scene.h"
 #include "deque"
 #include <cassert>
 
-BuildingFactory::BuildingFactory(PlayersEntitiesFactories &all_factories, std::string name) {
+
+BuildingAndSuburbFactory::BuildingAndSuburbFactory(PlayersEntitiesFactories &all_factories, std::string name) {
     assert(all_factories.buildings_production_stats.count(name));
 }
 
-unsigned int BuildingFactory::get_turns_left(const Player& player, const ProductionInfo& production) const {
+unsigned int BuildingAndSuburbFactory::get_turns_left(const Player& player, const ProductionInfo& production) const {
     return player.get_factories_stats().buildings_production_stats.find(production.name)->
             second.turns - production.turns;
 }
 
-void BuildingFactory::Select(SceneInfo& scene, const Town* town) {
+void BuildingAndSuburbFactory::Select(SceneInfo& scene, const Town* town) {
     auto suburbs = town->get_suburbs(scene.grid);
 
     std::vector<std::pair<int, int>> visited_cells;
@@ -25,7 +26,6 @@ void BuildingFactory::Select(SceneInfo& scene, const Town* town) {
     for (auto suburb : suburbs) {
         grid.logic_helper_.visit(suburb);
         grid.logic_helper_.set_info(suburb, -1);
-
     }
 
     std::deque<std::pair<int, int>> coords;
@@ -71,7 +71,7 @@ void SuburbFactory::BFSBody(std::vector<std::pair<int, int>>& visited_cells, Gri
 }
 
 SuburbFactory::SuburbFactory(PlayersEntitiesFactories &all_factories, std::string name) :
-    BuildingFactory(all_factories, std::move(name)){}
+        BuildingAndSuburbFactory(all_factories, std::move(name)){}
 
 
 ClickResponse SuburbFactory::HandleClick(SceneInfo &scene, const Vector2D &click_pos,
@@ -90,11 +90,10 @@ ClickResponse SuburbFactory::HandleClick(SceneInfo &scene, const Vector2D &click
     return {false, false, false};
 }
 
-bool BuildingFactory::is_correct_click(SceneInfo &scene, std::pair<int, int> coord) {
+bool BuildingAndSuburbFactory::is_correct_click(SceneInfo &scene, std::pair<int, int> coord) {
     Grid& grid = scene.grid;
     return !grid.is_coord_out_of_range(coord) && grid.logic_helper_.is_visited(coord) &&
         grid.logic_helper_.get_info(coord) != -1;
 }
-
 
 

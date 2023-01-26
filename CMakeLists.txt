@@ -52,12 +52,12 @@ set(    MAIN_SOURCE
         source/next_turn/next_turn_button.cpp
         source/drawable_objects/interface_elements/triangle.cpp
         source/player/factories/entity.cpp
-        source/player/factories/building.cpp
+        source/player/factories/building_and_suburb.cpp
         source/drawable_objects/interface_elements/rounded_rectangle_with_text.cpp
         source/drawable_objects_groups/interfaces/town_production.cpp
         source/drawable_objects/interface_elements/switch_button.cpp
         source/drawable_objects/hittable_entity.cpp
-        source/drawable_objects/selection_border.cpp source/drawable_objects_groups/interfaces/building_production_slots.cpp source/drawable_objects_groups/interfaces/building_production_slots.h source/drawable_objects_groups/game_scene/undo_button.cpp source/drawable_objects_groups/game_scene/undo_button.h source/drawable_objects_groups/game_scene/grid/cells.cpp source/drawable_objects_groups/game_scene/grid/cells.h source/drawable_objects_groups/game_scene/grid/action.cpp source/drawable_objects_groups/game_scene/grid/action.h source/drawable_objects/unit/range/archer.cpp source/drawable_objects/unit/range/archer.h source/drawable_objects/unit/range/range_unit_logic.cpp source/drawable_objects/unit/range/range_unit_logic.h)
+        source/drawable_objects/selection_border.cpp source/drawable_objects_groups/interfaces/building_production_slots.cpp source/drawable_objects_groups/interfaces/building_production_slots.h source/drawable_objects_groups/game_scene/undo_button.cpp source/drawable_objects_groups/game_scene/undo_button.h source/drawable_objects_groups/game_scene/grid/cells.cpp source/drawable_objects_groups/game_scene/grid/cells.h source/drawable_objects_groups/game_scene/grid/action.cpp source/drawable_objects_groups/game_scene/grid/action.h source/drawable_objects/unit/range/range_unit.cpp source/drawable_objects/unit/range/range_unit.h source/drawable_objects/unit/range/range_unit_logic.cpp source/drawable_objects/unit/range/range_unit_logic.h source/player/factories/outside_building.h source/player/factories/building.h)
 
 add_executable(Diplomacy ${MAIN_SOURCE})
 #---

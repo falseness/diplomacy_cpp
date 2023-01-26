@@ -1,37 +1,33 @@
-#include <deque>
-#include "source/player/factories/entity.h"
-#include "source/drawable_objects/entity.h"
-#include "source/drawable_objects/cell/coord_converter.h"
+#include "source/player/factories/building_and_suburb.h"
+#include "source/drawable_objects_groups/game_scene/game_scene.h"
+#include "source/drawable_objects/building/town.h"
 
-class Town;
-class SceneInfo;
-class Grid;
 
-#pragma once
-
-class BuildingFactory : public EntityFactory {
+template <typename Building>
+class BuildingFactory : public BuildingAndSuburbFactory {
 protected:
-    virtual void BFSBody(
-            std::vector<std::pair<int, int>>& visited_cells, Grid& grid,
-            std::deque<std::pair<int, int>>& coords, int distance,
-            const std::pair<int, int>& neighbour) const = 0;
-    static bool is_correct_click(SceneInfo &scene, std::pair<int, int> coord);
+    std::string name_;
 public:
-    [[nodiscard]] unsigned int get_turns_left(const Player&, const ProductionInfo&) const override;
-    BuildingFactory(PlayersEntitiesFactories& all_factories, std::string);
-    virtual void Select(SceneInfo&, const Town*);
-    virtual ClickResponse HandleClick(SceneInfo&, const Vector2D&, const GameOptions&, const Town* town) const = 0;
+    BuildingFactory(PlayersEntitiesFactories &all_factories, std::string names);
+    ClickResponse HandleClick(SceneInfo&, const Vector2D&, const GameOptions&, const Town* town) const override;
 };
 
-class SuburbFactory : public BuildingFactory {
-    static const int kArithmeticProgressionDelta = 2;
-    static const int kBaseCost = 1;
-    void BFSBody(
-            std::vector<std::pair<int, int>>& visited_cells, Grid& grid,
-            std::deque<std::pair<int, int>>& coords, int distance,
-            const std::pair<int, int>& neighbour) const override;
-public:
-    SuburbFactory(PlayersEntitiesFactories& all_factories, std::string);
-    ClickResponse HandleClick(SceneInfo& scene, const Vector2D& click_pos, const GameOptions& game_option,
-                              const Town* town) const override;
-};
+
+template <typename Building>
+ClickResponse BuildingFactory<Building>::HandleClick(SceneInfo &scene, const Vector2D &click_pos,
+                                           const GameOptions &game_options, const Town* town) const {
+    std::pair<int, int> coord = CoordConverter::CalculateCoord(click_pos, game_options);
+    auto cell = scene.grid.get_cell(coord);
+    if (!is_correct_click(scene, coord) || !cell->get_building()->is_empty())
+        return {true, false, false};
+
+    unsigned int turns = town->get_player().get_factories_stats().buildings_production_stats.find(name_)->second.turns;
+
+    scene.grid.CreateBuilding<Building>(coord, std::move(ProductionInfo{name_, turns}));
+    scene.town_production_interface.ReClick(scene);
+    return {false, false, false};
+}
+
+template <typename Building>
+BuildingFactory<Building>::BuildingFactory(PlayersEntitiesFactories &all_factories, std::string name) :
+    BuildingAndSuburbFactory(all_factories, name), name_(std::move(name)) {}

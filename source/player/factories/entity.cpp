@@ -3,7 +3,7 @@
 #include <cassert>
 
 #include "source/drawable_objects/cell/cell.h"
-#include "source/drawable_objects/unit/range/archer.h"
+#include "source/drawable_objects/unit/range/range_unit.h"
 
 
 void EntityFactory::NextTurn(const Player& player, ProductionInfo& production) const {
