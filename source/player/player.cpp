@@ -15,6 +15,8 @@
 Player::Player(const Color& color) : color_(color) {
     UnitStats(entities_stats_, "peasant", 2, 1, 2);
     RangeUnitStats(entities_stats_, "archer", 1, 2, 2, 2);
+    UnitStats(entities_stats_, "swordsman", 5, 1, 2);
+    UnitStats(entities_stats_, "cavalry", 3, 1, 4);
     RangeUnitStats(entities_stats_, "catapult", 1, 1, 4, 1);
 
 
@@ -25,6 +27,12 @@ Player::Player(const Color& color) : color_(color) {
 
     EntityProductionStats(entities_factories_.units_production_stats, "peasant", 10, 1);
     CreateUnitFactory<UnitFactory>("peasant");
+
+    EntityProductionStats(entities_factories_.units_production_stats, "swordsman", 25, 2);
+    CreateUnitFactory<UnitFactory>("swordsman");
+
+    EntityProductionStats(entities_factories_.units_production_stats, "cavalry", 25, 2);
+    CreateUnitFactory<UnitFactory>("cavalry");
 
     EntityProductionStats(entities_factories_.units_production_stats, "archer", 25, 2);
     CreateUnitFactory<RangeUnitFactory<RangeUnit>>("archer");

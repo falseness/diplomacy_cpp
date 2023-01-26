@@ -3,8 +3,12 @@
 void AssetsManager::load_all_images() {
     images_["peasant"] = sf::Texture();
     images_["peasant"].loadFromFile("entities/units/peasant.png");
+
     images_["archer"] = sf::Texture();
     images_["archer"].loadFromFile("entities/units/archer.png");
+
+    load_image("swordsman", "entities/units/swordsman.png");
+    load_image("cavalry", "entities/units/cavalry.png");
 
     load_image("catapult", "entities/units/catapult.png");
 
