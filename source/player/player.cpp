@@ -63,7 +63,7 @@ Player::Player(const Color& color) : color_(color) {
     BuildingWithHpStats(entities_stats_, "wall", 6);
     BuildingWithHpStats(entities_stats_, "tower", 7);
 
-    TownStats(entities_stats_, "town", 15, 11);
+    TownStats(entities_stats_, "town", 4, 11);
 }
 
 const PlayersEntitiesStats& Player::get_stats() const {
@@ -125,14 +125,14 @@ void Player::DeleteUnit(std::unique_ptr<Unit>&& unit) {
 
 std::unique_ptr<Unit> Player::get_last_deleted_unit() {
     assert(!deleted_units_.empty());
-    auto result = std::move(deleted_units_.front());
-    deleted_units_.pop_front();
+    auto result = std::move(deleted_units_.back());
+    deleted_units_.pop_back();
     return result;
 }
 
 std::unique_ptr<Building> Player::get_last_deleted_building() {
     assert(!deleted_buildings_.empty());
-    auto result = std::move(deleted_buildings_.front());
-    deleted_buildings_.pop_front();
+    auto result = std::move(deleted_buildings_.back());
+    deleted_buildings_.pop_back();
     return result;
 }

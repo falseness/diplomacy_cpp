@@ -6,6 +6,7 @@
 #include "source/drawable_objects_groups/game_scene/game_scene.h"
 #include "source/player/factories/building_and_suburb.h"
 
+// todo: fix potential_suburbs bugs with several towns
 Town::Town(Cell* cell, std::string&& image_name, std::vector<std::pair<int, int>> suburbs) :
         BuildingWithHp(cell, std::string(image_name)), Barrack(cell, std::string(image_name)),
         SuburbBuilding(cell, std::string(image_name)), Building(cell, std::string(image_name)),
@@ -84,4 +85,21 @@ void Town::AddSuburb(Cell* cell) {
     assert(!cell->is_suburb());
     cell->set_suburb(true);
     potential_suburbs_.push_back(cell->get_coord());
+}
+
+void Town::Kill(Grid &grid) const {
+    auto suburbs = get_suburbs(grid);
+    for (auto suburb : suburbs) {
+        if (suburb == get_coord()) {
+            continue;
+        }
+        if (grid.get_cell(suburb)->get_building()->should_be_destroyed_after_town_destroying()) {
+            grid.DeleteBuilding(suburb);
+        }
+    }
+    for (auto suburb : suburbs) {
+        grid.DeleteSuburb(suburb);
+    }
+
+    BuildingWithHp::Kill(grid);
 }

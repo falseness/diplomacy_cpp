@@ -23,6 +23,9 @@ public:
     [[nodiscard]] virtual inline bool is_high_ground() const {
         return false;
     }
+    [[nodiscard]] virtual inline bool should_be_destroyed_after_town_destroying() const {
+        return false;
+    }
     ~Building() override;
 };
 

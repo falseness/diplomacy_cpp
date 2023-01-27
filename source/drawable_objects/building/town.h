@@ -37,4 +37,9 @@ public:
     [[nodiscard]] inline int get_range_addition() const override {
         return kTownRangeAddition;
     }
+    void Kill(Grid& grid) const override;
+    [[nodiscard]] inline bool should_be_destroyed_after_town_destroying() const {
+        assert(false);
+        return false;
+    }
 };
