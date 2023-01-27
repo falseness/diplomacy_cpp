@@ -17,7 +17,7 @@ Player::Player(const Color& color) : color_(color) {
     RangeUnitStats(entities_stats_, "archer", 1, 2, 2, 2);
     UnitStats(entities_stats_, "swordsman", 5, 1, 2);
     UnitStats(entities_stats_, "cavalry", 3, 1, 4);
-    RangeUnitStats(entities_stats_, "catapult", 1, 1, 4, 1);
+    RangeUnitStats(entities_stats_, "catapult", 1, 4, 1, 5);
 
 
     UnitStats(entities_stats_, "", 0, 0, 0);
