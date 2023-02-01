@@ -7,10 +7,11 @@
 #include "source/player/factories/building_and_suburb.h"
 
 // todo: fix potential_suburbs bugs with several towns
-Town::Town(Cell* cell, std::string&& image_name, std::vector<std::pair<int, int>> suburbs) :
+Town::Town(Cell* cell, std::string&& image_name, std::set<std::pair<int, int>> suburbs) :
         BuildingWithHp(cell, std::string(image_name)), Barrack(cell, std::string(image_name)),
         SuburbBuilding(cell, std::string(image_name)), Building(cell, std::string(image_name)),
-        Entity(cell, std::string(image_name)), potential_suburbs_(std::move(suburbs)) {}
+        Entity(cell, std::string(image_name)), suburbs_(std::move(suburbs)) {
+}
 
 json Town::get_info() const {
     auto result = Barrack::get_info();
@@ -32,18 +33,6 @@ void Town::set_production_interface_visible(const SceneInfo& scene, bool visibil
 
 void Town::UpdateProductionInterface(const SceneInfo &scene) const {
     scene.town_production_interface.update(this);
-}
-
-std::vector<std::pair<int, int>> Town::get_suburbs(const Grid& grid) const {
-    std::vector<std::pair<int, int>> result;
-    for (auto coord : potential_suburbs_) {
-        if (grid.get_cell(coord)->is_suburb()) {
-            result.push_back(coord);
-        }
-    }
-    sort(result.begin(), result.end());
-    result.erase(std::unique(result.begin(), result.end()), result.end());
-    return result;
 }
 
 void Town::set_building_production_plan(std::string production_plan) const {
@@ -76,20 +65,19 @@ ClickResponse Town::HandleClick(SceneInfo& scene, const Vector2D& pos, const Gam
 }
 
 void Town::NextTurn(SceneInfo& scene) {
-    potential_suburbs_ = get_suburbs(scene.grid);
     clear_building_production_plan();
     Barrack::NextTurn(scene);
 }
 
 void Town::AddSuburb(Cell* cell) {
-    assert(!cell->is_suburb());
+    assert(cell && !cell->is_suburb());
     cell->set_suburb(true);
-    potential_suburbs_.push_back(cell->get_coord());
+    bool was_inserted = suburbs_.insert(cell->get_coord()).second;
+    assert(was_inserted);
 }
 
 void Town::Kill(Grid &grid) const {
-    auto suburbs = get_suburbs(grid);
-    for (auto suburb : suburbs) {
+    for (auto suburb : suburbs_) {
         if (suburb == get_coord()) {
             continue;
         }
@@ -97,9 +85,16 @@ void Town::Kill(Grid &grid) const {
             grid.DeleteBuilding(suburb);
         }
     }
-    for (auto suburb : suburbs) {
+    for (auto suburb : suburbs_) {
         grid.DeleteSuburb(suburb);
     }
 
     BuildingWithHp::Kill(grid);
+}
+
+void Town::DeleteSuburb(Cell *cell) {
+    assert(cell && cell->is_suburb());
+    cell->set_suburb(false);
+    bool was_erased = suburbs_.erase(cell->get_coord());
+    assert(was_erased);
 }

@@ -61,7 +61,8 @@ Grid::Grid(Players& players) : players_(players), logic_helper_(kGridRowsCount, 
         std::pair<int, int> town_pos = town_poses[i - 1];
         auto this_player_suburb_cells = get_neighbours(town_pos);
         this_player_suburb_cells.push_back(town_pos);
-        cells[town_pos.first][town_pos.second]->CreateBuilding<Town>("town", this_player_suburb_cells);
+        cells[town_pos.first][town_pos.second]->CreateBuilding<Town>("town",
+                                                                     std::set(this_player_suburb_cells.begin(), this_player_suburb_cells.end()));
         cells[town_pos.first][town_pos.second]->CreateUnit<RangeUnit>("archer");
     }
 
@@ -171,7 +172,10 @@ void Grid::DeleteBuilding(std::pair<int, int> coord) {
 }
 
 void Grid::DeleteSuburb(std::pair<int, int> coord) {
-    DeleteSuburbAction action(coord);
+    Town& town = get_cell_ptr(coord)->get_player().FindTown(coord);
+
+    DeleteSuburbAction action(town.get_coord(), coord);
+
     PerformActionAndSaveUndo(action);
 }
 

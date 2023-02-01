@@ -71,8 +71,9 @@ const PlayersEntitiesStats& Player::get_stats() const {
 }
 
 void Player::AddUnit(Unit* new_unit) {
-    if (!new_unit->is_empty())
-        units_.push_back(new_unit);
+    if (!new_unit->is_empty()) {
+        unique_insert(units_, new_unit);
+    }
 }
 
 void Player::NextTurn(SceneInfo& scene) {
@@ -105,7 +106,14 @@ int Player::get_gold() const {
 }
 
 void Player::AddBuilding(Building* building) {
-    buildings_.push_back(building);
+    if (building->is_empty()) {
+        return;
+    }
+    unique_insert(buildings_, building);
+    Town* town = dynamic_cast<Town*>(building);
+    if (town) {
+        AddTown(town);
+    }
 }
 
 Color Player::get_color() const {
@@ -113,17 +121,17 @@ Color Player::get_color() const {
 }
 
 void Player::DeleteBuilding(std::unique_ptr<Building>&& building) {
-    auto it = std::find(buildings_.begin(), buildings_.end(), building.get());
-    assert(it != buildings_.end());
-    buildings_.erase(it);
+    guaranteed_erase(buildings_, building.get());
 
+    Town* town = dynamic_cast<Town*>(building.get());
+    if (town) {
+        DeleteTown(town);
+    }
     deleted_buildings_.push_back(std::move(building));
 }
 
 void Player::DeleteUnit(std::unique_ptr<Unit>&& unit) {
-    auto it = std::find(units_.begin(), units_.end(), unit.get());
-    assert(it != units_.end());
-    units_.erase(it);
+    guaranteed_erase(units_, unit.get());
 
     deleted_units_.push_back(std::move(unit));
 }
@@ -145,3 +153,13 @@ std::unique_ptr<Building> Player::get_last_deleted_building() {
 void Player::IncreaseGold(int gold_change) {
     gold_ += gold_change;
 }
+
+Town &Player::FindTown(std::pair<int, int> suburb_coord) {
+    for (auto town : towns_) {
+        if (town->contains_suburb(suburb_coord)) {
+            return *town;
+        }
+    }
+    assert(false);
+}
+

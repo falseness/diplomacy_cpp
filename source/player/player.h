@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <map>
+#include <set>
 #include <deque>
 #include "source/utility/color.h"
 #include "source/player/entity_stats.h"
@@ -9,6 +10,7 @@
 #include "source/player/factories/building_and_suburb.h"
 #include "source/drawable_objects/unit/unit.h"
 #include "source/drawable_objects/building/building.h"
+#include "source/utility/set_additional_functions.h"
 
 #include <list>
 #include <memory>
@@ -38,11 +40,12 @@ struct PlayersEntitiesFactories {
 class Player {
     PlayersEntitiesStats entities_stats_;
     PlayersEntitiesFactories entities_factories_;
-    std::list<Unit*> units_;
-    std::list<Building*> buildings_;
-    std::unique_ptr<Unit> tmp_;
-    std::deque<std::unique_ptr<Unit>> deleted_units_;
-    std::deque<std::unique_ptr<Building>> deleted_buildings_;
+    std::set<Unit*> units_;
+    std::set<Building*> buildings_;
+    std::set<Town*> towns_;
+    std::vector<std::unique_ptr<Unit>> deleted_units_;
+    std::vector<std::unique_ptr<Building>> deleted_buildings_;
+    int gold_ = 125;
     template <typename Factory>
     void CreateUnitFactory(std::string name) {
         auto ptr = std::make_unique<Factory>(entities_factories_, name);
@@ -55,8 +58,14 @@ class Player {
         entities_factories_.buildings_factory.template emplace(
                 std::move(name), std::move(std::unique_ptr<BuildingAndSuburbFactory>(std::move(ptr))));
     }
-    int gold_ = 125;
 public:
+    inline void AddTown(Town* town) {
+        unique_insert(towns_, town);
+    }
+    inline void DeleteTown(Town* town) {
+        guaranteed_erase(towns_, town);
+    }
+    Town& FindTown(std::pair<int, int> suburb_coord);
     void NextTurn(SceneInfo& scene);
     void AddUnit(Unit*);
     void DeleteUnit(std::unique_ptr<Unit>&& unit);

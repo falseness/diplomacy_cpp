@@ -41,7 +41,7 @@ void AddSuburbAction::PerformAction(GridCells &cells, Players &players) {
 }
 
 std::unique_ptr<GridAction> AddSuburbAction::CreateUndoAction(GridCells &cells) {
-    return std::make_unique<DeleteSuburbAction>(new_suburb_coord_);
+    return std::make_unique<DeleteSuburbAction>(town_coord_, new_suburb_coord_);
 }
 
 void DecreaseUnitHPAction::PerformAction(GridCells &cells, Players &players) {
@@ -77,11 +77,13 @@ std::unique_ptr<GridAction> DeleteBuildingAction::CreateUndoAction(GridCells &ce
 }
 
 void DeleteSuburbAction::PerformAction(GridCells &cells, Players &players) {
-    cells.get_cell_ptr(coord_)->set_suburb(false);
+    auto town = dynamic_cast<Town*>(cells.get_cell_ptr(town_coord_)->get_building_ptr());
+    assert(town);
+    town->DeleteSuburb(cells.get_cell_ptr(suburb_coord_).get());
 }
 
 std::unique_ptr<GridAction> DeleteSuburbAction::CreateUndoAction(GridCells &cells) {
-    return std::make_unique<RestoreSuburbAction>(coord_);
+    return std::make_unique<AddSuburbAction>(town_coord_, suburb_coord_);
 }
 
 void SetPlayerAction::PerformAction(GridCells &cells, Players &players) {
@@ -108,17 +110,6 @@ void RestoreLastBuildingAction::PerformAction(GridCells &cells, Players &players
 }
 
 std::unique_ptr<GridAction> RestoreLastBuildingAction::CreateUndoAction(GridCells &cells) {
-    assert(false);
-    return {};
-}
-
-void RestoreSuburbAction::PerformAction(GridCells &cells, Players &players) {
-    auto& cell = cells.get_cell_ptr(coord_);
-    assert(!cell->is_suburb());
-    cell->set_suburb(true);
-}
-
-std::unique_ptr<GridAction> RestoreSuburbAction::CreateUndoAction(GridCells &cells) {
     assert(false);
     return {};
 }

@@ -122,17 +122,11 @@ public:
 };
 
 class DeleteSuburbAction : public GridAction {
-    std::pair<int, int> coord_;
+    std::pair<int, int> town_coord_;
+    std::pair<int, int> suburb_coord_;
 public:
-    DeleteSuburbAction(std::pair<int, int> coord) : coord_(coord) {}
-    void PerformAction(GridCells &cells, Players &players) override;
-    std::unique_ptr<GridAction> CreateUndoAction(GridCells& cells) override;
-};
-
-class RestoreSuburbAction : public GridAction {
-    std::pair<int, int> coord_;
-public:
-    RestoreSuburbAction(std::pair<int, int> coord) : coord_(coord) {}
+    DeleteSuburbAction(std::pair<int, int> town_coord, std::pair<int, int> coord) : town_coord_(town_coord),
+                                                                                    suburb_coord_(coord) {}
     void PerformAction(GridCells &cells, Players &players) override;
     std::unique_ptr<GridAction> CreateUndoAction(GridCells& cells) override;
 };

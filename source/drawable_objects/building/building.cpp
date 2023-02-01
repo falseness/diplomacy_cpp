@@ -11,8 +11,7 @@ const BuildingStats& Building::get_stats() const {
 }
 
 Building::Building(Cell *cell, std::string image_name) : Entity(cell, std::move(image_name)) {
-    if (!is_empty())
-        get_player().AddBuilding(this);
+
 }
 
 ClickResponse Building::HandleClick(SceneInfo& scene, const Vector2D &click_pos, const GameOptions &game_options) const {

@@ -46,6 +46,7 @@ public:
 
         building_ = std::move(static_cast<std::unique_ptr<Building>>(
                 std::make_unique<BuildingType>(this, std::forward<Args>(args)...)));
+        get_player().AddBuilding(building_.get());
     }
     template <typename BuildingType, typename ...Args>
     void DestroyBuildingAndCreateOne(Args&&... args) {
