@@ -8,7 +8,7 @@
 const RangeUnitLogic RangeUnitLogic::kRangeUnitLogic = RangeUnitLogic();
 
 bool RangeUnitLogic::CellSkipCondition(const Cell &cell, const Unit &unit) const {
-    return false;
+    return !cell.can_be_shot_through() && !unit.is_attackable(cell);
 }
 
 void RangeUnitLogic::BFSBodyHandler(const unsigned int max_moves, const Unit &unit, const Grid &grid,
