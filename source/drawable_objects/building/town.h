@@ -7,6 +7,7 @@ class Grid;
 
 class Town : public Barrack, public BuildingWithHp {
     static const int kTownRangeAddition = 1;
+    static const int kSuburbsIncome = 1;
 
     mutable std::string building_production_plan_;
     // some of this cells may not be suburbs. so we filter them in get_suburbs(). fields is updated in NextTurn method
@@ -41,5 +42,9 @@ public:
     [[nodiscard]] inline bool should_be_destroyed_after_town_destroying() const override {
         assert(false);
         return false;
+    }
+    [[nodiscard]] inline int get_income() const override {
+        // todo: fix potential suburbs
+        return SuburbBuilding::get_income() + kSuburbsIncome * static_cast<int>(potential_suburbs_.size());
     }
 };

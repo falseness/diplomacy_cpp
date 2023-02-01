@@ -55,7 +55,7 @@ class Player {
         entities_factories_.buildings_factory.template emplace(
                 std::move(name), std::move(std::unique_ptr<BuildingAndSuburbFactory>(std::move(ptr))));
     }
-    unsigned int gold_ = 25;
+    int gold_ = 125;
 public:
     void NextTurn(SceneInfo& scene);
     void AddUnit(Unit*);
@@ -68,7 +68,7 @@ public:
     std::unique_ptr<Building> get_last_deleted_building();
     const Color color_;
     explicit Player(const Color&);
-    [[nodiscard]] unsigned int get_gold() const;
+    [[nodiscard]] int get_gold() const;
     [[nodiscard]] Color get_color() const;
     [[nodiscard]] const PlayersEntitiesStats& get_stats() const;
     [[nodiscard]] const PlayersEntitiesFactories& get_factories_stats() const;

@@ -14,8 +14,10 @@ NextTurnButton::NextTurnButton(Screen& screen) {
 }
 
 void NextTurnButton::NextTurn(SceneInfo& scene) {
+    scene.grid.StartUndoSequence();
     scene.players.NextTurn(scene);
     scene.grid.RemoveSelection();
+    // it is important that stack clears after players.NextTurn call
     scene.grid.ClearUndoStack();
     scene.ClearInterfaces();
 

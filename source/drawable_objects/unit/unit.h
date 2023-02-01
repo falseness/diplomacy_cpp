@@ -12,10 +12,10 @@ class Unit : virtual public HittableEntity {
 protected:
     int dmg_;
     unsigned int moves_;
-    void Kill(Grid& grid) const override;
     void AskGridToDecreaseHP(int dmg, Grid& grid) const override;
     virtual ClickResponse ClickLogic(SceneInfo &scene, std::pair<int, int> &coord) const;
 public:
+    void Kill(Grid& grid) const override;
     void NextTurn(SceneInfo& scene) override;
     [[nodiscard]] const UnitStats& get_stats() const;
     [[nodiscard]] unsigned int get_speed() const;

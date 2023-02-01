@@ -51,7 +51,7 @@ Player::Player(const Color& color) : color_(color) {
     CreateBuildingFactory<SuburbBuildingFactory<BuildingUnderConstruction<SuburbBuilding>>>("farm");
 
 
-    SuburbBuildingStats(entities_stats_, "barrack", -2);
+    SuburbBuildingStats(entities_stats_, "barrack", -10);//-2
     SuburbBuildingStats(entities_stats_, "farm", 4);
 
     EntityProductionStats(entities_factories_.buildings_production_stats, "wall", 4, 4);
@@ -63,7 +63,7 @@ Player::Player(const Color& color) : color_(color) {
     BuildingWithHpStats(entities_stats_, "wall", 6);
     BuildingWithHpStats(entities_stats_, "tower", 7);
 
-    TownStats(entities_stats_, "town", 4, 11);
+    TownStats(entities_stats_, "town", 10, 4);
 }
 
 const PlayersEntitiesStats& Player::get_stats() const {
@@ -76,7 +76,6 @@ void Player::AddUnit(Unit* new_unit) {
 }
 
 void Player::NextTurn(SceneInfo& scene) {
-
     // some elements can be deleted in cycle
     auto units_copy = units_;
     for (auto unit : units_copy) {
@@ -85,6 +84,12 @@ void Player::NextTurn(SceneInfo& scene) {
     auto buildings_copy = buildings_;
     for (auto building : buildings_copy) {
         building->NextTurn(scene);
+    }
+    if (gold_ < 0) {
+        for (auto unit : units_copy) {
+            unit->Kill(scene.grid);
+        }
+        gold_ = 0;
     }
 
     deleted_units_.clear();
@@ -95,7 +100,7 @@ const PlayersEntitiesFactories& Player::get_factories_stats() const {
     return entities_factories_;
 }
 
-unsigned int Player::get_gold() const {
+int Player::get_gold() const {
     return gold_;
 }
 
@@ -138,6 +143,5 @@ std::unique_ptr<Building> Player::get_last_deleted_building() {
 }
 
 void Player::IncreaseGold(int gold_change) {
-    assert(static_cast<int>(gold_) + gold_change >= 0);
     gold_ += gold_change;
 }

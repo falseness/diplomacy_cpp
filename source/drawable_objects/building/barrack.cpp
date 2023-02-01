@@ -19,7 +19,9 @@ void Barrack::Select(const SceneInfo& scene) const {
     Building::Select(scene);
 }
 
-void Barrack::NextTurn(SceneInfo&) {
+void Barrack::NextTurn(SceneInfo& scene) {
+    SuburbBuilding::NextTurn(scene);
+
     if (!production_in_progress_)
         return;
     const auto& factories = get_player().get_factories_stats();

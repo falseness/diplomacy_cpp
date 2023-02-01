@@ -9,7 +9,7 @@ public:
     [[nodiscard]] const SuburbBuildingStats& get_stats() const;
     SuburbBuilding(Cell* cell, std::string image_name);
     ~SuburbBuilding() override = default;
-    [[nodiscard]] int get_income() const;
+    [[nodiscard]] virtual int get_income() const;
     [[nodiscard]] json get_info() const override;
     [[nodiscard]] inline bool is_passable(size_t asking_player_index) const override {
         return true;
@@ -18,4 +18,5 @@ public:
     [[nodiscard]] inline bool should_be_destroyed_after_town_destroying() const override {
         return true;
     }
+    void NextTurn(SceneInfo& scene) override;
 };
