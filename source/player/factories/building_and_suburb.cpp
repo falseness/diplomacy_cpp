@@ -82,9 +82,12 @@ ClickResponse SuburbFactory::HandleClick(SceneInfo &scene, const Vector2D &click
 
     int distance = scene.grid.logic_helper_.get_info(coord);
     int cost = kArithmeticProgressionDelta * (distance - 1) + kBaseCost;
-    assert(!scene.grid.get_cell(coord)->is_suburb());
+    if (cost > town->get_player().get_gold()) {
+        return {true, false, false};
+    }
 
     scene.grid.AddSuburb(town->get_coord(), coord);
+    scene.grid.IncreaseGold(town->get_player_index(), -cost);
     scene.town_production_interface.ReClick(scene);
 
     return {false, false, false};
