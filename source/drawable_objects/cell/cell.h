@@ -74,7 +74,7 @@ public:
     void set_unit(std::unique_ptr<Unit>&&);
     [[nodiscard]] bool is_my_turn() const;
     [[nodiscard]] inline bool is_my_player(size_t another_player_index) const;
-    [[nodiscard]] bool is_passable() const;
+    [[nodiscard]] bool is_passable(size_t asking_player_index) const;
     [[nodiscard]] bool is_hittable(size_t another_player_index) const;
     [[nodiscard]] bool is_suburb() const;
     void set_suburb(bool suburb_state);

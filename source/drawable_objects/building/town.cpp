@@ -18,8 +18,8 @@ json Town::get_info() const {
     return result;
 }
 
-bool Town::is_passable() const {
-    return BuildingWithHp::is_passable();
+bool Town::is_passable(size_t asking_player_index) const {
+    return BuildingWithHp::is_passable(asking_player_index);
 }
 
 bool Town::is_hittable(size_t asking_player_index) const {

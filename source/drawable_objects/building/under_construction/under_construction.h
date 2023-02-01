@@ -11,7 +11,7 @@ class BuildingUnderConstruction : public Building {
 public:
     BuildingUnderConstruction(Cell* cell, std::string image_name, ProductionInfo production_info);
     void NextTurn(SceneInfo& scene) override;
-    [[nodiscard]] inline bool is_passable() const override;
+    [[nodiscard]] inline bool is_passable(size_t asking_player_index) const override;
     void Draw(Screen& screen, const GameOptions& game_options) override;
     [[nodiscard]] json get_info() const override;
 };
@@ -46,7 +46,7 @@ void BuildingUnderConstruction<BuildingAfterConstruction>::DrawImage(Screen &scr
 }
 
 template<typename BuildingAfterConstruction>
-bool BuildingUnderConstruction<BuildingAfterConstruction>::is_passable() const {
+bool BuildingUnderConstruction<BuildingAfterConstruction>::is_passable(size_t) const {
     return true;
 }
 

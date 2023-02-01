@@ -13,7 +13,7 @@ public:
 class Wall : public OutsideBuilding {
 public:
     Wall(Cell* cell, std::string image_name);
-    [[nodiscard]] inline bool is_passable() const override {
+    [[nodiscard]] inline bool is_passable(size_t) const override {
         return false;
     }
 };

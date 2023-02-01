@@ -21,10 +21,6 @@ int SuburbBuilding::get_income() const {
     return get_stats().income;
 }
 
-bool SuburbBuilding::is_passable() const {
-    return true;
-}
-
 bool SuburbBuilding::is_hittable(size_t asking_player_index) const {
     return false;
 }

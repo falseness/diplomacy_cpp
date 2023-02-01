@@ -18,7 +18,7 @@ public:
     [[nodiscard]] json get_info() const override;
     Town(Cell*, std::string&&, std::vector<std::pair<int, int>>);
     ~Town() override = default;
-    [[nodiscard]] bool is_passable() const override;
+    [[nodiscard]] bool is_passable(size_t asking_player_index) const override;
     [[nodiscard]] bool is_hittable(size_t asking_player_index) const override;
     void Select(const SceneInfo&) const override;
     void set_building_production_plan(std::string production_plan) const;

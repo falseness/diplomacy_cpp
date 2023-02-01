@@ -12,7 +12,7 @@ public:
         return get_unit_base_range();
     }
     [[nodiscard]] inline bool is_attackable(const Cell& cell) const override {
-        return cell.get_building()->can_be_shot();
+        return cell.get_building()->can_be_shot(get_player_index());
     }
     Catapult(Cell*, std::string);
 };

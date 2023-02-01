@@ -34,7 +34,7 @@ public:
     [[nodiscard]] virtual inline bool can_melee_interact(const Cell& cell) const;
     [[nodiscard]] json to_json() override;
     [[nodiscard]] json get_info() const override;
-    [[nodiscard]] bool is_passable() const override;
+    [[nodiscard]] bool is_passable(size_t asking_player_index) const override;
     [[nodiscard]] inline virtual bool is_attackable(const Cell& cell) const;
     [[nodiscard]] bool is_on_high_ground() const;
     ~Unit() override = default;
@@ -46,7 +46,7 @@ protected:
         assert(false);
     }
 public:
-    [[nodiscard]] bool is_passable() const override;
+    [[nodiscard]] bool is_passable(size_t asking_player_index) const override;
     [[nodiscard]] bool is_hittable(size_t asking_player_index) const override;
     explicit EmptyUnit(Cell*);
     void Draw(Screen&, const GameOptions&) override;

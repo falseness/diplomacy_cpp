@@ -16,6 +16,6 @@ public:
     void DecreaseHP(int);
     [[nodiscard]] virtual unsigned int get_maximum_hp() const = 0;
     [[nodiscard]] bool is_hittable(size_t asking_player_index) const override;
-    [[nodiscard]] bool is_passable() const override;
+    [[nodiscard]] bool is_passable(size_t asking_player_index) const override;
     [[nodiscard]] json get_info() const override;
 };

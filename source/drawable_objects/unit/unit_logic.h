@@ -27,5 +27,5 @@ public:
     virtual ~UnitLogic() = default;
     static const UnitLogic kUnitLogic;
 
-    ClickResponse calculate_response_after_action(const Unit &unit) const;
+    [[nodiscard]] ClickResponse calculate_response_after_action(const Unit &unit) const;
 };

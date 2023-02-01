@@ -74,8 +74,8 @@ bool Cell::is_my_turn() const {
     return is_my_player(players_.get_whoose_turn());
 }
 
-bool Cell::is_passable() const {
-    return building_->is_passable() && unit_->is_passable();
+bool Cell::is_passable(size_t asking_player_index) const {
+    return building_->is_passable(asking_player_index) && unit_->is_passable(asking_player_index);
 }
 
 bool Cell::is_hittable(size_t another_player_index) const {

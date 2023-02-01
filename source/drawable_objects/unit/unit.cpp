@@ -72,7 +72,7 @@ void Unit::MoveTo(Grid& grid, std::pair<int, int> coord) const {
     for (auto next_coord : path) {
         auto current_cell = grid.get_cell(get_coord());
         auto cell = grid.get_cell(next_coord);
-        if (cell->is_passable()) {
+        if (cell->is_passable(get_player_index())) {
             if (!cell->is_my_turn() && !cell->get_building()->is_empty())
                 grid.DeleteBuilding(cell->get_coord());
             current_cell->MoveUnitTo(*cell, grid);
@@ -84,7 +84,7 @@ void Unit::MoveTo(Grid& grid, std::pair<int, int> coord) const {
             cell->HitSomethingOnCell(dmg_, grid);
         }
 
-        if (cell->is_passable()) {
+        if (cell->is_passable(get_player_index())) {
             current_cell->MoveUnitTo(*cell, grid);
         }
     }
@@ -119,7 +119,7 @@ void Unit::NextTurn(SceneInfo&) {
     moves_ = get_speed();
 }
 
-bool Unit::is_passable() const {
+bool Unit::is_passable(size_t asking_player_index) const {
     return false;
 }
 
@@ -136,14 +136,14 @@ bool Unit::is_attackable(const Cell &cell) const {
 }
 
 bool Unit::can_melee_interact(const Cell &cell) const {
-    return cell.is_passable() || cell.is_hittable(get_player_index());
+    return cell.is_passable(get_player_index()) || cell.is_hittable(get_player_index());
 }
 
 bool Unit::is_on_high_ground() const {
     return get_cell()->get_building()->is_high_ground();
 }
 
-bool EmptyUnit::is_passable() const {
+bool EmptyUnit::is_passable(size_t asking_player_index) const {
     return true;
 }
 

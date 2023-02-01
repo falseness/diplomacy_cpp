@@ -41,7 +41,7 @@ public:
     [[nodiscard]] bool is_empty() const;
     [[nodiscard]] bool is_my_turn() const;
     [[nodiscard]] const Player& get_player() const;
-    [[nodiscard]] virtual bool is_passable() const = 0;
+    [[nodiscard]] virtual bool is_passable(size_t asking_player_index) const = 0;
     ~Entity() override = default;
     [[nodiscard]] bool is_my_player(size_t another_player_index) const;
     [[nodiscard]] virtual bool is_hittable(size_t asking_player_index) const;

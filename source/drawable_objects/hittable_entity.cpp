@@ -23,8 +23,8 @@ json HittableEntity::get_info() const {
     return result;
 }
 
-bool HittableEntity::is_passable() const {
-    return is_my_turn();
+bool HittableEntity::is_passable(size_t asking_player_index) const {
+    return is_my_player(asking_player_index);
 }
 
 void HittableEntity::DecreaseHP(int dmg) {

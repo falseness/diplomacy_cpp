@@ -17,8 +17,8 @@ public:
     [[nodiscard]] virtual inline int get_range_addition() const {
         return 0;
     }
-    [[nodiscard]] virtual inline bool can_be_shot() const {
-        return !is_my_turn();
+    [[nodiscard]] virtual inline bool can_be_shot(size_t asking_player_index) const {
+        return !is_my_player(asking_player_index);
     }
     [[nodiscard]] virtual inline bool is_high_ground() const {
         return false;
@@ -31,10 +31,10 @@ public:
 
 class EmptyBuilding : public Building {
 public:
-    [[nodiscard]] inline bool can_be_shot() const override {
+    [[nodiscard]] inline bool can_be_shot(size_t asking_player_index) const override {
         return false;
     }
-    [[nodiscard]] bool is_passable() const override;
+    [[nodiscard]] bool is_passable(size_t asking_player_index) const override;
     explicit EmptyBuilding(Cell*);
     void Draw(Screen&, const GameOptions&) override;
 };
