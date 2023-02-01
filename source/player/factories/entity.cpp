@@ -12,8 +12,9 @@ void EntityFactory::NextTurn(const Player& player, ProductionInfo& production) c
 }
 
 unsigned int UnitFactory::get_turns_left(const Player& player, const ProductionInfo& production) const {
-    return player.get_factories_stats().units_production_stats.find(production.name)->
-        second.turns - production.turns;
+    auto it = player.get_factories_stats().units_production_stats.find(production.name);
+    assert(it != player.get_factories_stats().units_production_stats.end());
+    return it->second.turns - production.turns;
 }
 
 

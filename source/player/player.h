@@ -1,3 +1,5 @@
+#pragma once
+
 #include <vector>
 #include <map>
 #include <deque>
@@ -11,8 +13,6 @@
 #include <list>
 #include <memory>
 
-
-#pragma once
 
 class Unit;
 class Building;
@@ -55,18 +55,20 @@ class Player {
         entities_factories_.buildings_factory.template emplace(
                 std::move(name), std::move(std::unique_ptr<BuildingAndSuburbFactory>(std::move(ptr))));
     }
-    int gold_ = 0;
+    unsigned int gold_ = 25;
 public:
     void NextTurn(SceneInfo& scene);
     void AddUnit(Unit*);
     void DeleteUnit(std::unique_ptr<Unit>&& unit);
     void AddBuilding(Building*);
     void DeleteBuilding(std::unique_ptr<Building>&& building);
+    // gold_change may be negative
+    void IncreaseGold(int gold_change);
     std::unique_ptr<Unit> get_last_deleted_unit();
     std::unique_ptr<Building> get_last_deleted_building();
     const Color color_;
     explicit Player(const Color&);
-    [[nodiscard]] int get_gold() const;
+    [[nodiscard]] unsigned int get_gold() const;
     [[nodiscard]] Color get_color() const;
     [[nodiscard]] const PlayersEntitiesStats& get_stats() const;
     [[nodiscard]] const PlayersEntitiesFactories& get_factories_stats() const;

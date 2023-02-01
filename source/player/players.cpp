@@ -9,6 +9,7 @@ Players::Players(std::vector<Color>&& players_colors, size_t whoose_turn = 1) : 
 }
 
 Player& Players::operator[](size_t index) {
+    assert(index < players_.size());
     return players_[index];
 }
 
@@ -25,6 +26,7 @@ size_t Players::get_whoose_turn() const {
 }
 
 const Player &Players::operator[](size_t index) const {
+    assert(index < players_.size());
     return players_[index];
 }
 

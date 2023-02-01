@@ -4,6 +4,7 @@
 
 class BuildingProductionSlots : public ProductionSlots {
     std::string last_click_;
+    //const EntityProductionStats& previous_stat
     const Town* town_ = nullptr;
     bool CheckButtonsClick(const Vector2D& pos, SceneInfo& scene,
                            const PlayersEntitiesFactories& factories) override;

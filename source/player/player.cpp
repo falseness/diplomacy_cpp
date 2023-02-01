@@ -95,7 +95,7 @@ const PlayersEntitiesFactories& Player::get_factories_stats() const {
     return entities_factories_;
 }
 
-int Player::get_gold() const {
+unsigned int Player::get_gold() const {
     return gold_;
 }
 
@@ -135,4 +135,9 @@ std::unique_ptr<Building> Player::get_last_deleted_building() {
     auto result = std::move(deleted_buildings_.back());
     deleted_buildings_.pop_back();
     return result;
+}
+
+void Player::IncreaseGold(int gold_change) {
+    assert(static_cast<int>(gold_) + gold_change >= 0);
+    gold_ += gold_change;
 }

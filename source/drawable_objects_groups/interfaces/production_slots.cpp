@@ -37,7 +37,7 @@ bool ProductionSlots::should_display_button(
         const std::pair<std::string, EntityProductionStats>& stat) const {
     assert(barrack_ != nullptr);
     if (!barrack_->is_production_in_progress())
-        return true;
+        return stat.second.cost <= barrack_->get_player().get_gold();
     return stat.first == barrack_->get_training_unit_name();
 }
 
@@ -57,10 +57,11 @@ size_t ProductionSlots::get_button_text_size(const Screen& screen) {
 bool ProductionSlots::CheckButtonsClick(const Vector2D &pos, SceneInfo& scene,
                                                              const PlayersEntitiesFactories& factories) {
     auto stat = get_corresponding_stat(pos, factories.units_production_stats);
-    if (stat == factories.units_production_stats.end())
+    if (stat == factories.units_production_stats.end() || stat->second.cost > barrack_->get_player().get_gold())
         return false;
     // we have only const reference, so we can't call barrack-StartProduction()
     scene.grid.StartProduction(barrack_->get_coord(), std::move(ProductionInfo{stat->first, 0}));
+    scene.grid.IncreaseGold(barrack_->get_player_index(), -stat->second.cost);
     barrack_->Select(scene);
     return true;
 }

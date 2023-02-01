@@ -21,6 +21,7 @@ class SceneInfo;
 class Entity;
 
 class Grid : public DrawableObjectsGroup, public ClickableObject {
+    Players& players_;
     UndoButton undo_button_;
     GridCells grid_cells_;
     std::unique_ptr<EmptyUnit> empty_unit_;
@@ -51,6 +52,7 @@ public:
     void DeleteBuilding(std::pair<int, int> coord);
     void DeleteSuburb(std::pair<int, int> coord);
     void SetPlayer(std::pair<int, int> coord, size_t player_index);
+    void IncreaseGold(size_t player_index, int gold_increase);
     [[nodiscard]] inline size_t get_rows_count() const {
         return grid_cells_.get_rows_count();
     }

@@ -1,11 +1,13 @@
 #include "building_production_slots.h"
 #include "source/drawable_objects/building/town.h"
 #include "source/drawable_objects_groups/game_scene/game_scene.h"
+#include "source/utility/map_additional_functions.h"
+
 
 bool BuildingProductionSlots::CheckButtonsClick(const Vector2D &pos, SceneInfo &scene,
                                                                          const PlayersEntitiesFactories &factories) {
     auto stat = get_corresponding_stat(pos, factories.buildings_production_stats);
-    if (stat == factories.buildings_production_stats.end())
+    if (stat == factories.buildings_production_stats.end() || stat->second.cost > town_->get_player().get_gold())
         return false;
     last_click_ = stat->first;
 
@@ -32,7 +34,14 @@ void BuildingProductionSlots::Draw(Screen &screen, const GameOptions& game_optio
 
 void BuildingProductionSlots::ReClick(SceneInfo& scene) {
     assert(!last_click_.empty());
-    town_->get_player().get_factories_stats().buildings_factory.find(last_click_)->second->Select(scene, town_);
+    assert(town_);
+    const auto& factories_stats = town_->get_player().get_factories_stats();
+    const auto& stat = safe_find(factories_stats.buildings_production_stats, last_click_);
+    if (stat.cost <= town_->get_player().get_gold()) {
+        safe_find(factories_stats.buildings_factory, last_click_)->Select(scene, town_);
+        return;
+    }
+    UnSelect(scene);
 }
 
 float BuildingProductionSlots::get_bottom() const {
@@ -61,7 +70,7 @@ void BuildingProductionSlots::set_button_text(
 
 bool BuildingProductionSlots::should_display_button(
         const std::pair<std::string, EntityProductionStats>& stat) const {
-    return last_click_.empty() || stat.first == last_click_;
+    return (last_click_.empty() && stat.second.cost <= town_->get_player().get_gold()) || stat.first == last_click_;
 }
 
 bool BuildingProductionSlots::HandleClick(SceneInfo& scene, const Vector2D &click_pos,

@@ -11,6 +11,7 @@ class TownProductionInterface : public ProductionInterface {
     void UpdateSize() override;
 public:
     void set_visible(bool visibility) override;
+    // true if there may be action
     void ReClick(SceneInfo& scene);
     explicit TownProductionInterface(const Screen& screen);
     void update(const Town*);

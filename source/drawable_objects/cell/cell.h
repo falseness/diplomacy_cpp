@@ -15,7 +15,6 @@
 
 
 class Players;
-#include <iostream>
 
 
 class Cell : public DrawableObject {

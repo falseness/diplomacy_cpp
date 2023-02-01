@@ -1,13 +1,14 @@
+#pragma once
+
 #include <deque>
 #include "source/player/factories/entity.h"
 #include "source/drawable_objects/entity.h"
 #include "source/drawable_objects/cell/coord_converter.h"
+#include "source/utility/map_additional_functions.h"
 
 class Town;
 class SceneInfo;
 class Grid;
-
-#pragma once
 
 class BuildingAndSuburbFactory : public EntityFactory {
 protected:

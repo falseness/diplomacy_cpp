@@ -17,7 +17,7 @@
 
 
 
-Grid::Grid(Players& players) : logic_helper_(kGridRowsCount, kGridColumnsCount),
+Grid::Grid(Players& players) : players_(players), logic_helper_(kGridRowsCount, kGridColumnsCount),
         additional_logic_helper_(kGridRowsCount, kGridColumnsCount), grid_cells_() {
     size_t n = kGridRowsCount;
     size_t m = kGridColumnsCount;
@@ -180,8 +180,14 @@ void Grid::SetPlayer(std::pair<int, int> coord, size_t player_index) {
     PerformActionAndSaveUndo(action);
 }
 
+void Grid::IncreaseGold(size_t player_index, int gold_increase) {
+    IncreasePlayersGold action(player_index, gold_increase);
+    PerformActionAndSaveUndo(action);
+}
+
+
 void Grid::PerformAction(GridAction &action) {
-    action.PerformAction(grid_cells_);
+    action.PerformAction(grid_cells_, players_);
 }
 
 void Grid::HandleKeyPress(SceneInfo& scene) {

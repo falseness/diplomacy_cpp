@@ -1,5 +1,8 @@
+#pragma once
+
 #include <vector>
 #include <source/player/player.h>
+
 
 class Players {
     std::vector<Player> players_;
