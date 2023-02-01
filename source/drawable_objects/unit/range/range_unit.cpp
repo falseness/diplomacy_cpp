@@ -11,10 +11,14 @@ RangeUnit::RangeUnit(Cell* cell, std::string name) : Unit(cell, name), Entity(ce
 
 }
 
-unsigned int RangeUnit::get_range() const {
+unsigned int RangeUnit::get_unit_base_range() const {
     auto it = get_player_stats().range_units.find(image_name_);
     assert(it != get_player_stats().range_units.end());
-    int result = static_cast<int>(it->second.range) + get_cell()->get_building()->get_range_addition();
+    return static_cast<unsigned int>(it->second.range);
+}
+
+unsigned int RangeUnit::get_range() const {
+    int result = static_cast<int>(get_unit_base_range()) + get_cell()->get_building()->get_range_addition();
     result = std::max(0, result);
     return static_cast<unsigned int>(result);
 }
@@ -67,4 +71,3 @@ ClickResponse RangeUnit::HandleClick(SceneInfo &scene, const Vector2D &click_pos
     scene.range_unit_attack_border.Clear();
     return Unit::HandleClick(scene, click_pos, game_options);
 }
-
