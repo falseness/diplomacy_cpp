@@ -25,7 +25,6 @@ protected:
 private:
     const Barrack* barrack_ = nullptr;
     void add_to_pos(const Vector2D&);
-
 protected:
     [[nodiscard]] virtual bool should_display_button(const std::pair<std::string, EntityProductionStats>&) const;
     virtual void set_button_text(const std::pair<std::string, EntityProductionStats>&);

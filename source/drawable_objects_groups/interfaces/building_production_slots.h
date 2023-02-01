@@ -11,6 +11,7 @@ class BuildingProductionSlots : public ProductionSlots {
     void set_button_text(const std::pair<std::string, EntityProductionStats>& stat) override;
     [[nodiscard]] bool should_display_button(
             const std::pair<std::string, EntityProductionStats>& stat) const override;
+    void ChooseProduction(std::string click, SceneInfo &scene, const PlayersEntitiesFactories &factories_stats);
 public:
     void Draw(Screen& screen, const GameOptions&) override;
     BuildingProductionSlots(Vector2D pos, float background_width, float background_height, const Screen&);

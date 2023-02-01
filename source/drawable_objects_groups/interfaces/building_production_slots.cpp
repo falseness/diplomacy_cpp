@@ -4,15 +4,19 @@
 #include "source/utility/set_additional_functions.h"
 
 
+void BuildingProductionSlots::ChooseProduction(std::string click, SceneInfo &scene,
+                                               const PlayersEntitiesFactories &factories_stats) {
+    last_click_ = std::move(click);
+    town_->set_building_production_plan(last_click_);
+    safe_find(factories_stats.buildings_factory, last_click_)->Select(scene, town_);
+}
+
 bool BuildingProductionSlots::CheckButtonsClick(const Vector2D &pos, SceneInfo &scene,
                                                                          const PlayersEntitiesFactories &factories) {
     auto stat = get_corresponding_stat(pos, factories.buildings_production_stats);
     if (stat == factories.buildings_production_stats.end() || stat->second.cost > town_->get_player().get_gold())
         return false;
-    last_click_ = stat->first;
-
-    town_->set_building_production_plan(last_click_);
-    factories.buildings_factory.find(last_click_)->second->Select(scene, town_);
+    ChooseProduction(stat->first, scene, factories);
     return true;
 }
 
@@ -35,13 +39,15 @@ void BuildingProductionSlots::Draw(Screen &screen, const GameOptions& game_optio
 void BuildingProductionSlots::ReClick(SceneInfo& scene) {
     assert(!last_click_.empty());
     assert(town_);
+
     const auto& factories_stats = town_->get_player().get_factories_stats();
     const auto& stat = safe_find(factories_stats.buildings_production_stats, last_click_);
+    auto last_click = std::move(last_click_);
+    UnSelect(scene);
     if (stat.cost <= town_->get_player().get_gold()) {
-        safe_find(factories_stats.buildings_factory, last_click_)->Select(scene, town_);
+        ChooseProduction(std::move(last_click), scene, factories_stats);
         return;
     }
-    UnSelect(scene);
 }
 
 float BuildingProductionSlots::get_bottom() const {
