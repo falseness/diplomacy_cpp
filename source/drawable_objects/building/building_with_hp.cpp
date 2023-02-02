@@ -24,3 +24,11 @@ unsigned int BuildingWithHp::get_maximum_hp() const {
 void BuildingWithHp::AskGridToDecreaseHP(int dmg, Grid &grid) const {
     grid.DecreaseBuildingHP(get_coord(), dmg);
 }
+
+#include <iostream>
+json BuildingWithHp::get_info() const {
+    auto result = Building::get_info();
+    result["info"]["hp"] = HittableEntity::get_info()["info"]["hp"];
+    return result;
+}
+

@@ -12,7 +12,7 @@ SuburbBuilding::SuburbBuilding(Cell *cell, std::string image_name) : Building(ce
 }
 
 json SuburbBuilding::get_info() const {
-    auto result = Entity::get_info();
+    auto result = Building::get_info();
     result["info"]["income"] = get_income();
     return result;
 }

@@ -10,7 +10,7 @@ EntityInfoInterface::EntityInfoInterface(const Screen& screen) {
     Vector2D pos(0, h * 0.5f);
 
     float this_height = h - pos.y;
-    float this_width = this_height * 1.7f;
+    float this_width = this_height * 1.6f;
 
     background_.set_pos(Vector2D(pos.x - corner_radius, pos.y));
     background_.height = this_height + corner_radius;
@@ -28,7 +28,7 @@ EntityInfoInterface::EntityInfoInterface(const Screen& screen) {
 
     entity_info_.position.x = entity_name_.position.x;
     entity_info_.position.y = entity_name_.position.y + entity_name_.size;
-    entity_info_.size = static_cast<size_t>(this_height * 0.1f);
+    entity_info_.size = static_cast<size_t>(this_height * 0.09f);
 
 
     drawable_objects_.push_back(&background_);
@@ -55,6 +55,9 @@ void EntityInfoInterface::update(const json& entity, const Color& color) {
             tmp.pop_back();
         }
         entity_info += item.key() + ": " + tmp + "\n";
+    }
+    if (entity.find("additional_info") != entity.end()) {
+        entity_info += entity["additional_info"].get<std::string>();
     }
 
     entity_info_.text = entity_info;

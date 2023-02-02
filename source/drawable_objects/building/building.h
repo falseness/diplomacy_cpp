@@ -26,6 +26,7 @@ public:
     [[nodiscard]] virtual inline bool should_be_destroyed_after_town_destroying() const {
         return false;
     }
+    [[nodiscard]] json get_info() const override;
     ~Building() override;
 };
 

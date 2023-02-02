@@ -37,6 +37,29 @@ Building::~Building() {
     }*/
 }
 
+json Building::get_info() const {
+    auto result = Entity::get_info();
+    std::string additional_info;
+    if (!can_be_shot_through()) {
+        additional_info += "archers can't shoot..\n..through it\n";
+    }
+    if (is_high_ground()) {
+        additional_info += "high ground\n";
+    }
+    auto additional_range = get_range_addition();
+    if (additional_range) {
+        additional_info += "archers get +" + std::to_string(additional_range) + " range\n";
+    }
+    // we think that if building is not passable for owner then it is not passable for everyone
+    if (!is_passable(get_player_index())) {
+        additional_info += "units can't stand on it\n";
+    }
+    if (!additional_info.empty()) {
+        result["additional_info"] = additional_info;
+    }
+    return result;
+}
+
 bool EmptyBuilding::is_passable(size_t) const {
     return true;
 }
