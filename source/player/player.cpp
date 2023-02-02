@@ -13,14 +13,14 @@
 
 
 Player::Player(const Color& color) : color_(color) {
-    UnitStats(entities_stats_, "peasant", 2, 1, 2);
-    RangeUnitStats(entities_stats_, "archer", 1, 2, 2, 2);
-    UnitStats(entities_stats_, "swordsman", 5, 1, 2);
-    UnitStats(entities_stats_, "cavalry", 3, 1, 4);
-    RangeUnitStats(entities_stats_, "catapult", 1, 4, 1, 5);
+    UnitStats(entities_stats_, "peasant", 2, 1, 2, 1);
+    RangeUnitStats(entities_stats_, "archer", 1, 2, 2, 2, 2);
+    UnitStats(entities_stats_, "swordsman", 5, 1, 2, 2);
+    UnitStats(entities_stats_, "cavalry", 3, 1, 4, 2);
+    RangeUnitStats(entities_stats_, "catapult", 1, 4, 1, 2, 5);
 
 
-    UnitStats(entities_stats_, "", 0, 0, 0);
+    UnitStats(entities_stats_, "", 0, 0, 0, 0);
     BuildingStats(entities_stats_, "");
 
 
@@ -51,7 +51,7 @@ Player::Player(const Color& color) : color_(color) {
     CreateBuildingFactory<SuburbBuildingFactory<BuildingUnderConstruction<SuburbBuilding>>>("farm");
 
 
-    SuburbBuildingStats(entities_stats_, "barrack", -10);//-2
+    SuburbBuildingStats(entities_stats_, "barrack", -2);
     SuburbBuildingStats(entities_stats_, "farm", 4);
 
     EntityProductionStats(entities_factories_.buildings_production_stats, "wall", 4, 4);
@@ -63,7 +63,7 @@ Player::Player(const Color& color) : color_(color) {
     BuildingWithHpStats(entities_stats_, "wall", 6);
     BuildingWithHpStats(entities_stats_, "tower", 7);
 
-    TownStats(entities_stats_, "town", 2, 4);
+    TownStats(entities_stats_, "town", 10, 4);
 }
 
 const PlayersEntitiesStats& Player::get_stats() const {

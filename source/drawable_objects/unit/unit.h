@@ -12,6 +12,7 @@ class Unit : virtual public HittableEntity {
 protected:
     int dmg_;
     unsigned int moves_;
+    int salary_;
     void AskGridToDecreaseHP(int dmg, Grid& grid) const override;
     virtual ClickResponse ClickLogic(SceneInfo &scene, std::pair<int, int> &coord) const;
 public:

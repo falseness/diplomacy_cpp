@@ -5,8 +5,8 @@ EntityStats::EntityStats(PlayersEntitiesStats& all_stats, std::string name) {
     all_stats.entities.emplace(std::move(name), *this);
 }
 
-UnitStats::UnitStats(PlayersEntitiesStats& all_stats, std::string name, unsigned int hp, int dmg, unsigned int speed)
-    : EntityStats(all_stats, name), hp(hp), dmg(dmg), speed(speed) {
+UnitStats::UnitStats(PlayersEntitiesStats& all_stats, std::string name, unsigned int hp, int dmg, unsigned int speed,
+                     int salary) : EntityStats(all_stats, name), hp(hp), dmg(dmg), speed(speed), salary(salary) {
     all_stats.units.emplace(std::move(name), *this);
 }
 
@@ -32,6 +32,7 @@ TownStats::TownStats(PlayersEntitiesStats& all_stats, std::string name, unsigned
 }
 
 RangeUnitStats::RangeUnitStats(PlayersEntitiesStats& all_stats, std::string name, unsigned int hp, int dmg,
-        unsigned int speed, unsigned int range) : UnitStats(all_stats, name, hp, dmg, speed), range(range) {
+        unsigned int speed, int salary, unsigned int range) : UnitStats(all_stats, name, hp, dmg, speed, salary),
+        range(range) {
     all_stats.range_units.emplace(std::move(name), *this);
 }

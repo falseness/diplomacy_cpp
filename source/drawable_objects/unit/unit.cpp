@@ -17,6 +17,7 @@ Unit::Unit(Cell* cell, std::string image_name) : Entity(cell, std::move(image_na
     hp_ = unit_type_stats.hp;
     dmg_ = unit_type_stats.dmg;
     moves_ = unit_type_stats.speed;
+    salary_ = unit_type_stats.salary;
 }
 
 void Unit::set_cell(Cell* cell) {
@@ -117,6 +118,7 @@ unsigned int Unit::get_maximum_hp() const {
 
 void Unit::NextTurn(SceneInfo&) {
     moves_ = get_speed();
+    get_player().IncreaseGold(-salary_);
 }
 
 bool Unit::is_passable(size_t asking_player_index) const {
