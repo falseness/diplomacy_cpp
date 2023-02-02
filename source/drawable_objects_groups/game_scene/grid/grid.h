@@ -66,11 +66,12 @@ public:
     [[nodiscard]] inline bool is_coord_out_of_range(std::pair<int, int> coord) const {
         return grid_cells_.is_coord_out_of_range(coord);
     }
-    template <typename Building>
-    void CreateBuilding(std::pair<int, int> coord, ProductionInfo production_info) {
-        CreateBuildingAction<Building> action(coord, std::move(production_info));
+    template <typename Building, typename... Args>
+    void CreateBuilding(std::pair<int, int> coord, Args&&... args) {
+        CreateBuildingAction<Building, Args...> action(coord, std::forward<Args>(args)...);
         PerformActionAndSaveUndo(action);
     }
+
     void ClearUndoStack();
     void StartUndoSequence();
     void HandleKeyPress(SceneInfo& scene);

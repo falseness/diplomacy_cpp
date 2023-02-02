@@ -31,7 +31,7 @@ ClickResponse BuildingFactory<Building>::HandleClick(SceneInfo &scene, const Vec
     const EntityProductionStats& production_stats = get_production_stats(town->get_player());
     unsigned int turns = production_stats.turns;
 
-    scene.grid.CreateBuilding<Building>(coord, std::move(ProductionInfo{name_, turns}));
+    scene.grid.CreateBuilding<Building>(coord, name_, std::move(ProductionInfo{name_, turns}));
     scene.grid.IncreaseGold(player_index, -production_stats.cost);
 
     scene.town_production_interface.ReClick(scene);

@@ -31,6 +31,7 @@ void AssetsManager::load_all_images() {
 
     load_image("mountain", "entities/buildings/mountain.png");
     load_image("lake", "entities/buildings/lake.png");
+    load_image("sea", "entities/buildings/sea.png");
 }
 
 void AssetsManager::load_image(const std::string& name, const std::string& path) {

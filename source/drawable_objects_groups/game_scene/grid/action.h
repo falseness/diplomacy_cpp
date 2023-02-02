@@ -140,15 +140,47 @@ public:
     std::unique_ptr<GridAction> CreateUndoAction(GridCells& cells) override;
 };
 
-template <typename Building>
+
+using std::forward; // You can change this if you like unreadable code or care hugely about namespace pollution.
+
+template<size_t N>
+struct ApplyMember
+{
+    template<typename C, typename F, typename T, typename... A>
+    static inline auto apply(C&& c, F&& f, T&& t, A&&... a) ->
+    decltype(ApplyMember<N-1>::apply(forward<C>(c), forward<F>(f), forward<T>(t), std::get<N-1>(forward<T>(t)), forward<A>(a)...))
+    {
+        return ApplyMember<N-1>::apply(forward<C>(c), forward<F>(f), forward<T>(t), std::get<N-1>(forward<T>(t)), forward<A>(a)...);
+    }
+};
+
+template<>
+struct ApplyMember<0>
+{
+    template<typename C, typename F, typename T, typename... A>
+    static inline auto apply(C&& c, F&& f, T&&, A&&... a) ->
+    decltype((forward<C>(c)->*forward<F>(f))(forward<A>(a)...))
+    {
+        return (forward<C>(c)->*forward<F>(f))(forward<A>(a)...);
+    }
+};
+
+// C is the class, F is the member function, T is the tuple.
+template<typename C, typename F, typename T>
+inline auto apply(C&& c, F&& f, T&& t) ->
+decltype(ApplyMember<std::tuple_size<typename std::decay<T>::type>::value>::apply(forward<C>(c), forward<F>(f), forward<T>(t)))
+{
+    return ApplyMember<std::tuple_size<typename std::decay<T>::type>::value>::apply(forward<C>(c), forward<F>(f), forward<T>(t));
+}
+
+template <typename Building, typename... Args>
 class CreateBuildingAction : public GridAction {
     std::pair<int, int> coord_;
-    ProductionInfo production_info_;
+    std::tuple<Args...> args;
 public:
-    CreateBuildingAction(std::pair<int, int> coord, ProductionInfo production_info) : coord_(coord),
-        production_info_(std::move(production_info)) {}
-    void PerformAction(GridCells &cells, Players &players) override {
-        cells.get_cell_ptr(coord_)->template CreateBuilding<Building>(production_info_.name, production_info_);
+    CreateBuildingAction(std::pair<int, int> coord, Args&&... args) : coord_(coord), args(std::forward<Args>(args)...) {}
+    void PerformAction(GridCells &cells, Players&) override {
+        apply(static_cast<Cell*>(cells.get_cell_ptr(coord_).get()), &Cell::CreateBuilding<Building, Args...>, std::move(args));
     }
     std::unique_ptr<GridAction> CreateUndoAction(GridCells& cells) override {
         return std::make_unique<DeleteBuildingAction>(coord_);
