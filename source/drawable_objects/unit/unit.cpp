@@ -105,6 +105,7 @@ json Unit::get_info() const {
         result["info"]["moves"] = std::to_string(moves_) + " / " + std::to_string(get_speed());
     else
         result["info"]["speed"] = std::to_string(get_speed());
+    result["info"]["salary"] = std::to_string(salary_);
     return std::move(result);
 }
 

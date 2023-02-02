@@ -71,3 +71,9 @@ ClickResponse RangeUnit::HandleClick(SceneInfo &scene, const Vector2D &click_pos
     scene.range_unit_attack_border.Clear();
     return Unit::HandleClick(scene, click_pos, game_options);
 }
+
+json RangeUnit::get_info() const {
+    auto result = Unit::get_info();
+    result["info"]["range"] = get_range();
+    return result;
+}

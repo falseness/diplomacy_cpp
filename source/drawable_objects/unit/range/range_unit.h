@@ -11,6 +11,7 @@ protected:
     virtual void CallUnitLogicSelect(const SceneInfo &scene, unsigned int bfs_moves) const;
     [[nodiscard]] unsigned int get_unit_base_range() const;
 public:
+    [[nodiscard]] json get_info() const override;
     [[nodiscard]] inline bool can_melee_interact(const Cell& cell) const override {
         return cell.is_passable(get_player_index()) && !is_attackable(cell);
     }
