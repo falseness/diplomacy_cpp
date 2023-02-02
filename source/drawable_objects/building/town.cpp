@@ -77,7 +77,9 @@ void Town::AddSuburb(Cell* cell) {
 }
 
 void Town::Kill(Grid &grid) const {
-    for (auto suburb : suburbs_) {
+    // suburbs_ may be changed in these loops
+    auto suburbs_copy = suburbs_;
+    for (auto suburb : suburbs_copy) {
         if (suburb == get_coord()) {
             continue;
         }
@@ -85,7 +87,7 @@ void Town::Kill(Grid &grid) const {
             grid.DeleteBuilding(suburb);
         }
     }
-    for (auto suburb : suburbs_) {
+    for (auto suburb : suburbs_copy) {
         grid.DeleteSuburb(suburb);
     }
 

@@ -63,7 +63,7 @@ Player::Player(const Color& color) : color_(color) {
     BuildingWithHpStats(entities_stats_, "wall", 6);
     BuildingWithHpStats(entities_stats_, "tower", 7);
 
-    TownStats(entities_stats_, "town", 10, 4);
+    TownStats(entities_stats_, "town", 2, 4);
 }
 
 const PlayersEntitiesStats& Player::get_stats() const {

@@ -56,6 +56,7 @@ public:
 
         building_ = std::move(static_cast<std::unique_ptr<Building>>(
                           std::make_unique<BuildingType>(this, std::forward<Args>(args)...)));
+        get_player().AddBuilding(building_.get());
     }
     Cell(std::pair<int, int>, size_t player_index_, Players&, bool is_suburb = false);
     void Draw(Screen& screen, const GameOptions&) override;
