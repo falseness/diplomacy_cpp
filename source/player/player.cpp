@@ -76,6 +76,8 @@ void Player::AddUnit(Unit* new_unit) {
 }
 
 void Player::NextTurn(SceneInfo& scene) {
+    // it is important that get_income is called before NextTurn because it can create new buildings.
+    gold_ += get_income();
     // some elements can be deleted in cycle
     auto units_copy = units_;
     for (auto unit : units_copy) {
@@ -85,7 +87,7 @@ void Player::NextTurn(SceneInfo& scene) {
     for (auto building : buildings_copy) {
         building->NextTurn(scene);
     }
-    gold_ += get_income();
+
     if (gold_ < 0) {
         for (auto unit : units_copy) {
             unit->Kill(scene.grid);
