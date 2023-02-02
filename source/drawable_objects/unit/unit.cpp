@@ -73,20 +73,16 @@ void Unit::MoveTo(Grid& grid, std::pair<int, int> coord) const {
     for (auto next_coord : path) {
         auto current_cell = grid.get_cell(get_coord());
         auto cell = grid.get_cell(next_coord);
+        if (cell->is_hittable(get_player_index())) {
+            cell->HitSomethingOnCell(dmg_, grid);
+            assert(next_coord == path.back());
+        }
+
         if (cell->is_passable(get_player_index())) {
             if (!cell->is_my_turn() && !cell->get_building()->is_empty())
                 grid.DeleteBuilding(cell->get_coord());
             current_cell->MoveUnitTo(*cell, grid);
             continue;
-        }
-        assert(next_coord == path.back());
-
-        if (cell->is_hittable(get_player_index())) {
-            cell->HitSomethingOnCell(dmg_, grid);
-        }
-
-        if (cell->is_passable(get_player_index())) {
-            current_cell->MoveUnitTo(*cell, grid);
         }
     }
 }

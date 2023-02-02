@@ -6,7 +6,7 @@
 #include "source/drawable_objects_groups/game_scene/game_scene.h"
 #include "source/player/factories/building_and_suburb.h"
 
-// todo: fix potential_suburbs bugs with several towns
+
 Town::Town(Cell* cell, std::string&& image_name, std::set<std::pair<int, int>> suburbs) :
         BuildingWithHp(cell, std::string(image_name)), Barrack(cell, std::string(image_name)),
         SuburbBuilding(cell, std::string(image_name)), Building(cell, std::string(image_name)),
