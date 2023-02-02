@@ -77,6 +77,7 @@ public:
     std::unique_ptr<Building> get_last_deleted_building();
     const Color color_;
     explicit Player(const Color&);
+    [[nodiscard]] int get_income() const;
     [[nodiscard]] int get_gold() const;
     [[nodiscard]] Color get_color() const;
     [[nodiscard]] const PlayersEntitiesStats& get_stats() const;

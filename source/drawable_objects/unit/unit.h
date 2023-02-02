@@ -16,6 +16,9 @@ protected:
     void AskGridToDecreaseHP(int dmg, Grid& grid) const override;
     virtual ClickResponse ClickLogic(SceneInfo &scene, std::pair<int, int> &coord) const;
 public:
+    [[nodiscard]] inline int get_salary() const {
+        return salary_;
+    }
     void Kill(Grid& grid) const override;
     void NextTurn(SceneInfo& scene) override;
     [[nodiscard]] const UnitStats& get_stats() const;
