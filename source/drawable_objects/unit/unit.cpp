@@ -115,7 +115,6 @@ unsigned int Unit::get_maximum_hp() const {
 
 void Unit::NextTurn(SceneInfo&) {
     moves_ = get_speed();
-    get_player().IncreaseGold(-salary_);
 }
 
 bool Unit::is_passable(size_t asking_player_index) const {

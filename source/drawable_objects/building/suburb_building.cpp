@@ -26,6 +26,5 @@ bool SuburbBuilding::is_hittable(size_t asking_player_index) const {
 }
 
 void SuburbBuilding::NextTurn(SceneInfo &scene) {
-    get_player().IncreaseGold(get_income());
     Building::NextTurn(scene);
 }

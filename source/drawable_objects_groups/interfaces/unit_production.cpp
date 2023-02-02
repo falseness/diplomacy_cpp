@@ -1,7 +1,9 @@
 #include "unit_production.h"
+
+#include <cassert>
+
 #include "source/drawable_objects/building/barrack.h"
 #include "source/drawable_objects_groups/interfaces/production_slots.h"
-#include <cassert>
 
 
 ProductionInterface::ProductionInterface(const Screen &screen) : production_slots_(nullptr) {
@@ -61,7 +63,10 @@ void ProductionInterface::Draw(Screen &screen, const GameOptions& game_options) 
     if (!visible_)
         return;
     assert(barrack_ != nullptr);
-    gold_text_.text = std::to_string(barrack_->get_player().get_gold());
+    int income = barrack_->get_player().get_income();
+    std::string plus_sign = income > 0 ? "+" : "";
+    std::string income_info = " (" + plus_sign + std::to_string(income) + ")";
+    gold_text_.text = std::to_string(barrack_->get_player().get_gold()) + income_info;
     DrawableObjectsGroup::Draw(screen, game_options);
 }
 

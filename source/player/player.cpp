@@ -24,7 +24,6 @@ Player::Player(const Color& color) : color_(color) {
     BuildingStats(entities_stats_, "");
 
 
-
     EntityProductionStats(entities_factories_.units_production_stats, "peasant", 10, 1);
     CreateUnitFactory<UnitFactory>("peasant");
 
@@ -77,6 +76,8 @@ void Player::AddUnit(Unit* new_unit) {
 }
 
 void Player::NextTurn(SceneInfo& scene) {
+    // it is important that get_income is called before NextTurn because it can create new buildings.
+    gold_ += get_income();
     // some elements can be deleted in cycle
     auto units_copy = units_;
     for (auto unit : units_copy) {
@@ -86,6 +87,7 @@ void Player::NextTurn(SceneInfo& scene) {
     for (auto building : buildings_copy) {
         building->NextTurn(scene);
     }
+
     if (gold_ < 0) {
         for (auto unit : units_copy) {
             unit->Kill(scene.grid);
@@ -163,3 +165,18 @@ Town &Player::FindTown(std::pair<int, int> suburb_coord) {
     assert(false);
 }
 
+int Player::get_income() const {
+    int result = 0;
+
+    for (auto building : buildings_) {
+        auto suburb_building = dynamic_cast<SuburbBuilding*>(building);
+        if (suburb_building) {
+            result += suburb_building->get_income();
+        }
+    }
+
+    for (auto unit : units_) {
+        result -= unit->get_salary();
+    }
+    return result;
+}
