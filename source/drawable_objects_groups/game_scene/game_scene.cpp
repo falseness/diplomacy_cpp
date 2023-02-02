@@ -1,12 +1,16 @@
-#include <source/drawable_objects_groups/game_scene/game_scene.h>
+#include "source/drawable_objects_groups/game_scene/game_scene.h"
+
 #include "source/drawable_objects_groups/game_scene/grid/grid.h"
+#include "source/utility/color.h"
 
 
 GameScene::GameScene(Screen& screen, const GameOptions& game_options) : info_(screen), next_turn_button_(screen) {
+
     drawable_objects_.push_back(&info_.grid);
     drawable_objects_.push_back(&info_.range_unit_attack_border);
     drawable_objects_.push_back(&info_.selection_border);
     drawable_objects_.push_back(&next_turn_button_);
+    drawable_objects_.push_back(&info_.sudden_death_info);
     drawable_objects_.push_back(&info_.entity_interface);
     drawable_objects_.push_back(&info_.production_interface);
     drawable_objects_.push_back(&info_.town_production_interface);
@@ -56,7 +60,9 @@ SceneInfo::SceneInfo(Screen& screen) :
         selection_border(grid, Color::kWhite),
         range_unit_attack_border(grid, Color(255, 255, 255), Color(0, 0, 255)),
         entity_interface(screen), production_interface(screen),
-        town_production_interface(screen) {}
+        town_production_interface(screen),
+        sudden_death_info({screen.get_width() - screen.get_height() * 0.1f, screen.get_height() * 0.04f},
+                          static_cast<size_t>(screen.get_height() * 0.06), Color::kWhite) {}
 
 void SceneInfo::ClearInterfaces() {
     selection_border.Clear();

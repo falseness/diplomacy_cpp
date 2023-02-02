@@ -28,6 +28,9 @@ void AssetsManager::load_all_images() {
     images_["debug"].loadFromFile("entities/debug_image.png");
     images_["suburb"] = sf::Texture();
     images_["suburb"].loadFromFile("other_images/suburb.png");
+
+    load_image("mountain", "entities/buildings/mountain.png");
+    load_image("lake", "entities/buildings/lake.png");
 }
 
 void AssetsManager::load_image(const std::string& name, const std::string& path) {

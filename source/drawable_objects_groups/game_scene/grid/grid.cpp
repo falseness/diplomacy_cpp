@@ -8,6 +8,7 @@
 #include "source/drawable_objects/building/under_construction/under_construction.h"
 #include "source/drawable_objects_groups/game_scene/grid/action.h"
 #include "source/drawable_objects/unit/range/range_unit.h"
+#include "source/drawable_objects/building/nature.h"
 #include "cells.h"
 #include "action.h"
 
@@ -41,7 +42,6 @@ Grid::Grid(Players& players) : players_(players), logic_helper_(kGridRowsCount, 
     colors.emplace(std::pair<int, int>{2, 3}, 1);
     colors.emplace(std::pair<int, int>{9, 4}, 2);
 
-
     for (size_t i = 0; i < cells.size(); ++i) {
         for (size_t j = 0; j < m; ++j) {
             int color = 0;
@@ -55,6 +55,8 @@ Grid::Grid(Players& players) : players_(players), logic_helper_(kGridRowsCount, 
             drawable_objects_.push_back(cells[i][j].get());
         }
     }
+    cells[4][2]->CreateBuilding<NaturalBuilding>("lake");
+    cells[4][4]->CreateBuilding<Mountain>("mountain");
     cells[town_poses[0].first + 1][town_poses[0].second]->CreateBuilding<Barrack>("barrack");
     cells[town_poses[1].first][town_poses[1].second + 1]->CreateBuilding<SuburbBuilding>("farm");
     for (int i = 1; i < players.size(); ++i) {

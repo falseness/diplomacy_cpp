@@ -5,7 +5,7 @@
 
 
 class Players {
-    std::vector<Player> players_;
+    std::vector<std::unique_ptr<Player>> players_;
     size_t whoose_turn_;
 public:
     [[nodiscard]] size_t get_whoose_turn() const;

@@ -5,6 +5,7 @@
 #include "source/drawable_objects_groups/interfaces/town_production.h"
 #include "source/player/players.h"
 #include "source/next_turn/next_turn_button.h"
+#include "source/next_turn/sudden_death_info.h"
 #include "source/drawable_objects/clickable_object.h"
 #include "source/drawable_objects/selection_border.h"
 #include "source/utility/arrow_key_press_info.h"
@@ -20,6 +21,7 @@ struct SceneInfo {
     mutable EntityInfoInterface entity_interface;
     mutable ProductionInterface production_interface;
     mutable TownProductionInterface town_production_interface;
+    SuddenDeathInfo sudden_death_info;
     explicit SceneInfo(Screen& screen);
     void ClearInterfaces();
 };

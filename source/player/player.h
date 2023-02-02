@@ -4,6 +4,10 @@
 #include <map>
 #include <set>
 #include <deque>
+#include <list>
+#include <memory>
+
+
 #include "source/utility/color.h"
 #include "source/player/entity_stats.h"
 #include "source/player/factories/entity.h"
@@ -11,10 +15,6 @@
 #include "source/drawable_objects/unit/unit.h"
 #include "source/drawable_objects/building/building.h"
 #include "source/utility/set_additional_functions.h"
-
-#include <list>
-#include <memory>
-
 
 class Unit;
 class Building;
@@ -58,15 +58,15 @@ class Player {
         entities_factories_.buildings_factory.template emplace(
                 std::move(name), std::move(std::unique_ptr<BuildingAndSuburbFactory>(std::move(ptr))));
     }
-public:
     inline void AddTown(Town* town) {
         unique_insert(towns_, town);
     }
     inline void DeleteTown(Town* town) {
         guaranteed_erase(towns_, town);
     }
+public:
     Town& FindTown(std::pair<int, int> suburb_coord);
-    void NextTurn(SceneInfo& scene);
+    virtual void NextTurn(SceneInfo& scene);
     void AddUnit(Unit*);
     void DeleteUnit(std::unique_ptr<Unit>&& unit);
     void AddBuilding(Building*);
@@ -82,5 +82,6 @@ public:
     [[nodiscard]] Color get_color() const;
     [[nodiscard]] const PlayersEntitiesStats& get_stats() const;
     [[nodiscard]] const PlayersEntitiesFactories& get_factories_stats() const;
+    virtual ~Player() = default;
 };
 
