@@ -6,6 +6,7 @@
 
 void Player0::NextTurn(SceneInfo &scene) {
     Player::NextTurn(scene);
+    scene.sudden_death_info.decrease_turns_left();
 
     int turns_after_sudden_death = -scene.sudden_death_info.get_turns_left();
     if (turns_after_sudden_death < 0) {
@@ -21,24 +22,35 @@ void Player0::NextTurn(SceneInfo &scene) {
     int columns_maximum = columns_count - turns_after_sudden_death - 1;
 
     for (int i = rows_minimum; i <= rows_maximum; ++i) {
-        //scene.grid.get_cell(i, );
+        DeleteOtherAndSpawnSea({i, columns_minimum}, scene.grid);
+        DeleteOtherAndSpawnSea({i, columns_maximum}, scene.grid);
     }
-    //if (rows_minimum <= rows_maximum)
+
+    for (int j = columns_minimum; j <= columns_maximum; ++j) {
+        DeleteOtherAndSpawnSea({rows_minimum, j}, scene.grid);
+        DeleteOtherAndSpawnSea({rows_maximum, j}, scene.grid);
+    }
 }
 
-void Player0::SpawnSea(std::pair<int, int> coord, Grid &grid) {
+void Player0::DeleteOtherAndSpawnSea(std::pair<int, int> coord, Grid &grid) {
+    if (grid.is_coord_out_of_range(coord)) {
+        return;
+    }
     auto cell = grid.get_cell(coord);
     if (!cell->get_building()->is_empty()) {
+        cell->get_building()->Kill(grid);
         grid.DeleteBuilding(coord);
     }
-    if (cell->is_suburb()) {
+
+    if (grid.get_cell(coord)->is_suburb()) {
         grid.DeleteSuburb(coord);
     }
+
     if (!cell->get_unit()->is_empty()) {
         grid.DeleteUnit(coord);
     }
 
     grid.SetPlayer(coord, kPlayerIndex);
 
-    //grid.CreateBuilding<NaturalBuilding>()
+    grid.CreateBuilding<NaturalBuilding>(coord, "sea");
 }

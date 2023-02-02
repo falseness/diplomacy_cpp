@@ -99,4 +99,5 @@ void Town::DeleteSuburb(Cell *cell) {
     cell->set_suburb(false);
     bool was_erased = suburbs_.erase(cell->get_coord());
     assert(was_erased);
+
 }

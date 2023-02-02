@@ -7,7 +7,6 @@ class BuildingWithHpStats;
 
 class BuildingWithHp : virtual public Building, public HittableEntity {
 protected:
-    void Kill(Grid& grid) const override;
     void AskGridToDecreaseHP(int dmg, Grid& grid) const override;
 public:
     [[nodiscard]] json get_info() const override;

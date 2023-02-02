@@ -3,11 +3,12 @@
 #include <cassert>
 
 #include "source/drawable_objects_groups/game_scene/game_scene.h"
-
+#include "source/player/player0.h"
 
 Players::Players(std::vector<Color>&& players_colors, size_t whoose_turn = 1) : whoose_turn_(whoose_turn) {
-    for (auto&& color : players_colors) {
-        players_.push_back(std::move(std::make_unique<Player>(color)));
+    players_.push_back(std::move(std::make_unique<Player0>(players_colors[0])));
+    for (size_t i = 1; i < players_colors.size(); ++i) {
+        players_.push_back(std::move(std::make_unique<Player>(players_colors[i])));
     }
 }
 
@@ -21,7 +22,6 @@ void Players::NextTurn(SceneInfo &scene) {
     whoose_turn_ = (whoose_turn_ + 1) % players_.size();
     players_[whoose_turn_]->NextTurn(scene);
     if (!whoose_turn_) {
-        scene.sudden_death_info.decrease_turns_left();
         NextTurn(scene);
     }
 }
