@@ -1,20 +1,20 @@
 #include "grid.h"
-#include "source/drawable_objects/cell/cell.h"
+
+#include <cassert>
+
 #include <tuple>
+#include <set>
+
+#include "source/drawable_objects/cell/cell.h"
 #include "source/drawable_objects/cell/coord_converter.h"
 #include "source/drawable_objects_groups/game_scene/game_scene.h"
 #include "source/drawable_objects/building/town.h"
 #include "source/player/player.h"
-#include "source/drawable_objects/building/under_construction/under_construction.h"
 #include "source/drawable_objects_groups/game_scene/grid/action.h"
 #include "source/drawable_objects/unit/range/range_unit.h"
 #include "source/drawable_objects/building/nature.h"
 #include "cells.h"
-#include "action.h"
 
-
-#include <cassert>
-#include <set>
 
 
 
@@ -126,8 +126,8 @@ void Grid::ChangeSelectedUnitToBuilding() {
     selected_entity_ = grid_cells_.get_cell_ptr(coord)->get_building_ptr();
 }
 
-const size_t Grid::kGridRowsCount = 20;//15;
-const size_t Grid::kGridColumnsCount = 20;//6;
+const size_t Grid::kGridRowsCount = 15;
+const size_t Grid::kGridColumnsCount = 6;
 
 void Grid::RemoveSelection() {
     selected_entity_ = empty_unit_.get();
@@ -237,11 +237,4 @@ void Grid::Draw(Screen &screen, const GameOptions & game_options) {
     DrawableObjectsGroup::Draw(screen, game_options);
     screen.DrawHexagonBuffer({0, 0});
     screen.DrawBuffer({0, 0});
-    /*for (size_t i = 0; i < 5; ++i) {
-        for (size_t j = 0; j < 5; ++j) {
-            screen.DrawOnBuffer("peasant", {100, 100}, {i * 100.0f, j * 100.0f});
-        }
-    }
-    screen.DrawBuffer(game_options.draw_offset);*/
-
 }

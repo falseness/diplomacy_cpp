@@ -62,7 +62,7 @@ SceneInfo::SceneInfo(Screen& screen) :
         entity_interface(screen), production_interface(screen),
         town_production_interface(screen),
         sudden_death_info({screen.get_width() - screen.get_height() * 0.1f, screen.get_height() * 0.04f},
-                          static_cast<size_t>(screen.get_height() * 0.06), Color::kWhite, 1) {}
+                          static_cast<size_t>(screen.get_height() * 0.06), Color::kWhite, 10) {}
 
 void SceneInfo::ClearInterfaces() {
     selection_border.Clear();
