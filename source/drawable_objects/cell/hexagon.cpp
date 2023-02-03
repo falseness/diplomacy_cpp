@@ -11,10 +11,11 @@ void Hexagon::Draw(Screen& screen, const GameOptions& game_options) {
     HexagonOptions hexagon_options(game_options.hexagon_options);
     hexagon_options.fill_color = cell_.get_color();
 
-    screen.DrawHexagon(hexagon_options, position, 1.0f);
+    screen.DrawOnHexagonBuffer(hexagon_options, position, 1.0f);
+    //screen.DrawHexagon(hexagon_options, position, 1.0f);
     if (!cell_.is_suburb()) {
         hexagon_options.fill_color = Color::kWhite;
-        screen.DrawHexagon(hexagon_options, position, Cell::kColorAlphaRatio);
+        screen.DrawOnHexagonBuffer(hexagon_options, position, Cell::kColorAlphaRatio);
     }
 }
 

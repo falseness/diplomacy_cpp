@@ -74,4 +74,7 @@ AssetsManager::AssetsManager() {
                                       static_cast<float>(pos_x + size.x), static_cast<float>(kPosY + texture.getSize().y)};
         pos_x += size.x;
     }
+
+    all_images_.setSmooth(false);
+    tmp_.texture = &all_images_;
 }

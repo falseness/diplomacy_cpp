@@ -14,6 +14,7 @@ class AssetsManager {
     std::unordered_map<std::string, sf::Sprite> sprites_;
     sf::Texture all_images_;
     std::unordered_map<std::string, Rectangle> position_on_texture_;
+    sf::RenderStates tmp_;
 public:
     std::unordered_map<std::string, sf::Font> fonts_;
 private:
@@ -25,10 +26,13 @@ public:
     [[nodiscard]] inline const Rectangle& get_position_on_texture(const std::string& image_name) const {
         return position_on_texture_.find(image_name)->second;
     }
-    [[nodiscard]] sf::Texture& get_all_images_texture() {
-        return all_images_;
+    [[nodiscard]] sf::Texture* get_all_images_texture() {
+        return &all_images_;
     }
     [[nodiscard]] inline sf::Sprite& get_sprite(const std::string& image_name) {
         return sprites_[image_name];
+    }
+    [[nodiscard]] inline sf::RenderStates& get_render_states() {
+        return tmp_;
     }
 };

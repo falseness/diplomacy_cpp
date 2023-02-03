@@ -235,6 +235,7 @@ Vector2D Grid::get_right_bottom_corner(const GameOptions& game_options) const {
 
 void Grid::Draw(Screen &screen, const GameOptions & game_options) {
     DrawableObjectsGroup::Draw(screen, game_options);
+    screen.DrawHexagonBuffer({0, 0});
     screen.DrawBuffer({0, 0});
     /*for (size_t i = 0; i < 5; ++i) {
         for (size_t j = 0; j < 5; ++j) {

@@ -39,8 +39,8 @@ void GameScene::HandleKeyEnterPress() {
 }
 
 void GameScene::HandleArrowKeyPress(ArrowsKeyPressInfo arrows_info, Screen& screen, const GameOptions& game_options) {
-    static const float kCameraSpeed = 0.43;
-    static const float kMaximumMargin = kCameraSpeed * 1500.0f;
+    static const float kCameraSpeed = 0.43 * 25;
+    static const float kMaximumMargin = 800.0f;
     auto offset = screen.get_draw_offset();
     offset += {-static_cast<float>(arrows_info.hotizontal_sum) * kCameraSpeed,
                -static_cast<float>(arrows_info.vertical_sum) * kCameraSpeed};
