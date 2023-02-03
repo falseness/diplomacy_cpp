@@ -33,6 +33,7 @@ class Grid : public DrawableObjectsGroup, public ClickableObject {
         return grid_cells_.get_cell_ptr(coord);
     }
 public:
+    void Draw(Screen& screen, const GameOptions&) override;
     static const uint8_t kHexagonMaximumNeighbours = 6;
     void RemoveSelection();
     [[nodiscard]] std::vector<std::pair<int, int>> get_neighbours(std::pair<int, int> coord) const;

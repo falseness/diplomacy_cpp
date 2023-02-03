@@ -126,8 +126,8 @@ void Grid::ChangeSelectedUnitToBuilding() {
     selected_entity_ = grid_cells_.get_cell_ptr(coord)->get_building_ptr();
 }
 
-const size_t Grid::kGridRowsCount = 15;
-const size_t Grid::kGridColumnsCount = 6;
+const size_t Grid::kGridRowsCount = 20;//15;
+const size_t Grid::kGridColumnsCount = 20;//6;
 
 void Grid::RemoveSelection() {
     selected_entity_ = empty_unit_.get();
@@ -231,4 +231,16 @@ Vector2D Grid::get_right_bottom_corner(const GameOptions& game_options) const {
     return grid_cells_.get_cell(std::make_pair(grid_cells_.get_rows_count() - 1,
         grid_cells_.get_columns_count() - 1))->get_pos(game_options) + Vector2D(game_options.hexagon_options.radius * 2,
                                                                               game_options.hexagon_options.radius * 2);
+}
+
+void Grid::Draw(Screen &screen, const GameOptions & game_options) {
+    DrawableObjectsGroup::Draw(screen, game_options);
+    screen.DrawBuffer({0, 0});
+    /*for (size_t i = 0; i < 5; ++i) {
+        for (size_t j = 0; j < 5; ++j) {
+            screen.DrawOnBuffer("peasant", {100, 100}, {i * 100.0f, j * 100.0f});
+        }
+    }
+    screen.DrawBuffer(game_options.draw_offset);*/
+
 }

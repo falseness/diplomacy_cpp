@@ -12,6 +12,7 @@ Screen::Screen(sf::RenderWindow& window) :
             height_(sf::VideoMode::getDesktopMode().height),
             window_(window), background_color_(sf::Color(80, 80, 80)) {
     window_.create(sf::VideoMode(width_, height_), "Diplomacy");
+    ClearBuffer();
 }
 void Screen::Clear() {
     window_.clear(background_color_);
@@ -23,9 +24,7 @@ void Screen::DrawHexagon(const HexagonOptions& hexagon_options, const Vector2D& 
 }
 
 void Screen::DrawImage(const std::string &image_name, const ObjectSize &image_size, const Vector2D &position) {
-    sf::Sprite sprite = std::move(get_sprite(image_name, image_size, position));
-
-    window_.draw(sprite);
+    window_.draw(get_sprite(image_name, image_size, position));
 }
 
 void Screen::DrawGridImage(const std::string& image_name, const ObjectSize& image_size, const Vector2D& position) {
@@ -221,7 +220,7 @@ void Screen::ChangeSprite(sf::Sprite& sprite, const ObjectSize& image_size, cons
 
 void Screen::DrawGridImageWithOpactiy(const std::string &image_name, const ObjectSize &image_size,
                                       const Vector2D &position, float opacity) {
-    sf::Sprite sprite = std::move(get_sprite(image_name, image_size, get_real_position_on_grid(position)));
+    sf::Sprite sprite = get_sprite(image_name, image_size, get_real_position_on_grid(position));
     sprite.setColor({255, 255, 255, static_cast<sf::Uint8>(opacity * 255)});
 
     window_.draw(sprite);
@@ -231,12 +230,11 @@ Vector2D Screen::get_real_position_on_grid(const Vector2D& position) {
     return position + draw_offset_;
 }
 
-sf::Sprite Screen::get_sprite(const std::string &image_name, const ObjectSize &image_size,
-                                const Vector2D &position) {
-    sf::Sprite sprite;
-    sprite.setTexture(assets_manager_.images_[image_name]);
+const sf::Sprite& Screen::get_sprite(const std::string &image_name, const ObjectSize &image_size,
+                                      const Vector2D &position) {
+    sf::Sprite& sprite = assets_manager_.get_sprite(image_name);
     ChangeSprite(sprite, image_size, position);
-    return std::move(sprite);
+    return sprite;
 }
 
 void Screen::DrawCenteredLine(Vector2D begin, Vector2D end, float width, Color color) {
@@ -246,4 +244,36 @@ void Screen::DrawCenteredLine(Vector2D begin, Vector2D end, float width, Color c
     dt.ReplaceForPerpendicular();
     dt *= width / 2;
     DrawLine(begin + dt, end + dt, width, color);
+}
+
+void Screen::DrawOnBuffer(const std::string &image_name, const ObjectSize &image_size,
+                          const Vector2D &position_left_corner) {
+    sf::Vertex* quad = &buffer_[last_index++ * 4];
+    const auto& rect = assets_manager_.get_position_on_texture(image_name);
+    Vector2D position(position_left_corner.x - image_size.width / 2, position_left_corner.y - image_size.height / 2);
+    quad[0].position = sf::Vector2f(position.x, position.y);
+    quad[1].position = sf::Vector2f(position.x + image_size.width, position.y);
+    quad[2].position = sf::Vector2f(position.x + image_size.width, position.y + image_size.height);
+    quad[3].position = sf::Vector2f(position.x, position.y + image_size.height);
+
+    quad[0].texCoords = sf::Vector2f(rect.minimum_x, rect.minimum_y);
+    quad[1].texCoords = sf::Vector2f(rect.maximum_x, rect.minimum_y);
+    quad[2].texCoords = sf::Vector2f(rect.maximum_x, rect.maximum_y);
+    quad[3].texCoords = sf::Vector2f(rect.minimum_x, rect.maximum_y);
+}
+
+void Screen::DrawBuffer(const Vector2D &position) {
+    sf::RenderStates states;
+    states.texture = &assets_manager_.get_all_images_texture();
+    states.transform.translate(draw_offset_.x + position.x, draw_offset_.y + position.y);
+
+    window_.draw(buffer_, states);
+    ClearBuffer();
+}
+
+void Screen::ClearBuffer() {
+    buffer_.clear();
+    buffer_.setPrimitiveType(sf::Quads);
+    buffer_.resize(4000);
+    last_index = 0;
 }

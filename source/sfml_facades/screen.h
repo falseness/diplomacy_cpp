@@ -25,13 +25,18 @@ class Screen {
     void set_hexagon_shape(const HexagonOptions&, const Vector2D&, float);
     static void ChangeSprite(sf::Sprite& sprite, const ObjectSize &image_size, const Vector2D &position);
     Vector2D get_real_position_on_grid(const Vector2D& position);
-    sf::Sprite get_sprite(const std::string &image_name, const ObjectSize &image_size, const Vector2D &position);
+    const sf::Sprite& get_sprite(const std::string &image_name, const ObjectSize &image_size, const Vector2D &position);
+    size_t last_index = 0;
+    sf::VertexArray buffer_;
 public:
     explicit Screen(sf::RenderWindow& window);
     void Clear();
     void DrawHexagon(const HexagonOptions&, const Vector2D&, float);
     void DrawTriangle(const Triangle&);
     void DrawRoundedRectangle(const RoundedRectangle&);
+    void DrawOnBuffer(const std::string &image_name, const ObjectSize &image_size, const Vector2D &position);
+    void DrawBuffer(const Vector2D &position);
+    void ClearBuffer();
     void DrawImage(const std::string &image_name, const ObjectSize &image_size, const Vector2D &position);
     void DrawGridImage(const std::string &image_name, const ObjectSize &image_size, const Vector2D &position);
     void DrawGridImageWithOpactiy(const std::string &image_name, const ObjectSize &image_size,
