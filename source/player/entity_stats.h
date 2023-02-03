@@ -24,17 +24,18 @@ struct RangeUnitStats : public UnitStats {
 
 
 struct BuildingStats : public EntityStats {
-    BuildingStats(PlayersEntitiesStats&, std::string);
+    bool should_be_destroyed_after_town_destroying;
+    BuildingStats(PlayersEntitiesStats&, std::string, bool should_be_destroyed_after_town_destroying);
 };
 
 struct BuildingWithHpStats : virtual public BuildingStats {
     unsigned int hp;
-    BuildingWithHpStats(PlayersEntitiesStats&, std::string, unsigned int);
+    BuildingWithHpStats(PlayersEntitiesStats&, std::string, bool should_be_destroyed_after_town_destroying, unsigned int);
 };
 
 struct SuburbBuildingStats : virtual public BuildingStats {
     int income;
-    explicit SuburbBuildingStats(PlayersEntitiesStats&, std::string, int);
+    explicit SuburbBuildingStats(PlayersEntitiesStats&, std::string, bool should_be_destroyed_after_town_destroying, int);
 };
 
 struct TownStats : public BuildingWithHpStats, public SuburbBuildingStats {

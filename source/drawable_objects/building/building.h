@@ -1,4 +1,6 @@
-#include <source/drawable_objects/entity.h>
+#include "source/drawable_objects/entity.h"
+
+#include "source/player/entity_stats.h"
 
 #pragma once
 
@@ -23,8 +25,8 @@ public:
     [[nodiscard]] virtual inline bool is_high_ground() const {
         return false;
     }
-    [[nodiscard]] virtual inline bool should_be_destroyed_after_town_destroying() const {
-        return false;
+    [[nodiscard]] bool should_be_destroyed_after_town_destroying() const {
+        return get_stats().should_be_destroyed_after_town_destroying;
     }
     [[nodiscard]] json get_info() const override;
     void Kill(Grid& grid) const override;

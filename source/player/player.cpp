@@ -10,6 +10,7 @@
 #include "source/player/factories/range_unit.h"
 #include "source/drawable_objects/unit/range/range_unit.h"
 #include "source/drawable_objects/unit/range/catapult.h"
+#include "source/utility/set_additional_functions.h"
 
 
 Player::Player(const Color& color) : color_(color) {
@@ -21,7 +22,7 @@ Player::Player(const Color& color) : color_(color) {
 
 
     UnitStats(entities_stats_, "", 0, 0, 0, 0);
-    BuildingStats(entities_stats_, "");
+    BuildingStats(entities_stats_, "", false);
 
 
     EntityProductionStats(entities_factories_.units_production_stats, "peasant", 10, 1);
@@ -50,8 +51,8 @@ Player::Player(const Color& color) : color_(color) {
     CreateBuildingFactory<SuburbBuildingFactory<BuildingUnderConstruction<SuburbBuilding>>>("farm");
 
 
-    SuburbBuildingStats(entities_stats_, "barrack", -2);
-    SuburbBuildingStats(entities_stats_, "farm", 4);
+    SuburbBuildingStats(entities_stats_, "barrack", true, -2);
+    SuburbBuildingStats(entities_stats_, "farm", true, 4);
 
     EntityProductionStats(entities_factories_.buildings_production_stats, "wall", 4, 4);
     CreateBuildingFactory<OutsideBuildingFactory<BuildingUnderConstruction<Wall>>>("wall");
@@ -59,8 +60,8 @@ Player::Player(const Color& color) : color_(color) {
     EntityProductionStats(entities_factories_.buildings_production_stats, "tower", 28, 3);
     CreateBuildingFactory<OutsideBuildingFactory<BuildingUnderConstruction<Tower>>>("tower");
 
-    BuildingWithHpStats(entities_stats_, "wall", 6);
-    BuildingWithHpStats(entities_stats_, "tower", 7);
+    BuildingWithHpStats(entities_stats_, "wall", false, 6);
+    BuildingWithHpStats(entities_stats_, "tower", false, 7);
 
     TownStats(entities_stats_, "town", 10, 4);
 }
@@ -68,6 +69,12 @@ Player::Player(const Color& color) : color_(color) {
 const PlayersEntitiesStats& Player::get_stats() const {
     return entities_stats_;
 }
+
+const BuildingStats &Player::get_building_stats(const std::string &building_name) const {
+    return safe_find(get_stats().buildings, building_name);
+}
+
+
 
 void Player::AddUnit(Unit* new_unit) {
     if (!new_unit->is_empty()) {

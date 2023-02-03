@@ -4,10 +4,7 @@
 #include "source/drawable_objects/cell/coord_converter.h"
 
 const BuildingStats& Building::get_stats() const {
-    const auto& buildings_stats = cell_->get_player().get_stats().buildings;
-    auto it = buildings_stats.find(image_name_);
-    assert(it != buildings_stats.end());
-    return it->second;
+    return cell_->get_player().get_building_stats(image_name_);
 }
 
 Building::Building(Cell *cell, std::string image_name) : Entity(cell, std::move(image_name)) {

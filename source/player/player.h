@@ -81,6 +81,7 @@ public:
     [[nodiscard]] int get_gold() const;
     [[nodiscard]] Color get_color() const;
     [[nodiscard]] const PlayersEntitiesStats& get_stats() const;
+    [[nodiscard]] const BuildingStats& get_building_stats(const std::string& building_name) const;
     [[nodiscard]] const PlayersEntitiesFactories& get_factories_stats() const;
     virtual ~Player() = default;
 };

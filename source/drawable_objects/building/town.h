@@ -43,10 +43,6 @@ public:
         return kTownRangeAddition;
     }
     void Kill(Grid& grid) const override;
-    [[nodiscard]] inline bool should_be_destroyed_after_town_destroying() const override {
-        assert(false);
-        return false;
-    }
     [[nodiscard]] inline int get_income() const override {
         // todo: fix potential suburbs
         return SuburbBuilding::get_income() + kSuburbsIncome * static_cast<int>(suburbs_.size());
