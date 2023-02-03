@@ -190,7 +190,7 @@ Vector2D Screen::get_point_of_hexagon(uint8_t point, const HexagonOptions& hexag
 
 
     HexagonOptions my_hexagon_options = hexagon_options;
-    my_hexagon_options.radius += my_hexagon_options.outline_thickness;
+    my_hexagon_options.radius += my_hexagon_options.outline_thickness / 2;
     set_hexagon_shape(my_hexagon_options, position, opacity);
     auto sfml_result = hexagon_shape_.getTransform().transformPoint(
             hexagon_shape_.getPoint((point + kPointsShift) % hexagon_shape_.getPointCount()));
@@ -243,9 +243,11 @@ void Screen::DrawCenteredLine(Vector2D begin, Vector2D end, float width, Color c
     // todo: refactor it
     Vector2D dt = end - begin;
     dt.Normalize();
+    auto dt_copy = dt * (width / 4);
     dt.ReplaceForPerpendicular();
     dt *= width / 2;
-    DrawLine(begin + dt, end + dt, width, color);
+
+    DrawLine(begin + dt - dt_copy, end + dt + dt_copy, width, color);
 }
 
 void Screen::DrawOnBuffer(const std::string &image_name, const ObjectSize &image_size,
@@ -345,8 +347,6 @@ void Screen::DrawHexagonBuffer(const Vector2D &position) {
     window_.draw(hexagon_buffer_);
     window_.draw(hexagon_lines_buffer_);
     ClearHexagonBuffer();
-
-
 }
 
 std::array<Vector2D, 4> Screen::CreateLineRectangle(const Vector2D &begin, const Vector2D &end, float width) {
