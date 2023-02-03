@@ -39,12 +39,11 @@ void Game::DrawingIteration() {
     game_scene_->Draw(library_facade_.screen, game_options_);
     library_facade_.screen.Display();
 }
-#include <unistd.h>
+
 void Game::MainLoop() {
     while (library_facade_.screen.IsOpen()) {
         EventsIteration();
         DrawingIteration();
         frames_counter_.Step();
-        usleep(1e6 / 120);
     }
 }

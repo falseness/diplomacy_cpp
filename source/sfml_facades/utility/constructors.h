@@ -11,6 +11,7 @@ inline sf::Color create_color(const Color& color) {
     return sf::Color(color.red, color.green, color.blue);
 }
 
-inline sf::Vector2f create_vector(const Vector2D& vec) {
+template <typename VecType1, typename VecType2>
+inline VecType1 create_vector(const VecType2& vec) {
     return {vec.x, vec.y};
 }
