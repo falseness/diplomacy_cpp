@@ -27,6 +27,7 @@ public:
         return false;
     }
     [[nodiscard]] json get_info() const override;
+    void Kill(Grid& grid) const override;
     ~Building() override;
 };
 

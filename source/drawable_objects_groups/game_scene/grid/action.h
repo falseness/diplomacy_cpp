@@ -10,6 +10,7 @@
 #include "source/drawable_objects/cell/cell.h"
 #include "source/drawable_objects/building/building.h"
 #include "source/drawable_objects_groups/game_scene/grid/cells.h"
+#include "source/utility/apply_function_for_objects.h"
 
 using std::optional;
 using std::uint8_t;
@@ -140,15 +141,14 @@ public:
     std::unique_ptr<GridAction> CreateUndoAction(GridCells& cells) override;
 };
 
-template <typename Building>
+template <typename Building, typename... Args>
 class CreateBuildingAction : public GridAction {
     std::pair<int, int> coord_;
-    ProductionInfo production_info_;
+    std::tuple<Args...> args;
 public:
-    CreateBuildingAction(std::pair<int, int> coord, ProductionInfo production_info) : coord_(coord),
-        production_info_(std::move(production_info)) {}
-    void PerformAction(GridCells &cells, Players &players) override {
-        cells.get_cell_ptr(coord_)->template CreateBuilding<Building>(production_info_.name, production_info_);
+    CreateBuildingAction(std::pair<int, int> coord, Args&&... args) : coord_(coord), args(std::forward<Args>(args)...) {}
+    void PerformAction(GridCells &cells, Players&) override {
+        apply(static_cast<Cell*>(cells.get_cell_ptr(coord_).get()), &Cell::CreateBuilding<Building, Args...>, std::move(args));
     }
     std::unique_ptr<GridAction> CreateUndoAction(GridCells& cells) override {
         return std::make_unique<DeleteBuildingAction>(coord_);

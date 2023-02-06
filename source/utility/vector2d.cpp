@@ -49,6 +49,10 @@ void Vector2D::ReplaceForPerpendicular() {
     y = -y;
 }
 
+Vector2D Vector2D::operator-() const {
+    return (*this) * (-1.0f);
+}
+
 Vector2D operator+(const Vector2D& vector1, const Vector2D& vector2) {
     Vector2D result(vector1);
     result += vector2;

@@ -60,6 +60,10 @@ json Building::get_info() const {
     return result;
 }
 
+void Building::Kill(Grid &grid) const {
+    grid.DeleteBuilding(get_coord());
+}
+
 bool EmptyBuilding::is_passable(size_t) const {
     return true;
 }

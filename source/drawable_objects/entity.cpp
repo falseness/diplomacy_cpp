@@ -16,7 +16,8 @@ void Entity::Draw(Screen& screen, const GameOptions& game_options) {
 
 void Entity::DrawImage(Screen &screen, const GameOptions &game_options,
                        const Vector2D &pos) const {
-    screen.DrawGridImage(image_name_, game_options.get_image_size(), pos);
+    screen.DrawOnBuffer(image_name_, game_options.get_image_size(), pos, Screen::kMaximumOpacity);
+    //screen.DrawGridImage(image_name_, game_options.get_image_size(), pos);
 }
 
 std::pair<int, int> Entity::get_coord() const {

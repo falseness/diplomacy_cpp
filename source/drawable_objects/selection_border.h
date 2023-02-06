@@ -18,7 +18,7 @@ public:
     }
     void Clear();
     void SelectCell(std::pair<int, int> coord);
-    SelectionBorder(const Grid&, Color line_color, float border_width_multiply_ratio = 1.0, bool draw_centered=true);
+    SelectionBorder(const Grid&, Color line_color, float border_width_multiply_ratio = 1, bool draw_centered=true);
     void UpdateBorder(const std::vector<std::pair<int, int>> &visited_cells, const GridLogicHelper &logic_helper);
 
     void Draw(Screen&, const GameOptions&) override;
@@ -40,7 +40,7 @@ public:
         inner_border_.SelectCell(coord);
     }
     TwoLayersSelectionBorder(const Grid& grid, Color outer_line_color, Color inner_line_color,
-                    float outer_border_width_multiply_ratio = 2.0, float inner_border_width_multiply_ratio = 1.0);
+                    float outer_border_width_multiply_ratio = 2.0, float inner_border_width_multiply_ratio = 1);
     inline void UpdateBorder(const std::vector<std::pair<int, int>> &visited_cells, const GridLogicHelper &logic_helper) {
         outer_border_.UpdateBorder(visited_cells, logic_helper);
         inner_border_.UpdateBorder(visited_cells, logic_helper);

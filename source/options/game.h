@@ -12,6 +12,7 @@ struct GameOptions {
 private:
     ObjectSize image_size_;
 public:
+    static constexpr std::size_t kMaxFPS = 120;
     ObjectSize get_image_size() const;
     Vector2D get_image_offset() const;
     Vector2D draw_offset;

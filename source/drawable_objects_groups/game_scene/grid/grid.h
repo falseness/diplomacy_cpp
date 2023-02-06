@@ -33,6 +33,7 @@ class Grid : public DrawableObjectsGroup, public ClickableObject {
         return grid_cells_.get_cell_ptr(coord);
     }
 public:
+    void Draw(Screen& screen, const GameOptions&) override;
     static const uint8_t kHexagonMaximumNeighbours = 6;
     void RemoveSelection();
     [[nodiscard]] std::vector<std::pair<int, int>> get_neighbours(std::pair<int, int> coord) const;
@@ -66,11 +67,12 @@ public:
     [[nodiscard]] inline bool is_coord_out_of_range(std::pair<int, int> coord) const {
         return grid_cells_.is_coord_out_of_range(coord);
     }
-    template <typename Building>
-    void CreateBuilding(std::pair<int, int> coord, ProductionInfo production_info) {
-        CreateBuildingAction<Building> action(coord, std::move(production_info));
+    template <typename Building, typename... Args>
+    void CreateBuilding(std::pair<int, int> coord, Args&&... args) {
+        CreateBuildingAction<Building, Args...> action(coord, std::forward<Args>(args)...);
         PerformActionAndSaveUndo(action);
     }
+
     void ClearUndoStack();
     void StartUndoSequence();
     void HandleKeyPress(SceneInfo& scene);

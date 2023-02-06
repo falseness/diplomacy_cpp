@@ -43,19 +43,8 @@ void EntityInfoInterface::update(const json& entity, const Color& color) {
     entity_image_.name = entity["name"];
     entity_name_.text = entity["name"];
 
-    if (entity.find("info") == entity.end()) {
-        entity_info_.text = "";
-        return;
-    }
-    std::string entity_info;
-    for (const auto& item : entity["info"].items()) {
-        auto tmp = item.value().dump();
-        if (tmp.front() == '"' && tmp.back() == '"' && tmp.size() > 1) {
-            tmp.erase(tmp.begin());
-            tmp.pop_back();
-        }
-        entity_info += item.key() + ": " + tmp + "\n";
-    }
+
+    std::string entity_info = get_info_string(entity);
     if (entity.find("additional_info") != entity.end()) {
         entity_info += entity["additional_info"].get<std::string>();
     }
@@ -67,4 +56,20 @@ bool EntityInfoInterface::HandleClick(SceneInfo&, const Vector2D &click_pos, con
     if (!visible_)
         return false;
     return background_.is_inside(click_pos);
+}
+
+std::string EntityInfoInterface::get_info_string(json entity) {
+    if (entity.find("info") == entity.end()) {
+        return "";
+    }
+    std::string entity_info;
+    for (const auto& item : entity["info"].items()) {
+        auto tmp = item.value().dump();
+        if (tmp.front() == '"' && tmp.back() == '"' && tmp.size() > 1) {
+            tmp.erase(tmp.begin());
+            tmp.pop_back();
+        }
+        entity_info += item.key() + ": " + tmp + "\n";
+    }
+    return entity_info;
 }

@@ -25,7 +25,6 @@ set(    MAIN_SOURCE
         source/sfml_facades/library_facade.cpp
         source/utility/color.cpp
         source/options/hexagon.cpp
-        source/sfml_facades/utility/sfml_color.cpp
         source/player/player.cpp
         source/player/entity_stats.cpp
         source/drawable_objects/entity.cpp
@@ -57,7 +56,7 @@ set(    MAIN_SOURCE
         source/drawable_objects_groups/interfaces/town_production.cpp
         source/drawable_objects/interface_elements/switch_button.cpp
         source/drawable_objects/hittable_entity.cpp
-        source/drawable_objects/selection_border.cpp source/drawable_objects_groups/interfaces/building_production_slots.cpp source/drawable_objects_groups/interfaces/building_production_slots.h source/drawable_objects_groups/game_scene/undo_button.cpp source/drawable_objects_groups/game_scene/undo_button.h source/drawable_objects_groups/game_scene/grid/cells.cpp source/drawable_objects_groups/game_scene/grid/cells.h source/drawable_objects_groups/game_scene/grid/action.cpp source/drawable_objects_groups/game_scene/grid/action.h source/drawable_objects/unit/range/range_unit.cpp source/drawable_objects/unit/range/range_unit.h source/drawable_objects/unit/range/range_unit_logic.cpp source/drawable_objects/unit/range/range_unit_logic.h source/player/factories/outside_building.h source/player/factories/building.h source/drawable_objects/building/outside_building.cpp source/drawable_objects/building/outside_building.h source/drawable_objects/unit/range/catapult.cpp source/drawable_objects/unit/range/catapult.h source/drawable_objects/unit/range/catapult_logic.cpp source/drawable_objects/unit/range/catapult_logic.h)
+        source/drawable_objects/selection_border.cpp source/drawable_objects_groups/interfaces/building_production_slots.cpp source/drawable_objects_groups/interfaces/building_production_slots.h source/drawable_objects_groups/game_scene/undo_button.cpp source/drawable_objects_groups/game_scene/undo_button.h source/drawable_objects_groups/game_scene/grid/cells.cpp source/drawable_objects_groups/game_scene/grid/cells.h source/drawable_objects_groups/game_scene/grid/action.cpp source/drawable_objects_groups/game_scene/grid/action.h source/drawable_objects/unit/range/range_unit.cpp source/drawable_objects/unit/range/range_unit.h source/drawable_objects/unit/range/range_unit_logic.cpp source/drawable_objects/unit/range/range_unit_logic.h source/player/factories/outside_building.h source/player/factories/building.h source/drawable_objects/building/outside_building.cpp source/drawable_objects/building/outside_building.h source/drawable_objects/unit/range/catapult.cpp source/drawable_objects/unit/range/catapult.h source/drawable_objects/unit/range/catapult_logic.cpp source/drawable_objects/unit/range/catapult_logic.h source/player/player0.cpp source/utility/fps_counter.cpp)
 
 add_executable(Diplomacy ${MAIN_SOURCE})
 #---

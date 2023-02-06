@@ -8,6 +8,7 @@
 #include "source/drawable_objects/building/under_construction/under_construction.h"
 #include "source/drawable_objects_groups/game_scene/grid/action.h"
 #include "source/drawable_objects/unit/range/range_unit.h"
+#include "source/drawable_objects/building/nature.h"
 #include "cells.h"
 #include "action.h"
 
@@ -41,7 +42,6 @@ Grid::Grid(Players& players) : players_(players), logic_helper_(kGridRowsCount, 
     colors.emplace(std::pair<int, int>{2, 3}, 1);
     colors.emplace(std::pair<int, int>{9, 4}, 2);
 
-
     for (size_t i = 0; i < cells.size(); ++i) {
         for (size_t j = 0; j < m; ++j) {
             int color = 0;
@@ -55,6 +55,8 @@ Grid::Grid(Players& players) : players_(players), logic_helper_(kGridRowsCount, 
             drawable_objects_.push_back(cells[i][j].get());
         }
     }
+    cells[4][2]->CreateBuilding<NaturalBuilding>("lake");
+    cells[4][4]->CreateBuilding<Mountain>("mountain");
     cells[town_poses[0].first + 1][town_poses[0].second]->CreateBuilding<Barrack>("barrack");
     cells[town_poses[1].first][town_poses[1].second + 1]->CreateBuilding<SuburbBuilding>("farm");
     for (int i = 1; i < players.size(); ++i) {
@@ -124,8 +126,8 @@ void Grid::ChangeSelectedUnitToBuilding() {
     selected_entity_ = grid_cells_.get_cell_ptr(coord)->get_building_ptr();
 }
 
-const size_t Grid::kGridRowsCount = 15;
-const size_t Grid::kGridColumnsCount = 6;
+const size_t Grid::kGridRowsCount = 20;//15;
+const size_t Grid::kGridColumnsCount = 20;//6;
 
 void Grid::RemoveSelection() {
     selected_entity_ = empty_unit_.get();
@@ -229,4 +231,17 @@ Vector2D Grid::get_right_bottom_corner(const GameOptions& game_options) const {
     return grid_cells_.get_cell(std::make_pair(grid_cells_.get_rows_count() - 1,
         grid_cells_.get_columns_count() - 1))->get_pos(game_options) + Vector2D(game_options.hexagon_options.radius * 2,
                                                                               game_options.hexagon_options.radius * 2);
+}
+
+void Grid::Draw(Screen &screen, const GameOptions & game_options) {
+    DrawableObjectsGroup::Draw(screen, game_options);
+    screen.DrawHexagonBuffer({0, 0});
+    screen.DrawBuffer({0, 0});
+    /*for (size_t i = 0; i < 5; ++i) {
+        for (size_t j = 0; j < 5; ++j) {
+            screen.DrawOnBuffer("peasant", {100, 100}, {i * 100.0f, j * 100.0f});
+        }
+    }
+    screen.DrawBuffer(game_options.draw_offset);*/
+
 }

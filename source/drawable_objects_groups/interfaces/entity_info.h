@@ -16,6 +16,7 @@ class EntityInfoInterface : public DrawableObjectsGroup, public ClickableObject 
     Image entity_image_;
     Text entity_name_;
     Text entity_info_;
+    static std::string get_info_string(json info);
 public:
     explicit EntityInfoInterface(const Screen& screen);
     void update(const json&, const Color&);

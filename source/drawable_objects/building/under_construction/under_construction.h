@@ -42,7 +42,7 @@ void BuildingUnderConstruction<BuildingAfterConstruction>::Draw(Screen &screen, 
 template<typename BuildingAfterConstruction>
 void BuildingUnderConstruction<BuildingAfterConstruction>::DrawImage(Screen &screen, const GameOptions &game_options,
                                                                      const Vector2D &pos) const {
-    screen.DrawGridImageWithOpactiy(image_name_, game_options.get_image_size(), pos, kOpacity);
+    screen.DrawOnBuffer(image_name_, game_options.get_image_size(), pos, kOpacity);
 }
 
 template<typename BuildingAfterConstruction>

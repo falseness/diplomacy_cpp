@@ -8,6 +8,7 @@ struct Vector2D {
     Vector2D& operator-=(const Vector2D&);
     Vector2D& operator*=(float);
     Vector2D& operator/=(float);
+    Vector2D operator-() const;
     [[nodiscard]] float get_squared_length() const;
     [[nodiscard]] float get_length() const;
     void Normalize();

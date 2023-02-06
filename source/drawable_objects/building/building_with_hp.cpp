@@ -13,10 +13,6 @@ const BuildingWithHpStats& BuildingWithHp::get_stats() const {
     return cell_->get_player().get_stats().buildings_with_hp.find(image_name_)->second;
 }
 
-void BuildingWithHp::Kill(Grid& grid) const {
-    grid.DeleteBuilding(get_coord());
-}
-
 unsigned int BuildingWithHp::get_maximum_hp() const {
     return get_stats().hp;
 }

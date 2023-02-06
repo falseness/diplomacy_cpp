@@ -44,5 +44,6 @@ void Game::MainLoop() {
     while (library_facade_.screen.IsOpen()) {
         EventsIteration();
         DrawingIteration();
+        frames_counter_.Step();
     }
 }

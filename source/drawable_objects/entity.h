@@ -9,6 +9,7 @@ using json = nlohmann::json;
 class Cell;
 class SceneInfo;
 class Player;
+class Grid;
 class PlayersEntitiesStats;
 
 struct ClickResponse {
@@ -22,6 +23,7 @@ protected:
     Cell* cell_;
     virtual void DrawImage(Screen &screen, const GameOptions &game_options, const Vector2D &pos) const;
 public:
+    virtual void Kill(Grid& grid) const = 0;
     static const std::string kEmptyEntityName;
     const std::string image_name_;
     void Draw(Screen&, const GameOptions&) override;

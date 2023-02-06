@@ -1,5 +1,5 @@
 #include "screen.h"
-#include <source/sfml_facades/utility/sfml_color.h>
+#include <source/sfml_facades/utility/constructors.h>
 #include <source/drawable_objects/interface_elements/rounded_rectangle.h>
 #include <source/drawable_objects/interface_elements/text.h>
 #include <source/drawable_objects/interface_elements/triangle.h>
@@ -12,6 +12,8 @@ Screen::Screen(sf::RenderWindow& window) :
             height_(sf::VideoMode::getDesktopMode().height),
             window_(window), background_color_(sf::Color(80, 80, 80)) {
     window_.create(sf::VideoMode(width_, height_), "Diplomacy");
+    ClearBuffer();
+    window_.setFramerateLimit(GameOptions::kMaxFPS);
 }
 void Screen::Clear() {
     window_.clear(background_color_);
@@ -23,15 +25,12 @@ void Screen::DrawHexagon(const HexagonOptions& hexagon_options, const Vector2D& 
 }
 
 void Screen::DrawImage(const std::string &image_name, const ObjectSize &image_size, const Vector2D &position) {
-    sf::Sprite sprite = std::move(get_sprite(image_name, image_size, position));
-
-    window_.draw(sprite);
+    window_.draw(get_sprite(image_name, image_size, position));
 }
 
 void Screen::DrawGridImage(const std::string& image_name, const ObjectSize& image_size, const Vector2D& position) {
     DrawImage(image_name, image_size, get_real_position_on_grid(position));
 }
-
 
 
 void Screen::Display() {
@@ -182,6 +181,8 @@ void Screen::DrawLine(Vector2D begin, Vector2D end, float width, Color color) {
     window_.draw(line);
 }
 
+
+
 Vector2D Screen::get_point_of_hexagon(uint8_t point, const HexagonOptions& hexagon_options, const Vector2D& position,
                                       float opacity) {
     // need shift to synchronize order with Grid::get_neighbours()
@@ -189,7 +190,7 @@ Vector2D Screen::get_point_of_hexagon(uint8_t point, const HexagonOptions& hexag
 
 
     HexagonOptions my_hexagon_options = hexagon_options;
-    my_hexagon_options.radius += my_hexagon_options.outline_thickness;
+    my_hexagon_options.radius += my_hexagon_options.outline_thickness / 2;
     set_hexagon_shape(my_hexagon_options, position, opacity);
     auto sfml_result = hexagon_shape_.getTransform().transformPoint(
             hexagon_shape_.getPoint((point + kPointsShift) % hexagon_shape_.getPointCount()));
@@ -221,7 +222,7 @@ void Screen::ChangeSprite(sf::Sprite& sprite, const ObjectSize& image_size, cons
 
 void Screen::DrawGridImageWithOpactiy(const std::string &image_name, const ObjectSize &image_size,
                                       const Vector2D &position, float opacity) {
-    sf::Sprite sprite = std::move(get_sprite(image_name, image_size, get_real_position_on_grid(position)));
+    sf::Sprite sprite = get_sprite(image_name, image_size, get_real_position_on_grid(position));
     sprite.setColor({255, 255, 255, static_cast<sf::Uint8>(opacity * 255)});
 
     window_.draw(sprite);
@@ -231,19 +232,128 @@ Vector2D Screen::get_real_position_on_grid(const Vector2D& position) {
     return position + draw_offset_;
 }
 
-sf::Sprite Screen::get_sprite(const std::string &image_name, const ObjectSize &image_size,
-                                const Vector2D &position) {
-    sf::Sprite sprite;
-    sprite.setTexture(assets_manager_.images_[image_name]);
+const sf::Sprite& Screen::get_sprite(const std::string &image_name, const ObjectSize &image_size,
+                                      const Vector2D &position) {
+    sf::Sprite& sprite = assets_manager_.get_sprite(image_name);
     ChangeSprite(sprite, image_size, position);
-    return std::move(sprite);
+    return sprite;
 }
 
 void Screen::DrawCenteredLine(Vector2D begin, Vector2D end, float width, Color color) {
     // todo: refactor it
     Vector2D dt = end - begin;
     dt.Normalize();
+    auto dt_copy = dt * (width / 4);
     dt.ReplaceForPerpendicular();
     dt *= width / 2;
-    DrawLine(begin + dt, end + dt, width, color);
+
+    DrawLine(begin + dt - dt_copy, end + dt + dt_copy, width, color);
+}
+
+void Screen::DrawOnBuffer(const std::string &image_name, const ObjectSize &image_size,
+                          const Vector2D &position_left_corner, float opacity) {
+    const auto& rect = assets_manager_.get_position_on_texture(image_name);
+
+    static const size_t kQuadCountVertices = 4;
+    for (size_t i = 0; i < kQuadCountVertices; ++i) {
+        buffer_.append({});
+    }
+
+    auto alpha = static_cast<size_t>(kMaximumColorValue * opacity);
+    sf::Vertex* quad = &buffer_[last_index_++ * kQuadCountVertices];
+
+    Vector2D position(position_left_corner.x - image_size.width / 2, position_left_corner.y - image_size.height / 2);
+    quad[0].position = sf::Vector2f(position.x, position.y);
+    quad[1].position = sf::Vector2f(position.x + image_size.width, position.y);
+    quad[2].position = sf::Vector2f(position.x + image_size.width, position.y + image_size.height);
+    quad[3].position = sf::Vector2f(position.x, position.y + image_size.height);
+
+
+    for (size_t i = 0; i < 4; ++i) {
+        quad[i].color.a = alpha;
+    }
+
+    quad[0].texCoords = sf::Vector2f(rect.minimum_x, rect.minimum_y);
+    quad[1].texCoords = sf::Vector2f(rect.maximum_x, rect.minimum_y);
+    quad[2].texCoords = sf::Vector2f(rect.maximum_x, rect.maximum_y);
+    quad[3].texCoords = sf::Vector2f(rect.minimum_x, rect.maximum_y);
+
+}
+
+void Screen::DrawBuffer(const Vector2D &position) {
+    sf::RenderStates& states = assets_manager_.get_render_states();
+    //states.texture = assets_manager_.get_all_images_texture();
+    sf::Transform tmp;
+    tmp.translate(draw_offset_.x + position.x, draw_offset_.y + position.y);
+    states.transform = std::move(tmp);
+
+    window_.draw(buffer_, states);
+    ClearBuffer();
+}
+
+
+void Screen::ClearBuffer() {
+    buffer_.clear();
+    buffer_.setPrimitiveType(sf::Quads);
+    last_index_ = 0;
+}
+
+void Screen::DrawOnHexagonBuffer(const HexagonOptions &options, const Vector2D &position, float opacity) {
+    // drawing hexagon using sf::TriangleFan is quite strange;
+    static const size_t kTrianglesCount = 4;
+
+    set_hexagon_shape(options, position, Screen::kMaximumOpacity);
+    auto transform = hexagon_shape_.getTransform();
+
+    auto color = create_color(options.fill_color);
+    color.a = static_cast<size_t>(Screen::kMaximumColorValue * opacity);
+
+    for (size_t triangle_number = 0; triangle_number < kTrianglesCount; ++triangle_number) {
+
+        hexagon_buffer_.append(create_vertex(transform.transformPoint(hexagon_shape_.getPoint(0)), color));
+        hexagon_buffer_.append(create_vertex(transform.transformPoint(hexagon_shape_.getPoint(triangle_number + 1)), color));
+        hexagon_buffer_.append(create_vertex(transform.transformPoint(hexagon_shape_.getPoint(triangle_number + 2)), color));
+    }
+
+    auto outline_color = create_color(options.outline_color);
+
+
+
+    for (size_t i = 0; i < hexagon_shape_.getPointCount(); ++i) {
+        size_t next_index = (i + 1) % hexagon_shape_.getPointCount();
+        auto rectangle = CreateLineRectangle(create_vector<Vector2D>(transform.transformPoint(hexagon_shape_.getPoint(i))),
+                                          create_vector<Vector2D>(transform.transformPoint(hexagon_shape_.getPoint(next_index))), options.outline_thickness);
+        for (auto point : rectangle) {
+            hexagon_lines_buffer_.append(create_vertex(create_vector<sf::Vector2f>(point), outline_color));
+        }
+    }
+}
+
+void Screen::ClearHexagonBuffer() {
+    hexagon_buffer_.clear();
+    hexagon_buffer_.setPrimitiveType(sf::Triangles);
+    hexagon_lines_buffer_.clear();
+    hexagon_lines_buffer_.setPrimitiveType(sf::Quads);
+}
+
+sf::Vertex Screen::create_vertex(sf::Vector2f position, sf::Color color) {
+    sf::Vertex result;
+    result.position = position;
+    result.color = color;
+    return result;
+}
+
+void Screen::DrawHexagonBuffer(const Vector2D &position) {
+    window_.draw(hexagon_buffer_);
+    window_.draw(hexagon_lines_buffer_);
+    ClearHexagonBuffer();
+}
+
+std::array<Vector2D, 4> Screen::CreateLineRectangle(const Vector2D &begin, const Vector2D &end, float width) {
+    Vector2D dt = end - begin;
+    dt.Normalize();
+    auto dt_copy = dt;
+    dt.ReplaceForPerpendicular();
+    dt *= width;
+    return {begin + dt - dt_copy, end + dt + dt_copy, end + dt_copy, begin - dt_copy};
 }
