@@ -21,7 +21,10 @@ struct ClickResponse {
 class Entity : public DrawableObject {
 protected:
     Cell* cell_;
+    static void DrawImage(const std::string &image_name, Screen &screen, const GameOptions &game_options,
+                          const Vector2D &pos, float opacity);
     virtual void DrawImage(Screen &screen, const GameOptions &game_options, const Vector2D &pos) const;
+    [[nodiscard]] Vector2D get_image_pos(const GameOptions& game_options) const;
 public:
     virtual void Kill(Grid& grid) const = 0;
     static const std::string kEmptyEntityName;

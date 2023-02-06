@@ -85,3 +85,10 @@ void Barrack::UndoStartedProduction() {
     production_in_progress_ = false;
     production_ = ProductionInfo();
 }
+
+void Barrack::Draw(Screen& screen, const GameOptions& game_options) {
+    SuburbBuilding::Draw(screen, game_options);
+    if (production_in_progress_) {
+        DrawImage(production_.name, screen, game_options, get_image_pos(game_options), Barrack::kProductionDrawOpacity);
+    }
+}

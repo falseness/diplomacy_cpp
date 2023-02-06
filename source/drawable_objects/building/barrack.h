@@ -7,6 +7,7 @@
 class Barrack : virtual public SuburbBuilding {
     ProductionInfo production_;
     bool production_in_progress_ = false;
+    static constexpr float kProductionDrawOpacity = 0.7;
 protected:
     virtual void set_production_interface_visible(const SceneInfo& scene, bool) const;
     virtual void UpdateProductionInterface(const SceneInfo& scene) const;
@@ -22,4 +23,5 @@ public:
     void Select(const SceneInfo&) const override;
     void NextTurn(SceneInfo& scene) override;
     [[nodiscard]] json get_info() const override;
+    void Draw(Screen&, const GameOptions&) override;
 };
