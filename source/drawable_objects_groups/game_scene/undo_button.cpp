@@ -38,19 +38,18 @@ void UndoButton::UndoAction(SceneInfo& scene) {
         scene.grid.PerformAction(*action.first);
     }
     auto& selected_entity = undo_actions_stack_.back().back().second;
+    scene.grid.RemoveSelection();
+    scene.ClearInterfaces();
+    undo_actions_stack_.pop_back();
     if (!selected_entity) {
-        scene.grid.RemoveSelection();
-        scene.ClearInterfaces();
+        return;
+    }
+    if (selected_entity.value().is_unit) {
+        scene.production_interface.set_visible(false);
+        scene.town_production_interface.set_visible(false);
+        scene.grid.SelectUnit(selected_entity.value().coord, scene);
     }
     else {
-        if (selected_entity.value().is_unit) {
-            scene.production_interface.set_visible(false);
-            scene.town_production_interface.set_visible(false);
-            scene.grid.SelectUnit(selected_entity.value().coord, scene);
-        }
-        else {
-            scene.grid.SelectBuilding(selected_entity.value().coord, scene);
-        }
+        scene.grid.SelectBuilding(selected_entity.value().coord, scene);
     }
-    undo_actions_stack_.pop_back();
 }
