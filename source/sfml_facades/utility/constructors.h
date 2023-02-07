@@ -6,9 +6,9 @@
 
 
 // we may use copy constructor, but I don't want do change classes of external library
-
-inline sf::Color create_color(const Color& color) {
-    return sf::Color(color.red, color.green, color.blue);
+template <typename ColorType1, typename ColorType2>
+inline ColorType1 create_color(const ColorType2& color) {
+    return ColorType1(color.red, color.green, color.blue);
 }
 
 template <typename VecType1, typename VecType2>

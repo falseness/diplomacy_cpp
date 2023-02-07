@@ -9,20 +9,30 @@ void GridText::Draw(Screen &screen, const GameOptions &game_options) {
     text_template_.size = game_options.get_text_size();
     for (size_t i = 0; i < grid_.get_rows_count(); ++i) {
         for (size_t j = 0; j < grid_.get_columns_count(); ++j) {
-            Vector2D pos = grid_.get_cell({i, j})->get_pos(game_options);
             text_template_.text = get_text({i, j});
-            text_template_.set_center(screen.get_real_position_on_grid(pos) + game_options.get_text_offset(), screen);
 
-            DrawText(screen, game_options);
+            DrawText({i, j}, screen, game_options);
         }
     }
 }
 
 GridText::GridText(const Grid &grid) : grid_(grid) {}
 
-std::string GridRegularCellInfo::get_text(std::pair<int, int> coord) const {
-    return grid_.get_cell(coord)->get_additional_text_info();
+void GridText::set_text_position(std::pair<int, int> coord, Screen& screen, const GameOptions& game_options) {
+    Vector2D pos = grid_.get_cell({coord.first, coord.second})->get_pos(game_options);
+    text_template_.set_center(screen.get_real_position_on_grid(pos) + game_options.get_text_offset(), screen);
 }
+
+std::string GridRegularCellInfo::get_text(std::pair<int, int> coord) const {
+    return grid_.get_cell(coord)->get_regular_text_info();
+}
+
+void GridRegularCellInfo::DrawText(std::pair<int, int> coord, Screen &screen, const GameOptions &game_options) {
+    set_text_position(coord, screen, game_options);
+    text_template_.color = grid_.get_cell(coord)->get_player().get_color();
+    text_template_.Draw(screen, game_options, game_options.text_outline_thickness, Color::kWhite);
+}
+
 
 
 /*

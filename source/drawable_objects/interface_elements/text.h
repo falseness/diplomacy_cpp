@@ -24,6 +24,7 @@ struct Text : public DrawableObject {
         set_center_y(pos.y, screen);
     }
     void Draw(Screen&, const GameOptions&) override;
+    void Draw(Screen& screen, const GameOptions& game_options, float thickness, Color outline_color);
 };
 
 class RightAlignedText : public Text {

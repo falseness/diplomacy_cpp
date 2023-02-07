@@ -56,7 +56,7 @@ void Screen::DrawRoundedRectangle(const RoundedRectangle& rect) {
     // drawing rounded rectangle using four circles and two rectangles
     sf::CircleShape sfml_circle;
     sfml_circle.setRadius(rect.corner_radius);
-    sfml_circle.setOutlineColor(create_color(rect.border_color));
+    sfml_circle.setOutlineColor(create_color<sf::Color>(rect.border_color));
     sfml_circle.setOutlineThickness(rect.border_width);
     sfml_circle.setFillColor(sf::Color::Transparent);
 
@@ -70,7 +70,7 @@ void Screen::DrawRoundedRectangle(const RoundedRectangle& rect) {
     }
 
     sf::RectangleShape sfml_rect;
-    sfml_rect.setOutlineColor(create_color(rect.border_color));
+    sfml_rect.setOutlineColor(create_color<sf::Color>(rect.border_color));
     sfml_rect.setOutlineThickness(rect.border_width);
     sfml_rect.setFillColor(sf::Color::Transparent);
 
@@ -90,11 +90,11 @@ void Screen::DrawRoundedRectangle(const RoundedRectangle& rect) {
 
     }
     for (auto& this_rect : sfml_rects) {
-        this_rect.setFillColor(create_color(rect.background_color));
+        this_rect.setFillColor(create_color<sf::Color>(rect.background_color));
         this_rect.setOutlineColor(sf::Color::Transparent);
         window_.draw(this_rect);
     }
-    sfml_circle.setFillColor(create_color(rect.background_color));
+    sfml_circle.setFillColor(create_color<sf::Color>(rect.background_color));
     sfml_circle.setOutlineColor(sf::Color::Transparent);
     for (auto pos_transition : transition_from_left_up_corner) {
         sfml_circle.setPosition(sf::Vector2f(rect.get_left(), rect.get_up()) + pos_transition);
@@ -114,6 +114,13 @@ void Screen::DrawText(const Text& text) {
     window_.draw(get_sfml_text(text));
 }
 
+void Screen::DrawText(const Text &text, float outline_thickness, Color color) {
+    auto sfml_text = get_sfml_text(text);
+    sfml_text.setOutlineColor(create_color<sf::Color>(color));
+    sfml_text.setOutlineThickness(outline_thickness);
+    window_.draw(sfml_text);
+}
+
 void Screen::DrawTriangle(const Triangle& triangle) {
     static const size_t kTrianglePointsCount = 3;
     sf::ConvexShape convex;
@@ -122,19 +129,14 @@ void Screen::DrawTriangle(const Triangle& triangle) {
     for (size_t i = 0; i < points.size(); ++i) {
         convex.setPoint(i, {points[i].x, points[i].y});
     }
-    convex.setOutlineColor(create_color(triangle.border_color));
-    convex.setFillColor(create_color(triangle.background_color));
+    convex.setOutlineColor(create_color<sf::Color>(triangle.border_color));
+    convex.setFillColor(create_color<sf::Color>(triangle.background_color));
     convex.setOutlineThickness(triangle.border_width);
     window_.draw(convex);
 }
 
 float Screen::get_width_of(const Text& text) const {
     return get_sfml_text(text).getLocalBounds().width;
-    if (text.text.empty()) {
-        return 0;
-    }
-    auto sfml_text = get_sfml_text(text);
-    return sfml_text.findCharacterPos(text.text.size() - 1).x - sfml_text.findCharacterPos(0).x;
 }
 
 float Screen::get_height_of(const Text& text) const {
@@ -155,7 +157,7 @@ sf::Text Screen::get_sfml_text(const Text & text) const {
     sfml_text.setFont(assets_manager_.fonts_.find(kFontName)->second);
     sfml_text.setString(text.text);
     sfml_text.setCharacterSize(text.size);
-    sfml_text.setFillColor(create_color(text.color));
+    sfml_text.setFillColor(create_color<sf::Color>(text.color));
 
     sfml_text.setOrigin(sfml_text.getGlobalBounds().left, sfml_text.getGlobalBounds().top);
     sfml_text.setPosition(text.position.x, text.position.y);
@@ -164,7 +166,7 @@ sf::Text Screen::get_sfml_text(const Text & text) const {
 
 void Screen::DrawVerticalLine(float x, float y_bottom, float y_up, float width, Color color) {
     sf::RectangleShape rect;
-    rect.setFillColor(create_color(color));
+    rect.setFillColor(create_color<sf::Color>(color));
     float height = y_bottom - y_up;
     assert(height >= 0);
     rect.setSize({width, height});
@@ -178,7 +180,7 @@ void Screen::DrawLine(Vector2D begin, Vector2D end, float width, Color color) {
     float angle = atan2f(dt.y, dt.x);
 
     sf::RectangleShape line({dt.get_length(), width});
-    line.setFillColor(create_color(color));
+    line.setFillColor(create_color<sf::Color>(color));
 
     line.setRotation(Geometry::RadiansToDegrees(angle));
     line.setPosition(begin.x, begin.y);
@@ -210,7 +212,7 @@ void Screen::set_hexagon_shape(const HexagonOptions& hexagon_options, const Vect
                                 hexagon_options.fill_color.blue, static_cast<size_t>(opacity * 255));
     hexagon_shape_.setFillColor(sfml_color);
 
-    hexagon_shape_.setOutlineColor(create_color(hexagon_options.outline_color));
+    hexagon_shape_.setOutlineColor(create_color<sf::Color>(hexagon_options.outline_color));
     hexagon_shape_.setOutlineThickness(hexagon_options.outline_thickness);
 
     hexagon_shape_.setRotation(hexagon_options.rotation);
@@ -310,7 +312,7 @@ void Screen::DrawOnHexagonBuffer(const HexagonOptions &options, const Vector2D &
     set_hexagon_shape(options, position, Screen::kMaximumOpacity);
     auto transform = hexagon_shape_.getTransform();
 
-    auto color = create_color(options.fill_color);
+    auto color = create_color<sf::Color>(options.fill_color);
     color.a = static_cast<size_t>(Screen::kMaximumColorValue * opacity);
 
     for (size_t triangle_number = 0; triangle_number < kTrianglesCount; ++triangle_number) {
@@ -320,7 +322,7 @@ void Screen::DrawOnHexagonBuffer(const HexagonOptions &options, const Vector2D &
         hexagon_buffer_.append(create_vertex(transform.transformPoint(hexagon_shape_.getPoint(triangle_number + 2)), color));
     }
 
-    auto outline_color = create_color(options.outline_color);
+    auto outline_color = create_color<sf::Color>(options.outline_color);
 
 
 

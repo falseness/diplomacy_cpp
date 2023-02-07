@@ -56,6 +56,7 @@ public:
     void DrawLine(Vector2D begin, Vector2D end, float width, Color color);
     void DrawCenteredLine(Vector2D begin, Vector2D end, float width, Color color);
     void DrawText(const Text&);
+    void DrawText(const Text& text, float outline_thickness, Color color);
     void Display();
     bool IsOpen() const;
     void Close();

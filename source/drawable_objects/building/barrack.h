@@ -7,7 +7,7 @@
 class Barrack : virtual public SuburbBuilding {
     ProductionInfo production_;
     bool production_in_progress_ = false;
-    static constexpr float kProductionDrawOpacity = 0.7;
+    static constexpr float kProductionDrawOpacity = 0.6;
 protected:
     virtual void set_production_interface_visible(const SceneInfo& scene, bool) const;
     virtual void UpdateProductionInterface(const SceneInfo& scene) const;
@@ -23,8 +23,8 @@ public:
     void Select(const SceneInfo&) const override;
     void NextTurn(SceneInfo& scene) override;
     [[nodiscard]] json get_info() const override;
-    [[nodiscard]] inline std::string get_additional_text_info() const override {
-        return is_production_in_progress() ? std::to_string(get_turns_left()) : SuburbBuilding::get_additional_text_info();
+    [[nodiscard]] inline std::string get_regular_text_info() const override {
+        return is_production_in_progress() ? std::to_string(get_turns_left()) : SuburbBuilding::get_regular_text_info();
     }
     void Draw(Screen&, const GameOptions&) override;
 };

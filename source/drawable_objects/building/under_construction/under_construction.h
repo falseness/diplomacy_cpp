@@ -15,7 +15,7 @@ public:
     BuildingUnderConstruction(Cell* cell, std::string image_name, ProductionInfo production_info);
     void NextTurn(SceneInfo& scene) override;
     [[nodiscard]] inline bool is_passable(size_t asking_player_index) const override;
-    [[nodiscard]] inline std::string get_additional_text_info() const override {
+    [[nodiscard]] inline std::string get_regular_text_info() const override {
         return std::to_string(get_turns_left());
     }
     void Draw(Screen& screen, const GameOptions& game_options) override;
