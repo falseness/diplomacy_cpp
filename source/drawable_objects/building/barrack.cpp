@@ -27,6 +27,7 @@ void Barrack::NextTurn(SceneInfo& scene) {
     const auto& factories = get_player().get_factories_stats();
     const auto& factory = *factories.units_factory.find(production_.name)->second;
     factory.NextTurn(get_player(), production_);
+
     if (!get_turns_left() && cell_->get_unit()->is_empty()) {
         factory.Create(cell_, production_);
         production_in_progress_ = false;

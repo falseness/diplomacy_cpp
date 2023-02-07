@@ -8,10 +8,16 @@ class BuildingUnderConstruction : public Building {
     ProductionInfo production_info_;
     static constexpr float kOpacity = 0.5f;
     void DrawImage(Screen &screen, const GameOptions &game_options, const Vector2D &pos) const override;
+    [[nodiscard]] inline unsigned int get_turns_left() const {
+        return production_info_.turns;
+    }
 public:
     BuildingUnderConstruction(Cell* cell, std::string image_name, ProductionInfo production_info);
     void NextTurn(SceneInfo& scene) override;
     [[nodiscard]] inline bool is_passable(size_t asking_player_index) const override;
+    [[nodiscard]] inline std::string get_additional_text_info() const override {
+        return std::to_string(get_turns_left());
+    }
     void Draw(Screen& screen, const GameOptions& game_options) override;
     [[nodiscard]] json get_info() const override;
 };

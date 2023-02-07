@@ -130,10 +130,15 @@ void Screen::DrawTriangle(const Triangle& triangle) {
 
 float Screen::get_width_of(const Text& text) const {
     return get_sfml_text(text).getLocalBounds().width;
+    if (text.text.empty()) {
+        return 0;
+    }
+    auto sfml_text = get_sfml_text(text);
+    return sfml_text.findCharacterPos(text.text.size() - 1).x - sfml_text.findCharacterPos(0).x;
 }
 
 float Screen::get_height_of(const Text& text) const {
-    // sfml function doesnt work properly is text doesnt contain all symbols
+    // sfml function doesn't work properly is text doesn't contain all symbols
     std::string all_symbols_string;
     for (char symbol = 'a'; symbol <= 'z'; ++symbol) {
         all_symbols_string += symbol;

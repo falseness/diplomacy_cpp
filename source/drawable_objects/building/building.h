@@ -29,6 +29,9 @@ public:
         return get_stats().should_be_destroyed_after_town_destroying;
     }
     [[nodiscard]] json get_info() const override;
+    [[nodiscard]] virtual inline std::string get_additional_text_info() const {
+        return "";
+    }
     void Kill(Grid& grid) const override;
     ~Building() override;
 };

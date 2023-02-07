@@ -13,7 +13,16 @@ struct Text : public DrawableObject {
         size(size), color(color) {}
     [[nodiscard]] float get_height(const Screen&) const;
     [[nodiscard]] float get_width(const Screen&) const;
-    void set_center(Vector2D pos, const Screen&);
+    inline void set_center_y(float y, const Screen& screen) {
+        position.y = y - get_height(screen) / 2;
+    }
+    inline void set_center_x(float x, const Screen& screen) {
+        position.x = x - get_width(screen) / 2;
+    }
+    inline void set_center(Vector2D pos, const Screen& screen) {
+        set_center_x(pos.x, screen);
+        set_center_y(pos.y, screen);
+    }
     void Draw(Screen&, const GameOptions&) override;
 };
 

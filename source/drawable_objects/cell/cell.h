@@ -94,4 +94,7 @@ public:
     [[nodiscard]] inline bool can_be_shot_through() const {
         return get_building()->can_be_shot_through();
     }
+    [[nodiscard]] inline std::string get_additional_text_info() const {
+        return get_building()->get_additional_text_info();
+    }
 };

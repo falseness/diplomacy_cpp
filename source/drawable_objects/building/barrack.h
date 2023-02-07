@@ -23,5 +23,8 @@ public:
     void Select(const SceneInfo&) const override;
     void NextTurn(SceneInfo& scene) override;
     [[nodiscard]] json get_info() const override;
+    [[nodiscard]] inline std::string get_additional_text_info() const override {
+        return is_production_in_progress() ? std::to_string(get_turns_left()) : SuburbBuilding::get_additional_text_info();
+    }
     void Draw(Screen&, const GameOptions&) override;
 };

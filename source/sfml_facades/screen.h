@@ -25,7 +25,6 @@ class Screen {
     sf::Text get_sfml_text(const Text&) const;
     void set_hexagon_shape(const HexagonOptions&, const Vector2D&, float);
     static void ChangeSprite(sf::Sprite& sprite, const ObjectSize &image_size, const Vector2D &position);
-    Vector2D get_real_position_on_grid(const Vector2D& position);
     const sf::Sprite& get_sprite(const std::string &image_name, const ObjectSize &image_size, const Vector2D &position);
     size_t last_index_ = 0;
     // todo: refactoring buffer
@@ -71,4 +70,5 @@ public:
 
     size_t get_width() const;
     size_t get_height() const;
+    Vector2D get_real_position_on_grid(const Vector2D& position);
 };

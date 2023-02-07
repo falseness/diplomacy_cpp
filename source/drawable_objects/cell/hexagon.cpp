@@ -23,7 +23,7 @@ Segment Hexagon::get_side(uint8_t side_index, Screen& screen, const GameOptions&
     Vector2D point1 = screen.get_point_of_hexagon(side_index, game_options.hexagon_options, cell_.get_pos(game_options),
                                 Cell::kColorAlphaRatio);
 
-    Vector2D point2 = screen.get_point_of_hexagon((side_index + 1) % Grid::kHexagonMaximumNeighbours,
+    Vector2D point2 = screen.get_point_of_hexagon((side_index + 1) % GridCells::kHexagonMaximumNeighbours,
                                                   game_options.hexagon_options, cell_.get_pos(game_options),
                                                   Cell::kColorAlphaRatio);
     return {point1, point2};

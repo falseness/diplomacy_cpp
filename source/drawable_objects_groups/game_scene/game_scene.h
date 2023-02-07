@@ -12,10 +12,11 @@
 
 #pragma once
 
-// fields are mutable if they are not related to game information but to interfaces and etc.
+// fields are mutable if they are not related to game information but to interfaces etc.
 struct SceneInfo {
     Players players;
     Grid grid;
+    GridRegularCellInfo cells_text;
     mutable SelectionBorder selection_border;
     mutable TwoLayersSelectionBorder range_unit_attack_border;
     mutable EntityInfoInterface entity_interface;

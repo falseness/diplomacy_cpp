@@ -5,13 +5,11 @@
 #include <tuple>
 #include <set>
 
-#include "source/drawable_objects/cell/cell.h"
 #include "source/drawable_objects/cell/coord_converter.h"
 #include "source/drawable_objects_groups/game_scene/game_scene.h"
 #include "source/drawable_objects/building/town.h"
 #include "source/player/player.h"
 #include "source/drawable_objects_groups/game_scene/grid/action.h"
-#include "source/drawable_objects/unit/range/range_unit.h"
 #include "source/drawable_objects/building/nature.h"
 #include "cells.h"
 
@@ -19,53 +17,15 @@
 
 
 Grid::Grid(Players& players) : players_(players), logic_helper_(kGridRowsCount, kGridColumnsCount),
-        additional_logic_helper_(kGridRowsCount, kGridColumnsCount), grid_cells_() {
+        additional_logic_helper_(kGridRowsCount, kGridColumnsCount), grid_cells_(kGridRowsCount, kGridColumnsCount, players_) {
     size_t n = kGridRowsCount;
     size_t m = kGridColumnsCount;
     auto& cells = grid_cells_.get_cells();
-    cells.resize(n);
 
-    std::map<std::pair<int, int>, int> colors;
-    std::set<std::pair<int, int>> suburbs;
-
-    std::pair<int, int> town_poses[2] = {{1, 1}, {8, 3}};
-    for (int i = 1; i < players.size(); ++i) {
-        std::pair<int, int> town_pos = town_poses[i - 1];
-        auto this_player_suburb_cells = get_neighbours(town_pos);
-        this_player_suburb_cells.push_back(town_pos);
-
-        for (auto u: this_player_suburb_cells) {
-            colors.emplace(u, i);
-            suburbs.emplace(u);
+    for (auto& row : cells) {
+        for (auto& cell : row) {
+            drawable_objects_.push_back(cell.get());
         }
-    }
-    colors.emplace(std::pair<int, int>{2, 3}, 1);
-    colors.emplace(std::pair<int, int>{9, 4}, 2);
-
-    for (size_t i = 0; i < cells.size(); ++i) {
-        for (size_t j = 0; j < m; ++j) {
-            int color = 0;
-            auto it = colors.find({i, j});
-            if (it != colors.end()) {
-                color = it->second;
-            }
-            bool is_suburb = suburbs.find({i, j}) != suburbs.end();
-            cells[i].push_back(std::make_unique<Cell>(std::make_pair(i, j), color, players, is_suburb));
-
-            drawable_objects_.push_back(cells[i][j].get());
-        }
-    }
-    cells[4][2]->CreateBuilding<NaturalBuilding>("lake");
-    cells[4][4]->CreateBuilding<Mountain>("mountain");
-    cells[town_poses[0].first + 1][town_poses[0].second]->CreateBuilding<Barrack>("barrack");
-    cells[town_poses[1].first][town_poses[1].second + 1]->CreateBuilding<SuburbBuilding>("farm");
-    for (int i = 1; i < players.size(); ++i) {
-        std::pair<int, int> town_pos = town_poses[i - 1];
-        auto this_player_suburb_cells = get_neighbours(town_pos);
-        this_player_suburb_cells.push_back(town_pos);
-        cells[town_pos.first][town_pos.second]->CreateBuilding<Town>("town",
-                                                                     std::set(this_player_suburb_cells.begin(), this_player_suburb_cells.end()));
-        cells[town_pos.first][town_pos.second]->CreateUnit<RangeUnit>("archer");
     }
 
     empty_unit_ = std::make_unique<EmptyUnit>(cells[0][0].get());
@@ -104,21 +64,6 @@ bool Grid::HandleClick(SceneInfo& scene, const Vector2D& screen_click_pos, const
     return true;
 }
 
-// order of cells is fixed and is used in SelectionBorder class
-std::vector<std::pair<int, int>> Grid::get_neighbours(std::pair<int, int> coord) const {
-    static const std::pair<int, int> neighborhood[2][Grid::kHexagonMaximumNeighbours] = {
-            {{0, -1}, {1, -1}, {1, 0}, {0, 1}, {-1, 0}, {-1, -1}},
-            {{0, -1}, {1, 0}, {1, 1}, {0, 1}, {-1, 1}, {-1, 0}}
-    };
-    std::vector<std::pair<int, int>> result;
-    size_t parity = coord.first & 1;
-    for (size_t neighbour_number = 0; neighbour_number < Grid::kHexagonMaximumNeighbours; ++neighbour_number) {
-        result.emplace_back(coord.first + neighborhood[parity][neighbour_number].first,
-                          coord.second + neighborhood[parity][neighbour_number].second);
-    }
-
-    return std::move(result);
-}
 
 void Grid::ChangeSelectedUnitToBuilding() {
     assert(selected_entity_ != nullptr);

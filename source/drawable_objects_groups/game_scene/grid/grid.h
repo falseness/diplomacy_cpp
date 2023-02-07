@@ -1,3 +1,5 @@
+#pragma once
+
 #include <vector>
 #include <tuple>
 
@@ -11,9 +13,10 @@
 #include "source/drawable_objects_groups/game_scene/grid_logic_helper.h"
 #include "source/drawable_objects_groups/game_scene/grid/action.h"
 #include "source/drawable_objects_groups/game_scene/undo_button.h"
-#include "cells.h"
 
-#pragma once
+#include "source/drawable_objects_groups/game_scene/grid/cells.h"
+
+#include "source/drawable_objects_groups/game_scene/grid/text.h"
 
 
 class Players;
@@ -32,11 +35,13 @@ class Grid : public DrawableObjectsGroup, public ClickableObject {
     [[nodiscard]] inline std::unique_ptr<Cell>& get_cell_ptr(const std::pair<int, int> coord) {
         return grid_cells_.get_cell_ptr(coord);
     }
+
 public:
     void Draw(Screen& screen, const GameOptions&) override;
-    static const uint8_t kHexagonMaximumNeighbours = 6;
     void RemoveSelection();
-    [[nodiscard]] std::vector<std::pair<int, int>> get_neighbours(std::pair<int, int> coord) const;
+    [[nodiscard]] inline std::vector<std::pair<int, int>> get_neighbours(std::pair<int, int> coord) const {
+        return grid_cells_.get_neighbours(coord);
+    }
     mutable GridLogicHelper logic_helper_;
     mutable GridLogicHelper additional_logic_helper_;
     explicit Grid(Players&);

@@ -52,7 +52,7 @@ void SelectionBorder::UpdateBorder(const std::vector<std::pair<int, int>> &visit
 
 void SelectionBorder::SelectCell(std::pair<int, int> coord) {
     Clear();
-    for (size_t i = 0; i < Grid::kHexagonMaximumNeighbours; ++i) {
+    for (size_t i = 0; i < GridCells::kHexagonMaximumNeighbours; ++i) {
         AddLine(coord, i);
     }
 }

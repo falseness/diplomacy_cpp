@@ -7,10 +7,12 @@
 
 
 class Cell;
+class Players;
 
 class GridCells {
     std::vector<std::vector<std::unique_ptr<Cell>>> cells_;
 public:
+    static constexpr uint8_t kHexagonMaximumNeighbours = 6;
     [[nodiscard]] inline std::unique_ptr<Cell>& get_cell_ptr(const std::pair<int, int> coord) {
         assert(!is_coord_out_of_range(coord));
         return cells_[coord.first][coord.second];
@@ -33,5 +35,7 @@ public:
     [[nodiscard]] inline std::vector<std::vector<std::unique_ptr<Cell>>>& get_cells() {
         return cells_;
     }
-    GridCells() = default;
+    // order of cells is fixed and is used in SelectionBorder class
+    [[nodiscard]] std::vector<std::pair<int, int>> get_neighbours(std::pair<int, int> coord) const;
+    GridCells(size_t rows_count, size_t columns_count, Players& players);
 };

@@ -7,6 +7,7 @@
 GameScene::GameScene(Screen& screen, const GameOptions& game_options) : info_(screen), next_turn_button_(screen) {
 
     drawable_objects_.push_back(&info_.grid);
+    drawable_objects_.push_back(&info_.cells_text);
     drawable_objects_.push_back(&info_.range_unit_attack_border);
     drawable_objects_.push_back(&info_.selection_border);
     drawable_objects_.push_back(&next_turn_button_);
@@ -56,7 +57,7 @@ void GameScene::HandleArrowKeyPress(ArrowsKeyPressInfo arrows_info, Screen& scre
 }
 
 SceneInfo::SceneInfo(Screen& screen) :
-        players({Color(80, 80, 80), Color(255, 0, 0), Color(0, 255, 0)}, 1), grid(players),
+        players({Color(80, 80, 80), Color(255, 0, 0), Color(0, 255, 0)}, 1), grid(players), cells_text(grid),
         selection_border(grid, Color::kWhite),
         range_unit_attack_border(grid, Color(255, 255, 255), Color(0, 0, 255)),
         entity_interface(screen), production_interface(screen),
