@@ -6,8 +6,8 @@
 template <typename BuildingAfterConstruction>
 class BuildingUnderConstruction : public Building {
     ProductionInfo production_info_;
-    void DrawImage(Screen &screen, const GameOptions &game_options, const Vector2D &pos) const override;
     static constexpr float kOpacity = 0.5f;
+    void DrawImage(Screen &screen, const GameOptions &game_options, const Vector2D &pos) const override;
 public:
     BuildingUnderConstruction(Cell* cell, std::string image_name, ProductionInfo production_info);
     void NextTurn(SceneInfo& scene) override;
@@ -42,7 +42,7 @@ void BuildingUnderConstruction<BuildingAfterConstruction>::Draw(Screen &screen, 
 template<typename BuildingAfterConstruction>
 void BuildingUnderConstruction<BuildingAfterConstruction>::DrawImage(Screen &screen, const GameOptions &game_options,
                                                                      const Vector2D &pos) const {
-    screen.DrawOnBuffer(image_name_, game_options.get_image_size(), pos, kOpacity);
+    Entity::DrawImage(image_name_, screen, game_options, pos, kOpacity);
 }
 
 template<typename BuildingAfterConstruction>
