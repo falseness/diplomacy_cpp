@@ -9,5 +9,5 @@ struct HexagonOptions {
     Color fill_color;
     Color outline_color;
     float outline_thickness;
-    HexagonOptions(const Color&);
+    HexagonOptions(const float radius, const Color&);
 };

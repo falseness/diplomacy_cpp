@@ -4,8 +4,7 @@
 #include "source/utility/color.h"
 
 
-GameScene::GameScene(Screen& screen, const GameOptions& game_options) : info_(screen), next_turn_button_(screen) {
-
+GameScene::GameScene(Screen& screen) : info_(screen), next_turn_button_(screen) {
     drawable_objects_.push_back(&info_.grid);
     drawable_objects_.push_back(&info_.cells_text);
     drawable_objects_.push_back(&info_.range_unit_attack_border);

@@ -12,6 +12,7 @@ class Game {
     std::unique_ptr<GameScene> game_scene_;
     GameOptions game_options_;
     FramesCounter frames_counter_;
+    void ScaleCamera(const MouseWheelInfo&);
     void EventsIteration();
     void DrawingIteration();
 public:

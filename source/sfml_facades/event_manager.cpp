@@ -17,6 +17,10 @@ void EventManager::HandleEvents() {
             has_close_event_ = true;
             continue;
         }
+        if (event.type == sf::Event::MouseWheelMoved) {
+            mouse_wheel_event_ = {.delta = event.mouseWheel.delta, .x = event.mouseWheel.x, .y = event.mouseWheel.y};
+            continue;
+        }
         if (event.type == sf::Event::MouseButtonPressed) {
             click_event_ = std::make_pair(Vector2D(static_cast<float>(event.mouseButton.x),
                                                    static_cast<float>(event.mouseButton.y)), true);
@@ -50,6 +54,7 @@ void EventManager::NextIteration() {
     click_event_ = no_click_event_;
     has_close_event_ = false;
     has_key_press_backspace_event_ = has_key_press_enter_event_ = false;
+    mouse_wheel_event_ = std::nullopt;
     HandleEvents();
 }
 
@@ -57,8 +62,12 @@ bool EventManager::HasCloseEvent() const {
     return has_close_event_;
 }
 
-const std::pair<Vector2D, bool>& EventManager::get_click_event() {
+const std::pair<Vector2D, bool>& EventManager::get_click_event() const {
     return click_event_;
+}
+
+const std::optional<MouseWheelInfo>& EventManager::get_mouse_wheel_event() const {
+    return mouse_wheel_event_;
 }
 
 bool EventManager::HasKeyPressBackspaceEvent() const {

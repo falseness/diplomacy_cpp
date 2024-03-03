@@ -7,7 +7,7 @@
 #include "source/utility/object_size.h"
 #include "source/options/hexagon.h"
 
-// todo: delete methods and make fields public
+
 struct GameOptions {
     HexagonOptions hexagon_options;
     Vector2D hexagon_offset;
@@ -31,5 +31,6 @@ public:
     }
     float text_outline_thickness;
     Vector2D draw_offset;
-    GameOptions();
+    explicit GameOptions(const float dt);
+    void ScaleRadius(const float dt);
 };

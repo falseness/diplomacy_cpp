@@ -8,7 +8,7 @@
 #include "source/next_turn/sudden_death_info.h"
 #include "source/drawable_objects/clickable_object.h"
 #include "source/drawable_objects/selection_border.h"
-#include "source/utility/arrow_key_press_info.h"
+#include "source/utility/event_info.h"
 
 #pragma once
 
@@ -32,7 +32,7 @@ class GameScene : public Scene {
     NextTurnButton next_turn_button_;
     std::vector<ClickableObject*> clickable_objects_;
 public:
-    GameScene(Screen& screen, const GameOptions&);
+    explicit GameScene(Screen& screen);
     void HandleClick(const Vector2D&, const GameOptions&) override;
     void HandleKeyBackspacePress();
     void HandleKeyEnterPress();
