@@ -9,7 +9,17 @@ Game::Game() : game_options_(75.f){
 }
 
 void Game::ScaleCamera(const MouseWheelInfo& mouse_wheel_info) {
-    game_options_.ScaleRadius(static_cast<float>(mouse_wheel_info.delta) * 3);
+    float zoom = std::exp(static_cast<float>(mouse_wheel_info.delta) * 0.1f);
+    float scale = game_options_.hexagon_options.radius / 75.f;
+    auto offset = library_facade_.screen.get_draw_offset();
+    float target_x = (mouse_wheel_info.x - offset.x) / scale;
+    float target_y = (mouse_wheel_info.y - offset.y) / scale;
+    scale *= zoom;
+    offset.x = -target_x * scale + mouse_wheel_info.x;
+    offset.y = -target_y * scale + mouse_wheel_info.y;
+
+    game_options_ = GameOptions(75.f * scale);
+    library_facade_.screen.set_draw_offset(offset);
 }
 
 void Game::EventsIteration() {
