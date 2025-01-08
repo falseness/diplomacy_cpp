@@ -32,8 +32,8 @@ std::vector<std::pair<int, int>> CoordConverter::CalculateNearestHexagons(
 std::pair<int, int> CoordConverter::ChooseNearestHexagon(
         const std::vector<std::pair<int, int>>& nearest_hexagons,
         const Vector2D& pos, const GameOptions& game_options) {
-    size_t nearest_hexagon_index = nearest_hexagons.size();
-    float min_distance = game_options.hexagon_options.radius * game_options.hexagon_options.radius;
+    size_t nearest_hexagon_index = 0;
+    float min_distance = std::numeric_limits<float>::max();
 
     for (size_t i = 0; i < nearest_hexagons.size(); ++i) {
         Vector2D hex_pos = {static_cast<float>(nearest_hexagons[i].first) * game_options.hexagon_offset.x,
