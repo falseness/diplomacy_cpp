@@ -13,6 +13,12 @@ Town::Town(Cell* cell, std::string&& image_name, std::set<std::pair<int, int>> s
         Entity(cell, std::string(image_name)), suburbs_(std::move(suburbs)) {
 }
 
+
+void Town::Draw(Screen& screen, const GameOptions& game_options) {
+    Barrack::Draw(screen, game_options);
+    // tmp
+}
+
 json Town::get_info() const {
     auto result = Barrack::get_info();
     result["info"]["hp"] = BuildingWithHp::get_info()["info"]["hp"].get<std::string>();

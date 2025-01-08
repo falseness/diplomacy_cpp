@@ -19,6 +19,7 @@ class Town : public Barrack, public BuildingWithHp {
     void set_production_interface_visible(const SceneInfo& scene, bool) const override;
     void UpdateProductionInterface(const SceneInfo& scene) const override;
 public:
+    void Draw(Screen&, const GameOptions&) override;
     [[nodiscard]] json get_info() const override;
     Town(Cell*, std::string&&, std::set<std::pair<int, int>> suburbs);
     ~Town() override = default;

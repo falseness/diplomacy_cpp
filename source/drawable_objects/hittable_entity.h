@@ -18,4 +18,6 @@ public:
     [[nodiscard]] bool is_hittable(size_t asking_player_index) const override;
     [[nodiscard]] bool is_passable(size_t asking_player_index) const override;
     [[nodiscard]] json get_info() const override;
+
+    void Draw(Screen&, const GameOptions&) override;
 };

@@ -182,4 +182,5 @@ void Grid::Draw(Screen &screen, const GameOptions & game_options) {
     DrawableObjectsGroup::Draw(screen, game_options);
     screen.DrawHexagonBuffer({0, 0});
     screen.DrawBuffer({0, 0});
+    screen.DrawRectangleBuffer({0, 0});
 }

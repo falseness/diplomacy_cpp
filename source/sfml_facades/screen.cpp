@@ -20,7 +20,7 @@ void Screen::Clear() {
 }
 
 void Screen::DrawHexagon(const HexagonOptions& hexagon_options, const Vector2D& position, float opacity) {
-    set_hexagon_shape(hexagon_options, position, opacity);
+    set_hexagon_shape(hexagon_options, position + draw_offset_, opacity);
     window_.draw(hexagon_shape_);
 }
 
@@ -202,7 +202,7 @@ Vector2D Screen::get_point_of_hexagon(uint8_t point, const HexagonOptions& hexag
     auto sfml_result = hexagon_shape_.getTransform().transformPoint(
             hexagon_shape_.getPoint((point + kPointsShift) % hexagon_shape_.getPointCount()));
     Vector2D result = {sfml_result.x, sfml_result.y};
-    return result;
+    return result + draw_offset_;
 }
 
 void Screen::set_hexagon_shape(const HexagonOptions& hexagon_options, const Vector2D& position, float opacity) {
@@ -216,8 +216,9 @@ void Screen::set_hexagon_shape(const HexagonOptions& hexagon_options, const Vect
     hexagon_shape_.setOutlineThickness(hexagon_options.outline_thickness);
 
     hexagon_shape_.setRotation(hexagon_options.rotation);
-    hexagon_shape_.setPosition(position.x + hexagon_options.radius + draw_offset_.x,
-                               position.y - hexagon_options.radius + draw_offset_.y);
+    // подвинь
+    hexagon_shape_.setPosition(position.x + hexagon_options.radius,
+                               position.y - hexagon_options.radius);
 }
 
 void Screen::ChangeSprite(sf::Sprite& sprite, const ObjectSize& image_size, const Vector2D& position) {
@@ -276,15 +277,14 @@ void Screen::DrawOnBuffer(const std::string &image_name, const ObjectSize &image
     quad[3].position = sf::Vector2f(position.x, position.y + image_size.height);
 
 
-    for (size_t i = 0; i < 4; ++i) {
+    for (size_t i = 0; i < kQuadCountVertices; ++i) {
         quad[i].color.a = alpha;
     }
 
-    quad[0].texCoords = sf::Vector2f(rect.minimum_x, rect.minimum_y);
-    quad[1].texCoords = sf::Vector2f(rect.maximum_x, rect.minimum_y);
-    quad[2].texCoords = sf::Vector2f(rect.maximum_x, rect.maximum_y);
-    quad[3].texCoords = sf::Vector2f(rect.minimum_x, rect.maximum_y);
-
+    const auto points = rect.get_points();
+    for (size_t i = 0; i < points.size(); ++i) {
+        quad[i].texCoords = sf::Vector2f(points[i].x, points[i].y);
+    }
 }
 
 void Screen::DrawBuffer(const Vector2D &position) {
@@ -303,6 +303,31 @@ void Screen::ClearBuffer() {
     buffer_.clear();
     buffer_.setPrimitiveType(sf::Quads);
     last_index_ = 0;
+}
+
+void Screen::DrawOnRectangleBuffer(const RoundedRectangle& rectangle) {
+    auto color = create_color<sf::Color>(rectangle.background_color);
+    //color.a = static_cast<size_t>(Screen::kMaximumColorValue * opacity);
+    std::vector<Vector2D> points{
+            {rectangle.get_left(), rectangle.get_up()},
+            {rectangle.get_right(), rectangle.get_up()},
+            {rectangle.get_right(), rectangle.get_bottom()},
+            {rectangle.get_left(), rectangle.get_bottom()}
+    };
+    for (const auto& point : points) {
+        rectangle_buffer_.append(create_vertex(sf::Vector2f(point.x, point.y), color));
+    }
+
+    auto outline_color = create_color<sf::Color>(rectangle.border_color);
+
+
+    for (size_t i = 0; i < points.size(); ++i) {
+        size_t next_index = (i + 1) % points.size();
+        auto tmp = CreateLineRectangle(points[i], points[next_index], rectangle.border_width);
+        for (auto point : tmp) {
+            rectangle_lines_buffer_.append(create_vertex(create_vector<sf::Vector2f>(point), outline_color));
+        }
+    }
 }
 
 void Screen::DrawOnHexagonBuffer(const HexagonOptions &options, const Vector2D &position, float opacity) {
@@ -336,11 +361,15 @@ void Screen::DrawOnHexagonBuffer(const HexagonOptions &options, const Vector2D &
     }
 }
 
+void Screen::ClearPrimitivesBuffers(sf::VertexArray& buffer, sf::VertexArray& lines_buffer, sf::PrimitiveType type) {
+    buffer.clear();
+    buffer.setPrimitiveType(type);
+    lines_buffer.clear();
+    lines_buffer.setPrimitiveType(sf::Quads);
+}
+
 void Screen::ClearHexagonBuffer() {
-    hexagon_buffer_.clear();
-    hexagon_buffer_.setPrimitiveType(sf::Triangles);
-    hexagon_lines_buffer_.clear();
-    hexagon_lines_buffer_.setPrimitiveType(sf::Quads);
+    ClearPrimitivesBuffers(hexagon_buffer_, hexagon_lines_buffer_, sf::Triangles);
 }
 
 sf::Vertex Screen::create_vertex(sf::Vector2f position, sf::Color color) {
@@ -350,9 +379,29 @@ sf::Vertex Screen::create_vertex(sf::Vector2f position, sf::Color color) {
     return result;
 }
 
+void Screen::DrawRectangleBuffer(const Vector2D &position) {
+    sf::RenderStates states;
+    sf::Transform tmp;
+    tmp.translate(draw_offset_.x + position.x, draw_offset_.y + position.y);
+    states.transform = std::move(tmp);
+
+    window_.draw(rectangle_buffer_, tmp);
+    window_.draw(rectangle_lines_buffer_, tmp);
+    ClearRectangleBuffer();
+}
+
+void Screen::ClearRectangleBuffer() {
+    ClearPrimitivesBuffers(rectangle_buffer_, rectangle_lines_buffer_, sf::Quads);
+}
+
 void Screen::DrawHexagonBuffer(const Vector2D &position) {
-    window_.draw(hexagon_buffer_);
-    window_.draw(hexagon_lines_buffer_);
+    sf::RenderStates states;
+    sf::Transform tmp;
+    tmp.translate(draw_offset_.x + position.x, draw_offset_.y + position.y);
+    states.transform = std::move(tmp);
+
+    window_.draw(hexagon_buffer_, states);
+    window_.draw(hexagon_lines_buffer_, states);
     ClearHexagonBuffer();
 }
 
@@ -364,3 +413,4 @@ std::array<Vector2D, 4> Screen::CreateLineRectangle(const Vector2D &begin, const
     dt *= width;
     return {begin + dt - dt_copy, end + dt + dt_copy, end + dt_copy, begin - dt_copy};
 }
+

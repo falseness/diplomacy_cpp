@@ -12,7 +12,7 @@ EntityInfoInterface::EntityInfoInterface(const Screen& screen) {
     float this_height = h - pos.y;
     float this_width = this_height * 1.6f;
 
-    background_.set_pos(Vector2D(pos.x - corner_radius, pos.y));
+    background_.set_top_left_corner_pos(Vector2D(pos.x - corner_radius, pos.y));
     background_.height = this_height + corner_radius;
     background_.width = this_width + corner_radius;
     background_.corner_radius = corner_radius;

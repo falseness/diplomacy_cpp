@@ -115,7 +115,7 @@ ProductionSlots::ProductionSlots(Vector2D pos, float background_width, float bac
 
     button_.height = screen_h * 0.07f;
 
-    button_.set_pos({pos.x + background_width * 0.375f, pos.y - screen_h * 0.07f / 2});
+    button_.set_top_left_corner_pos({pos.x + background_width * 0.375f, pos.y - screen_h * 0.07f / 2});
 
     button_.background_color = ProductionSlots::kButtonBackgroundColor;
     button_.text.color = ProductionSlots::kButtonTextColor;
@@ -140,5 +140,5 @@ void ProductionSlots::Draw(Screen &screen, const GameOptions& game_options) {
 void ProductionSlots::add_to_pos(const Vector2D& transition) {
     production_image_.position += transition;
     cost_text_.position += transition;
-    button_.add_to_pos(transition);
+    button_.move_by(transition);
 }

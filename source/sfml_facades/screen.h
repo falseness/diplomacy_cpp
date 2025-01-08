@@ -16,6 +16,7 @@ class Screen {
     sf::Color background_color_;
 
     sf::CircleShape hexagon_shape_ = sf::CircleShape(0, 6);
+    sf::CircleShape rectangle_shape_ = sf::CircleShape(0, 4);
 
     AssetsManager assets_manager_ = AssetsManager();
 
@@ -29,10 +30,16 @@ class Screen {
     size_t last_index_ = 0;
     // todo: refactoring buffer
     sf::VertexArray buffer_;
+
+    sf::VertexArray rectangle_buffer_;
+    sf::VertexArray rectangle_lines_buffer_;
+
     sf::VertexArray hexagon_buffer_;
     sf::VertexArray hexagon_lines_buffer_;
     static sf::Vertex create_vertex(sf::Vector2f, sf::Color color);
     std::array<Vector2D, 4> CreateLineRectangle(const Vector2D& begin, const Vector2D& end, float width);
+
+    void ClearPrimitivesBuffers(sf::VertexArray& buffer, sf::VertexArray& lines_buffer, sf::PrimitiveType);
 public:
     static constexpr float kMaximumOpacity = 1.0f;
     static constexpr size_t kMaximumColorValue = 255;
@@ -41,11 +48,15 @@ public:
     void DrawHexagon(const HexagonOptions&, const Vector2D&, float);
     void DrawTriangle(const Triangle&);
     void DrawRoundedRectangle(const RoundedRectangle&);
+    void DrawOnRectangleBuffer(const RoundedRectangle&);
     void DrawOnBuffer(const std::string &image_name, const ObjectSize &image_size, const Vector2D &position,
                       float opacity);
     void DrawOnHexagonBuffer(const HexagonOptions& options, const Vector2D& position, float opacity);
     void DrawBuffer(const Vector2D &position);
     void ClearBuffer();
+
+    void DrawRectangleBuffer(const Vector2D &position);
+    void ClearRectangleBuffer();
     void DrawHexagonBuffer(const Vector2D &position);
     void ClearHexagonBuffer();
     void DrawImage(const std::string &image_name, const ObjectSize &image_size, const Vector2D &position);

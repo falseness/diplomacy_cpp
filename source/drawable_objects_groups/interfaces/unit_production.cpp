@@ -18,7 +18,7 @@ ProductionInterface::ProductionInterface(const Screen &screen) : production_slot
     this_height = h * 0.4f;
     this_width = w - pos.x;
 
-    background_.set_pos(Vector2D(pos.x, pos.y));
+    background_.set_top_left_corner_pos(Vector2D(pos.x, pos.y));
     background_.height = this_height;
     background_.width = this_width + corner_radius;
     background_.corner_radius = corner_radius;

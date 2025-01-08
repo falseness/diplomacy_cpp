@@ -70,8 +70,9 @@ AssetsManager::AssetsManager() {
         all_images_.update(texture, pos_x, kPosY);
         auto size = texture.getSize();
 
-        position_on_texture_[name] = {static_cast<float>(pos_x), static_cast<float>(kPosY),
-                                      static_cast<float>(pos_x + size.x), static_cast<float>(kPosY + texture.getSize().y)};
+        position_on_texture_[name] = {.left_side_x = static_cast<float>(pos_x), .up_side_y = kPosY,
+                                      .width = static_cast<float>(size.x),
+                                      .height = static_cast<float>(size.y)};
         pos_x += size.x;
     }
 

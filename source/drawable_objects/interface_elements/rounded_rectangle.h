@@ -1,34 +1,13 @@
-#include <source/drawable_objects/drawable_object.h>
-#include <source/utility/vector2d.h>
-#include <source/utility/color.h>
-#include <array>
-
-
 #pragma once
 
-struct RoundedRectangle : DrawableObject {
-    Color border_color = Color(0, 0, 0);
-    // width 0 means no border
-    float border_width = 5;
-    Color background_color = Color(255, 0, 0);
-    float left_side_x = 0;
-    float up_side_y = 0;
-    float width = 100;
-    float height = 400;
+#include "source/drawable_objects/drawable_object.h"
+#include "source/utility/vector2d.h"
+#include "source/utility/color.h"
+#include "source/utility/colored_rectangle.h"
+
+
+struct RoundedRectangle : ColoredRectangle, DrawableObject {
     // radius 0 means no circle
     float corner_radius = 30;
-    void set_pos(const Vector2D&);
-    void add_to_pos(const Vector2D&);
-    [[nodiscard]] float get_right() const;
-    [[nodiscard]] float get_left() const;
-    [[nodiscard]] float get_up() const;
-    [[nodiscard]] float get_bottom() const;
-    void set_center_x(float center_x);
-    void set_center_y(float center_y);
-    [[nodiscard]] float get_center_x() const;
-    [[nodiscard]] float get_center_y() const;
-    [[nodiscard]] Vector2D get_center() const;
     void Draw(Screen&, const GameOptions&) override;
-    // check if point in rectangle
-    [[nodiscard]] bool is_inside(const Vector2D&) const;
 };
