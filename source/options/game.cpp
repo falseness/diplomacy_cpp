@@ -12,5 +12,5 @@ GameOptions::GameOptions(const float radius) : hexagon_options(radius, Color(0, 
 }
 
 void GameOptions::ScaleRadius(const float dt) {
-    *this = GameOptions(hexagon_options.radius + dt);
+    *this = GameOptions(hexagon_options.radius * dt);
 }
