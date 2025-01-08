@@ -3,14 +3,16 @@
 #include <source/drawable_objects_groups/game_scene/game_scene.h>
 #include "source/options/game.h"
 
-Game::Game() : game_options_(75.f){
+Game::Game() : game_options_(GameOptions::kMaxRadiusSize){
     game_scene_ = std::make_unique<GameScene>(library_facade_.screen);
     library_facade_.screen.set_draw_offset(Vector2D(100.f, 100.f));
 }
 
 void Game::ScaleCamera(const MouseWheelInfo& mouse_wheel_info) {
     float zoom = std::exp(static_cast<float>(mouse_wheel_info.delta) * 0.1f);
+    zoom = game_options_.get_correct_in_borders_scale(zoom);
     auto offset = library_facade_.screen.get_draw_offset();
+
     offset *= zoom;
     offset += Vector2D{static_cast<float>(mouse_wheel_info.x), static_cast<float>(mouse_wheel_info.y)} * (1 - zoom);
 

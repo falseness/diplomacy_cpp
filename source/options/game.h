@@ -16,6 +16,7 @@ struct GameOptions {
 private:
     ObjectSize image_size_;
 public:
+    static constexpr float kMaxRadiusSize = 75.f;
     static constexpr std::size_t kMaxFPS = 120;
     [[nodiscard]] inline ObjectSize get_image_size() const {
         return image_size_;
@@ -32,5 +33,6 @@ public:
     float text_outline_thickness;
     Vector2D draw_offset;
     explicit GameOptions(const float dt);
+    float get_correct_in_borders_scale(const float dt) const;
     void ScaleRadius(const float dt);
 };

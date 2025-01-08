@@ -11,6 +11,20 @@ GameOptions::GameOptions(const float radius) : hexagon_options(radius, Color(0, 
                        hexagon_options.outline_thickness * sqrtf(3) / 2 / 2};
 }
 
+
+float GameOptions::get_correct_in_borders_scale(const float dt) const {
+    static constexpr float kMinRadiusSize = 10;
+
+    if (hexagon_options.radius * dt > GameOptions::kMaxRadiusSize) {
+        return GameOptions::kMaxRadiusSize / hexagon_options.radius;
+    }
+    if (hexagon_options.radius * dt < kMinRadiusSize) {
+        return kMinRadiusSize / hexagon_options.radius;
+    }
+    return dt;
+}
+
 void GameOptions::ScaleRadius(const float dt) {
     *this = GameOptions(hexagon_options.radius * dt);
 }
+
