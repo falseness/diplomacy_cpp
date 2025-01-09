@@ -28,3 +28,12 @@ json BuildingWithHp::get_info() const {
     return result;
 }
 
+void BuildingWithHp::DrawHPBar(Screen &screen, const GameOptions &game_options) const {
+    const float building_hp_bar_y_offset = game_options.hexagon_options.radius * 0.5;
+    HittableEntity::DrawHPBar(building_hp_bar_y_offset, screen, game_options);
+}
+
+void BuildingWithHp::Draw(Screen &screen, const GameOptions &game_options) {
+    Building::Draw(screen, game_options);
+    DrawHPBar(screen, game_options);
+}

@@ -1,7 +1,9 @@
 #include "hittable_entity.h"
 
 #include "source/drawable_objects_groups/game_scene/grid/grid.h"
-#include <source/drawable_objects/interface_elements/rounded_rectangle.h>
+#include "source/drawable_objects/interface_elements/rounded_rectangle.h"
+#include "source/drawable_objects/entity_bar.h"
+
 
 bool HittableEntity::is_hittable(size_t asking_player_index) const {
     return !is_my_player(asking_player_index);
@@ -31,24 +33,12 @@ void HittableEntity::DecreaseHP(int dmg) {
 
 void HittableEntity::Draw(Screen& screen, const GameOptions& game_options) {
     Entity::Draw(screen, game_options);
-    RoundedRectangle rectangle;
+}
 
-    rectangle.width = game_options.hexagon_options.radius * 0.15;
+void HittableEntity::DrawHPBar(float y_offset, Screen& screen, const GameOptions& game_options) const {
+    static constexpr Color kHPPresenceColor(43, 181, 43);
+    static constexpr Color kHPAbsenseColor(179, 179, 179);
 
-    rectangle.height = game_options.hexagon_options.radius * 0.15;
-
-    const int rects_count = get_maximum_hp();
-    float interval_x = game_options.hexagon_options.radius * 0.05;
-    float interval_y = -game_options.hexagon_options.radius * 0.9;
-    double hpBarWidth = rectangle.width * rects_count +
-            interval_x * (rects_count - 1);
-
-    for (int i = 0; i < get_maximum_hp(); ++i) {
-        rectangle.background_color = i < hp_ ? Color(43, 181, 43) : Color(179, 179, 179);
-        rectangle.set_top_left_corner_pos(get_image_pos(game_options) +
-                                          Vector2D(-hpBarWidth / 2 + i * rectangle.width + i * interval_x,
-                                                   interval_y));
-        screen.DrawOnRectangleBuffer(rectangle);
-    }
-
+    DrawEntityBar(hp_, get_maximum_hp(), get_image_pos(game_options) + Vector2D(0, y_offset),
+                  kHPPresenceColor, kHPAbsenseColor, screen, game_options);
 }

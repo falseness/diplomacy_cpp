@@ -8,10 +8,13 @@ class BuildingWithHpStats;
 class BuildingWithHp : virtual public Building, public HittableEntity {
 protected:
     void AskGridToDecreaseHP(int dmg, Grid& grid) const override;
+
+    void DrawHPBar(Screen& screen, const GameOptions& game_options) const;
 public:
     [[nodiscard]] json get_info() const override;
     [[nodiscard]] const BuildingWithHpStats& get_stats() const;
     BuildingWithHp(Cell* cell, std::string image_name);
     ~BuildingWithHp() override = default;
     [[nodiscard]] unsigned int get_maximum_hp() const override;
+    void Draw(Screen&, const GameOptions&) override;
 };

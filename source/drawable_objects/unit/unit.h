@@ -42,6 +42,7 @@ public:
     [[nodiscard]] inline virtual bool is_attackable(const Cell& cell) const;
     [[nodiscard]] bool is_on_high_ground() const;
     ~Unit() override = default;
+    void Draw(Screen&, const GameOptions&) override;
 };
 
 class EmptyUnit : public Unit {

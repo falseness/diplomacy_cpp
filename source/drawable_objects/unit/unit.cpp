@@ -141,6 +141,12 @@ bool Unit::is_on_high_ground() const {
     return get_cell()->get_building()->is_high_ground();
 }
 
+void Unit::Draw(Screen& screen, const GameOptions& game_options) {
+    HittableEntity::Draw(screen, game_options);
+    const auto unit_hp_bar_y_offset = -game_options.hexagon_options.radius * 0.9;
+    HittableEntity::DrawHPBar(unit_hp_bar_y_offset, screen, game_options);
+}
+
 bool EmptyUnit::is_passable(size_t asking_player_index) const {
     return true;
 }

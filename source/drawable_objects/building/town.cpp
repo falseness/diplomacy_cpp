@@ -16,7 +16,7 @@ Town::Town(Cell* cell, std::string&& image_name, std::set<std::pair<int, int>> s
 
 void Town::Draw(Screen& screen, const GameOptions& game_options) {
     Barrack::Draw(screen, game_options);
-    // tmp
+    BuildingWithHp::DrawHPBar(screen, game_options);
 }
 
 json Town::get_info() const {
