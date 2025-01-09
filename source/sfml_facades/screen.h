@@ -40,6 +40,7 @@ class Screen {
 
 
     static constexpr size_t kBuffersCount = 2;
+    // todo: refactor buffers
     std::vector<size_t> last_index_;
     std::vector<sf::VertexArray> buffer_;
 

@@ -18,7 +18,6 @@ struct ClickResponse {
     bool should_change_selection_to_building_on_same_cell;
 };
 
-#include <iostream>
 class Entity : public DrawableObject {
 protected:
     Cell* cell_;
@@ -30,9 +29,7 @@ public:
     virtual void Kill(Grid& grid) const = 0;
     static const std::string kEmptyEntityName;
     const std::string image_name_;
-    void Draw(Screen& screen, const GameOptions& game_options) {
-        std::cout << "error" << std::endl;
-    }
+
     virtual ClickResponse HandleClick(SceneInfo&, const Vector2D& click_pos, const GameOptions& game_options) const = 0;
     Entity(Cell*, std::string);
     [[nodiscard]] std::pair<int, int> get_coord() const;

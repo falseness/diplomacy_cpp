@@ -15,6 +15,8 @@ protected:
     int salary_;
     void AskGridToDecreaseHP(int dmg, Grid& grid) const override;
     virtual ClickResponse ClickLogic(SceneInfo &scene, std::pair<int, int> &coord) const;
+
+    void DrawMovesBar(Screen& screen, const GameOptions& game_options) const;
 public:
     [[nodiscard]] inline int get_salary() const {
         return salary_;
@@ -43,7 +45,6 @@ public:
     [[nodiscard]] bool is_on_high_ground() const;
     ~Unit() override = default;
     void Draw(Screen&, const GameOptions&) override;
-    void DrawMovesBar(Screen& screen, const GameOptions& game_options) const;
 };
 
 class EmptyUnit : public Unit {

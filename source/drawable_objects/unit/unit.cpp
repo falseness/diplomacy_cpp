@@ -148,7 +148,9 @@ void Unit::Draw(Screen& screen, const GameOptions& game_options) {
     DrawImage(screen, game_options, pos, Buffer::Units);
     const auto unit_hp_bar_y_offset = game_options.hexagon_options.radius * -1.15f;
     HittableEntity::DrawHPBar(unit_hp_bar_y_offset, screen, game_options);
-    DrawMovesBar(screen, game_options);
+    if (is_my_turn()) {
+        DrawMovesBar(screen, game_options);
+    }
 }
 
 void Unit::DrawMovesBar(Screen &screen, const GameOptions &game_options) const {
