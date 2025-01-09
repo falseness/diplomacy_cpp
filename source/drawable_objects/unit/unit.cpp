@@ -5,6 +5,7 @@
 #include "source/drawable_objects/unit/unit_logic.h"
 #include "source/drawable_objects_groups/game_scene/game_scene.h"
 #include "source/drawable_objects/hittable_entity.h"
+#include "source/drawable_objects/entity_bar.h"
 
 const UnitStats& Unit::get_stats() const {
     auto it = get_player_stats().units.find(image_name_);
@@ -143,8 +144,20 @@ bool Unit::is_on_high_ground() const {
 
 void Unit::Draw(Screen& screen, const GameOptions& game_options) {
     HittableEntity::Draw(screen, game_options);
-    const auto unit_hp_bar_y_offset = -game_options.hexagon_options.radius * 0.9;
+    const auto unit_hp_bar_y_offset = game_options.hexagon_options.radius * -1.15f;
     HittableEntity::DrawHPBar(unit_hp_bar_y_offset, screen, game_options);
+    DrawMovesBar(screen, game_options);
+}
+
+void Unit::DrawMovesBar(Screen &screen, const GameOptions &game_options) const {
+    static constexpr Color kMovePresenceColor(255, 165, 0);
+    static constexpr Color kMoveAbsenseColor(179, 179, 179);
+    const float kYBarOffset = game_options.hexagon_options.radius * -0.8;
+    DrawEntityBar(
+            moves_, get_speed(), get_image_pos(game_options) + Vector2D(0, kYBarOffset),
+            Vector2D(0.4, 0.225),
+            kMovePresenceColor, kMoveAbsenseColor, RectangleBuffer::Moves, screen, game_options);
+
 }
 
 bool EmptyUnit::is_passable(size_t asking_player_index) const {

@@ -14,13 +14,17 @@ std::pair<int, int> Cell::get_coord() const {
     return coord_;
 }
 
+void Cell::DrawEntities(Screen &screen, const GameOptions & game_options) const {
+    if (!building_->is_empty()) {
+        building_->Draw(screen, game_options);
+    }
+    if (!unit_->is_empty()) {
+        unit_->Draw(screen, game_options);
+    }
+}
+
 void Cell::Draw(Screen& screen, const GameOptions& game_options) {
     hexagon_.Draw(screen, game_options);
-    if (!building_->is_empty())
-        building_->Draw(screen, game_options);
-    if (!unit_->is_empty())
-        unit_->Draw(screen, game_options);
-
 }
 
 Vector2D Cell::get_pos(const GameOptions& game_options) const {

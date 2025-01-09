@@ -180,7 +180,15 @@ Vector2D Grid::get_right_bottom_corner(const GameOptions& game_options) const {
 
 void Grid::Draw(Screen &screen, const GameOptions & game_options) {
     DrawableObjectsGroup::Draw(screen, game_options);
+    // this is for optimization
     screen.DrawHexagonBuffer({0, 0});
+    for (auto& row : grid_cells_.get_cells()) {
+        for (auto& cell : row) {
+            cell->DrawEntities(screen, game_options);
+        }
+    }
+
+    screen.DrawRectangleBuffer({0, 0}, RectangleBuffer::Moves);
     screen.DrawBuffer({0, 0});
-    screen.DrawRectangleBuffer({0, 0});
+    screen.DrawRectangleBuffer({0, 0}, RectangleBuffer::HP);
 }

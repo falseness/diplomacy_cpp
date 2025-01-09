@@ -10,7 +10,8 @@
 Screen::Screen(sf::RenderWindow& window) :
             width_(sf::VideoMode::getDesktopMode().width),
             height_(sf::VideoMode::getDesktopMode().height),
-            window_(window), background_color_(sf::Color(80, 80, 80)) {
+            window_(window), background_color_(sf::Color(80, 80, 80)),
+            rectangle_buffer_(kRectangleBuffersCount), rectangle_lines_buffer_(kRectangleBuffersCount) {
     window_.create(sf::VideoMode(width_, height_), "Diplomacy");
     ClearBuffer();
     window_.setFramerateLimit(GameOptions::kMaxFPS);
@@ -305,7 +306,7 @@ void Screen::ClearBuffer() {
     last_index_ = 0;
 }
 
-void Screen::DrawOnRectangleBuffer(const RoundedRectangle& rectangle) {
+void Screen::DrawOnRectangleBuffer(const ColoredRectangle &rectangle, const RectangleBuffer buffer_type) {
     auto color = create_color<sf::Color>(rectangle.background_color);
     //color.a = static_cast<size_t>(Screen::kMaximumColorValue * opacity);
     std::vector<Vector2D> points{
@@ -315,7 +316,7 @@ void Screen::DrawOnRectangleBuffer(const RoundedRectangle& rectangle) {
             {rectangle.get_left(), rectangle.get_bottom()}
     };
     for (const auto& point : points) {
-        rectangle_buffer_.append(create_vertex(sf::Vector2f(point.x, point.y), color));
+        buffer_.append(create_vertex(sf::Vector2f(point.x, point.y), color));
     }
 
     auto outline_color = create_color<sf::Color>(rectangle.border_color);
@@ -325,7 +326,7 @@ void Screen::DrawOnRectangleBuffer(const RoundedRectangle& rectangle) {
         size_t next_index = (i + 1) % points.size();
         auto tmp = CreateLineRectangle(points[i], points[next_index], rectangle.border_width);
         for (auto point : tmp) {
-            rectangle_lines_buffer_.append(create_vertex(create_vector<sf::Vector2f>(point), outline_color));
+            buffer_.append(create_vertex(create_vector<sf::Vector2f>(point), outline_color));
         }
     }
 }
@@ -379,19 +380,19 @@ sf::Vertex Screen::create_vertex(sf::Vector2f position, sf::Color color) {
     return result;
 }
 
-void Screen::DrawRectangleBuffer(const Vector2D &position) {
+void Screen::DrawRectangleBuffer(const Vector2D &position, const RectangleBuffer buffer_type) {
     sf::RenderStates states;
     sf::Transform tmp;
     tmp.translate(draw_offset_.x + position.x, draw_offset_.y + position.y);
     states.transform = std::move(tmp);
 
-    window_.draw(rectangle_buffer_, tmp);
-    window_.draw(rectangle_lines_buffer_, tmp);
-    ClearRectangleBuffer();
+    window_.draw(rectangle_buffer_[buffer_type], tmp);
+    window_.draw(rectangle_lines_buffer_[buffer_type], tmp);
+    ClearRectangleBuffer(buffer_type);
 }
 
-void Screen::ClearRectangleBuffer() {
-    ClearPrimitivesBuffers(rectangle_buffer_, rectangle_lines_buffer_, sf::Quads);
+void Screen::ClearRectangleBuffer(const RectangleBuffer buffer_type) {
+    ClearPrimitivesBuffers(rectangle_buffer_[buffer_type], rectangle_lines_buffer_[buffer_type], sf::Quads);
 }
 
 void Screen::DrawHexagonBuffer(const Vector2D &position) {

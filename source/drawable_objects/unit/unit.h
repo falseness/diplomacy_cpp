@@ -43,6 +43,7 @@ public:
     [[nodiscard]] bool is_on_high_ground() const;
     ~Unit() override = default;
     void Draw(Screen&, const GameOptions&) override;
+    void DrawMovesBar(Screen& screen, const GameOptions& game_options) const;
 };
 
 class EmptyUnit : public Unit {

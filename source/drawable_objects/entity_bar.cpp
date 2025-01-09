@@ -1,0 +1,40 @@
+#pragma once
+
+#include "entity_bar.h"
+
+#include <assert.h>
+
+#include "source/drawable_objects/interface_elements/rounded_rectangle.h"
+
+
+void DrawEntityBar(const unsigned int current_value, const unsigned int maximum_value,
+                   const Vector2D& position, const Vector2D& size_ratio,
+                   const Color& presence_color, const Color& absence_color,
+                   const RectangleBuffer buffer_type, Screen& screen, const GameOptions& game_options) {
+    assert(current_value <= maximum_value);
+    /*if (current_value == maximum_value) {
+        // we don't paint full bars because it creates too much image noise
+        return;
+    }*/
+    // поменяй на COlorRectangle
+    RoundedRectangle rectangle;
+
+    rectangle.corner_radius = 0;
+
+    rectangle.width = game_options.hexagon_options.radius * size_ratio.x;
+
+    rectangle.height = game_options.hexagon_options.radius * size_ratio.y;
+    rectangle.border_width = game_options.hexagon_options.radius * 0.03;
+
+    const unsigned int rects_count = maximum_value;
+    float interval_x = game_options.hexagon_options.radius * 0.1;
+    float hpBarWidth = rectangle.width * rects_count + interval_x * (rects_count - 1);
+
+    for (int i = 0; i < maximum_value; ++i) {
+        rectangle.background_color = i < current_value ? presence_color : absence_color;
+        auto rectangle_position = screen.get_real_position_on_grid(
+                position + Vector2D(-hpBarWidth / 2 + i * rectangle.width + i * interval_x, 0));
+        rectangle.set_top_left_corner_pos(rectangle_position);
+        screen.DrawRoundedRectangle(rectangle);
+    }
+}

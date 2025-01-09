@@ -39,6 +39,9 @@ void HittableEntity::DrawHPBar(float y_offset, Screen& screen, const GameOptions
     static constexpr Color kHPPresenceColor(43, 181, 43);
     static constexpr Color kHPAbsenseColor(179, 179, 179);
 
-    DrawEntityBar(hp_, get_maximum_hp(), get_image_pos(game_options) + Vector2D(0, y_offset),
-                  kHPPresenceColor, kHPAbsenseColor, screen, game_options);
+    static constexpr float kSideRadiusRatio = 0.15;
+    DrawEntityBar(
+            hp_, get_maximum_hp(), get_image_pos(game_options) + Vector2D(0, y_offset),
+                  Vector2D(kSideRadiusRatio, kSideRadiusRatio),
+                  kHPPresenceColor, kHPAbsenseColor, RectangleBuffer::HP, screen, game_options);
 }

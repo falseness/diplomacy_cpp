@@ -5,11 +5,16 @@
 #include "source/options/hexagon.h"
 #include "source/sfml_facades/assets_manager.h"
 #include "source/utility/object_size.h"
+#include "source/utility/colored_rectangle.h"
 
 class RoundedRectangle;
 class Text;
 class Triangle;
 
+enum RectangleBuffer : uint8_t {
+    HP = 0,
+    Moves = 1
+};
 
 class Screen {
     sf::RenderWindow& window_;
@@ -31,8 +36,9 @@ class Screen {
     // todo: refactoring buffer
     sf::VertexArray buffer_;
 
-    sf::VertexArray rectangle_buffer_;
-    sf::VertexArray rectangle_lines_buffer_;
+    static constexpr size_t kRectangleBuffersCount = 2;
+    std::vector<sf::VertexArray> rectangle_buffer_;
+    std::vector<sf::VertexArray> rectangle_lines_buffer_;
 
     sf::VertexArray hexagon_buffer_;
     sf::VertexArray hexagon_lines_buffer_;
@@ -48,15 +54,15 @@ public:
     void DrawHexagon(const HexagonOptions&, const Vector2D&, float);
     void DrawTriangle(const Triangle&);
     void DrawRoundedRectangle(const RoundedRectangle&);
-    void DrawOnRectangleBuffer(const RoundedRectangle&);
+    void DrawOnRectangleBuffer(const ColoredRectangle &rectangle, const RectangleBuffer buffer_type);
     void DrawOnBuffer(const std::string &image_name, const ObjectSize &image_size, const Vector2D &position,
                       float opacity);
     void DrawOnHexagonBuffer(const HexagonOptions& options, const Vector2D& position, float opacity);
     void DrawBuffer(const Vector2D &position);
     void ClearBuffer();
 
-    void DrawRectangleBuffer(const Vector2D &position);
-    void ClearRectangleBuffer();
+    void DrawRectangleBuffer(const Vector2D &position, const RectangleBuffer buffer_type);
+    void ClearRectangleBuffer(const RectangleBuffer buffer_type);
     void DrawHexagonBuffer(const Vector2D &position);
     void ClearHexagonBuffer();
     void DrawImage(const std::string &image_name, const ObjectSize &image_size, const Vector2D &position);

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <array>
+
 #include "source/utility/vector2d.h"
 
 

@@ -25,9 +25,9 @@ void Entity::DrawImage(Screen &screen, const GameOptions &game_options,
 }
 
 void Entity::DrawImage(const std::string& image_name, Screen &screen, const GameOptions &game_options,
-                       const Vector2D &pos, float opacity) {
-    screen.DrawOnBuffer(image_name, game_options.get_image_size(), pos, opacity);
-    //screen.DrawGridImage(image_name_, game_options.get_image_size(), pos);
+                       const Vector2D &pos, float) {
+    //screen.DrawImage(image_name, game_options.get_image_size(), pos);
+    screen.DrawGridImage(image_name, game_options.get_image_size(), pos);
 }
 
 std::pair<int, int> Entity::get_coord() const {
