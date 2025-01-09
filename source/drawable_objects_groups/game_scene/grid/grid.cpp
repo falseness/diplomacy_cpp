@@ -182,13 +182,8 @@ void Grid::Draw(Screen &screen, const GameOptions & game_options) {
     DrawableObjectsGroup::Draw(screen, game_options);
     // this is for optimization
     screen.DrawHexagonBuffer({0, 0});
-    for (auto& row : grid_cells_.get_cells()) {
-        for (auto& cell : row) {
-            cell->DrawEntities(screen, game_options);
-        }
-    }
-
+    screen.DrawBuffer({0, 0}, Buffer::Buildings);
     screen.DrawRectangleBuffer({0, 0}, RectangleBuffer::Moves);
-    screen.DrawBuffer({0, 0});
+    screen.DrawBuffer({0, 0}, Buffer::Units);
     screen.DrawRectangleBuffer({0, 0}, RectangleBuffer::HP);
 }

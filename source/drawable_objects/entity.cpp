@@ -5,12 +5,6 @@
 
 Entity::Entity(Cell* cell_, std::string image_name) : cell_(cell_), image_name_(std::move(image_name)) {}
 
-void Entity::Draw(Screen& screen, const GameOptions& game_options) {
-    Vector2D pos = get_image_pos(game_options);
-
-    DrawImage(screen, game_options, pos);
-}
-
 Vector2D Entity::get_image_pos(const GameOptions &game_options) const {
     Vector2D pos = cell_->get_pos(game_options);
     Vector2D offset = game_options.get_image_offset();
@@ -20,14 +14,14 @@ Vector2D Entity::get_image_pos(const GameOptions &game_options) const {
 }
 
 void Entity::DrawImage(Screen &screen, const GameOptions &game_options,
-                       const Vector2D &pos) const {
-    DrawImage(image_name_, screen, game_options, pos, Screen::kMaximumOpacity);
+                       const Vector2D &pos, Buffer buffer_type) const {
+    DrawImage(image_name_, screen, game_options, pos, Screen::kMaximumOpacity, buffer_type);
 }
 
 void Entity::DrawImage(const std::string& image_name, Screen &screen, const GameOptions &game_options,
-                       const Vector2D &pos, float) {
-    //screen.DrawImage(image_name, game_options.get_image_size(), pos);
-    screen.DrawGridImage(image_name, game_options.get_image_size(), pos);
+                       const Vector2D &pos, float opacity, Buffer buffer_type) {
+    screen.DrawOnBuffer(image_name, game_options.get_image_size(), pos, opacity, buffer_type);
+    //screen.DrawGridImage(image_name, game_options.get_image_size(), pos);
 }
 
 std::pair<int, int> Entity::get_coord() const {

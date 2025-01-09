@@ -12,14 +12,12 @@ void DrawEntityBar(const unsigned int current_value, const unsigned int maximum_
                    const Color& presence_color, const Color& absence_color,
                    const RectangleBuffer buffer_type, Screen& screen, const GameOptions& game_options) {
     assert(current_value <= maximum_value);
-    /*if (current_value == maximum_value) {
+    if (current_value == maximum_value) {
         // we don't paint full bars because it creates too much image noise
         return;
-    }*/
-    // поменяй на COlorRectangle
-    RoundedRectangle rectangle;
+    }
+    ColoredRectangle rectangle;
 
-    rectangle.corner_radius = 0;
 
     rectangle.width = game_options.hexagon_options.radius * size_ratio.x;
 
@@ -32,9 +30,9 @@ void DrawEntityBar(const unsigned int current_value, const unsigned int maximum_
 
     for (int i = 0; i < maximum_value; ++i) {
         rectangle.background_color = i < current_value ? presence_color : absence_color;
-        auto rectangle_position = screen.get_real_position_on_grid(
-                position + Vector2D(-hpBarWidth / 2 + i * rectangle.width + i * interval_x, 0));
+        auto rectangle_position =
+                position + Vector2D(-hpBarWidth / 2 + i * rectangle.width + i * interval_x, 0);
         rectangle.set_top_left_corner_pos(rectangle_position);
-        screen.DrawRoundedRectangle(rectangle);
+        screen.DrawOnRectangleBuffer(rectangle, buffer_type);
     }
 }

@@ -7,7 +7,7 @@ template <typename BuildingAfterConstruction>
 class BuildingUnderConstruction : public Building {
     ProductionInfo production_info_;
     static constexpr float kOpacity = 0.5f;
-    void DrawImage(Screen &screen, const GameOptions &game_options, const Vector2D &pos) const override;
+    void DrawImage(Screen &screen, const GameOptions &game_options, const Vector2D &pos, const Buffer) const override;
     [[nodiscard]] inline unsigned int get_turns_left() const {
         return production_info_.turns;
     }
@@ -47,8 +47,8 @@ void BuildingUnderConstruction<BuildingAfterConstruction>::Draw(Screen &screen, 
 
 template<typename BuildingAfterConstruction>
 void BuildingUnderConstruction<BuildingAfterConstruction>::DrawImage(Screen &screen, const GameOptions &game_options,
-                                                                     const Vector2D &pos) const {
-    Entity::DrawImage(image_name_, screen, game_options, pos, kOpacity);
+                                                                     const Vector2D &pos, const Buffer buffer_type) const {
+    Entity::DrawImage(image_name_, screen, game_options, pos, kOpacity, buffer_type);
 }
 
 template<typename BuildingAfterConstruction>

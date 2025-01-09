@@ -11,6 +11,11 @@ class RoundedRectangle;
 class Text;
 class Triangle;
 
+enum Buffer : uint8_t {
+    Buildings = 0,
+    Units = 1
+};
+
 enum RectangleBuffer : uint8_t {
     HP = 0,
     Moves = 1
@@ -32,9 +37,11 @@ class Screen {
     void set_hexagon_shape(const HexagonOptions&, const Vector2D&, float);
     static void ChangeSprite(sf::Sprite& sprite, const ObjectSize &image_size, const Vector2D &position);
     const sf::Sprite& get_sprite(const std::string &image_name, const ObjectSize &image_size, const Vector2D &position);
-    size_t last_index_ = 0;
-    // todo: refactoring buffer
-    sf::VertexArray buffer_;
+
+
+    static constexpr size_t kBuffersCount = 2;
+    std::vector<size_t> last_index_;
+    std::vector<sf::VertexArray> buffer_;
 
     static constexpr size_t kRectangleBuffersCount = 2;
     std::vector<sf::VertexArray> rectangle_buffer_;
@@ -56,10 +63,10 @@ public:
     void DrawRoundedRectangle(const RoundedRectangle&);
     void DrawOnRectangleBuffer(const ColoredRectangle &rectangle, const RectangleBuffer buffer_type);
     void DrawOnBuffer(const std::string &image_name, const ObjectSize &image_size, const Vector2D &position,
-                      float opacity);
+                      float opacity, const Buffer buffer_type);
     void DrawOnHexagonBuffer(const HexagonOptions& options, const Vector2D& position, float opacity);
-    void DrawBuffer(const Vector2D &position);
-    void ClearBuffer();
+    void DrawBuffer(const Vector2D &position, const Buffer buffer_type);
+    void ClearBuffer(const Buffer buffer_type);
 
     void DrawRectangleBuffer(const Vector2D &position, const RectangleBuffer buffer_type);
     void ClearRectangleBuffer(const RectangleBuffer buffer_type);

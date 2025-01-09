@@ -31,10 +31,6 @@ void HittableEntity::DecreaseHP(int dmg) {
     hp_ -= dmg;
 }
 
-void HittableEntity::Draw(Screen& screen, const GameOptions& game_options) {
-    Entity::Draw(screen, game_options);
-}
-
 void HittableEntity::DrawHPBar(float y_offset, Screen& screen, const GameOptions& game_options) const {
     static constexpr Color kHPPresenceColor(43, 181, 43);
     static constexpr Color kHPAbsenseColor(179, 179, 179);

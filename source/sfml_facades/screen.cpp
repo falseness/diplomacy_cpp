@@ -11,9 +11,12 @@ Screen::Screen(sf::RenderWindow& window) :
             width_(sf::VideoMode::getDesktopMode().width),
             height_(sf::VideoMode::getDesktopMode().height),
             window_(window), background_color_(sf::Color(80, 80, 80)),
+            last_index_(kBuffersCount, 0), buffer_(kBuffersCount),
             rectangle_buffer_(kRectangleBuffersCount), rectangle_lines_buffer_(kRectangleBuffersCount) {
     window_.create(sf::VideoMode(width_, height_), "Diplomacy");
-    ClearBuffer();
+    //ClearBuffer(Buffer::Buildings);
+    //ClearBuffer(Buffer::Units);
+    //ClearHexagonBuffer();
     window_.setFramerateLimit(GameOptions::kMaxFPS);
 }
 void Screen::Clear() {
@@ -260,16 +263,16 @@ void Screen::DrawCenteredLine(Vector2D begin, Vector2D end, float width, Color c
 }
 
 void Screen::DrawOnBuffer(const std::string &image_name, const ObjectSize &image_size,
-                          const Vector2D &position_left_corner, float opacity) {
+                          const Vector2D &position_left_corner, float opacity, const Buffer buffer_type) {
     const auto& rect = assets_manager_.get_position_on_texture(image_name);
 
     static const size_t kQuadCountVertices = 4;
     for (size_t i = 0; i < kQuadCountVertices; ++i) {
-        buffer_.append({});
+        buffer_[buffer_type].append({});
     }
 
     auto alpha = static_cast<size_t>(kMaximumColorValue * opacity);
-    sf::Vertex* quad = &buffer_[last_index_++ * kQuadCountVertices];
+    sf::Vertex* quad = &buffer_[buffer_type][last_index_[buffer_type]++ * kQuadCountVertices];
 
     Vector2D position(position_left_corner.x - image_size.width / 2, position_left_corner.y - image_size.height / 2);
     quad[0].position = sf::Vector2f(position.x, position.y);
@@ -288,22 +291,22 @@ void Screen::DrawOnBuffer(const std::string &image_name, const ObjectSize &image
     }
 }
 
-void Screen::DrawBuffer(const Vector2D &position) {
+void Screen::DrawBuffer(const Vector2D &position, const Buffer buffer_type) {
     sf::RenderStates& states = assets_manager_.get_render_states();
     //states.texture = assets_manager_.get_all_images_texture();
     sf::Transform tmp;
     tmp.translate(draw_offset_.x + position.x, draw_offset_.y + position.y);
     states.transform = std::move(tmp);
 
-    window_.draw(buffer_, states);
-    ClearBuffer();
+    window_.draw(buffer_[buffer_type], states);
+    ClearBuffer(buffer_type);
 }
 
 
-void Screen::ClearBuffer() {
-    buffer_.clear();
-    buffer_.setPrimitiveType(sf::Quads);
-    last_index_ = 0;
+void Screen::ClearBuffer(const Buffer buffer_type) {
+    buffer_[buffer_type].clear();
+    buffer_[buffer_type].setPrimitiveType(sf::Quads);
+    last_index_[buffer_type] = 0;
 }
 
 void Screen::DrawOnRectangleBuffer(const ColoredRectangle &rectangle, const RectangleBuffer buffer_type) {
@@ -316,7 +319,7 @@ void Screen::DrawOnRectangleBuffer(const ColoredRectangle &rectangle, const Rect
             {rectangle.get_left(), rectangle.get_bottom()}
     };
     for (const auto& point : points) {
-        buffer_.append(create_vertex(sf::Vector2f(point.x, point.y), color));
+        rectangle_buffer_[buffer_type].append(create_vertex(sf::Vector2f(point.x, point.y), color));
     }
 
     auto outline_color = create_color<sf::Color>(rectangle.border_color);
@@ -326,7 +329,7 @@ void Screen::DrawOnRectangleBuffer(const ColoredRectangle &rectangle, const Rect
         size_t next_index = (i + 1) % points.size();
         auto tmp = CreateLineRectangle(points[i], points[next_index], rectangle.border_width);
         for (auto point : tmp) {
-            buffer_.append(create_vertex(create_vector<sf::Vector2f>(point), outline_color));
+            rectangle_lines_buffer_[buffer_type].append(create_vertex(create_vector<sf::Vector2f>(point), outline_color));
         }
     }
 }

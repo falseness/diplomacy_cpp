@@ -33,6 +33,7 @@ public:
         return "";
     }
     void Kill(Grid& grid) const override;
+    void Draw(Screen& screen, const GameOptions& game_options);
     ~Building() override;
 };
 

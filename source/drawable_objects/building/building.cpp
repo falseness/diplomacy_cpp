@@ -61,6 +61,12 @@ void Building::Kill(Grid &grid) const {
     grid.DeleteBuilding(get_coord());
 }
 
+void Building::Draw(Screen &screen, const GameOptions &game_options) {
+    auto pos = get_image_pos(game_options);
+
+    DrawImage(screen, game_options, pos, Buffer::Buildings);
+}
+
 bool EmptyBuilding::is_passable(size_t) const {
     return true;
 }

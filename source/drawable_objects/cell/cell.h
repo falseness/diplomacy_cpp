@@ -60,7 +60,6 @@ public:
     }
     Cell(std::pair<int, int>, size_t player_index_, Players&, bool is_suburb = false);
     void Draw(Screen& screen, const GameOptions&) override;
-    void DrawEntities(Screen& screen, const GameOptions&) const;
     [[nodiscard]] std::pair<int, int> get_coord() const;
     [[nodiscard]] Vector2D get_pos(const GameOptions& game_options) const;
     [[nodiscard]] const Color& get_color() const;

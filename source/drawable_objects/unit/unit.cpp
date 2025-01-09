@@ -143,7 +143,9 @@ bool Unit::is_on_high_ground() const {
 }
 
 void Unit::Draw(Screen& screen, const GameOptions& game_options) {
-    HittableEntity::Draw(screen, game_options);
+    auto pos = get_image_pos(game_options);
+
+    DrawImage(screen, game_options, pos, Buffer::Units);
     const auto unit_hp_bar_y_offset = game_options.hexagon_options.radius * -1.15f;
     HittableEntity::DrawHPBar(unit_hp_bar_y_offset, screen, game_options);
     DrawMovesBar(screen, game_options);
